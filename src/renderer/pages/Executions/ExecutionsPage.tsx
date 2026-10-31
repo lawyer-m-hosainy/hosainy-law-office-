@@ -41,6 +41,7 @@ import {
 } from '../../../shared/types';
 import { useExecutions } from '../../hooks/useExecutions';
 import { generateExecutionReportHtml } from '../../services/executionReportGenerator';
+import { ExportButton } from '../../components/Common/ExportButton';
 
 interface ExecutionsPageProps {
   settings: OfficeSettings | null;
@@ -543,8 +544,30 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
           </div>
         </div>
 
-        <button
-          onClick={() => {
+        <div className="flex items-center gap-2">
+          <ExportButton
+            fileName="ملفات_التنفيذ"
+            title="سجل ملفات التنفيذ الجبري والأوامر القضائية"
+            headers={['م', 'رقم الملف', 'السنة', 'نوع السند', 'رقم السند', 'طالب التنفيذ (المحكوم له)', 'المنفذ ضده (المدين)', 'المحكمة', 'المبلغ المطلوب', 'المحصل', 'المتبقي', 'الحالة']}
+            rows={filteredFiles.map((f, idx) => [
+              idx + 1,
+              f.file_number,
+              f.year,
+              f.deed_type,
+              f.deed_number,
+              f.applicant_name,
+              f.enforced_against,
+              f.court,
+              f.total_claimed_amount,
+              f.total_collected_amount,
+              f.remaining_amount,
+              f.status,
+            ])}
+            buttonLabel="تصدير التنفيذات"
+          />
+
+          <button
+            onClick={() => {
             setNewFileForm({
               file_number: '',
               year: new Date().getFullYear(),
@@ -573,6 +596,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
           <span>فتح ملف تنفيذ جديد</span>
         </button>
       </div>
+    </div>
 
       {/* Main Workspace Layout (Files Grid / Master-Detail) */}
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-5 overflow-hidden">

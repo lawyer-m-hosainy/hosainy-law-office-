@@ -4,6 +4,7 @@ import {
   Printer,
   ShieldCheck,
   Calendar,
+  Search,
 } from 'lucide-react';
 import { NavigationTab, OfficeSettings } from '../../../shared/types';
 
@@ -12,6 +13,7 @@ interface HeaderProps {
   settings: OfficeSettings | null;
   onOpenDataDir: () => void;
   onOpenQuickPrint: () => void;
+  onOpenUniversalSearch: () => void;
 }
 
 const tabTitles: Record<NavigationTab, { title: string; subtitle: string }> = {
@@ -31,6 +33,7 @@ export const Header: React.FC<HeaderProps> = ({
   activeTab,
   onOpenDataDir,
   onOpenQuickPrint,
+  onOpenUniversalSearch,
 }) => {
   const currentTabInfo = tabTitles[activeTab] || { title: '', subtitle: '' };
 
@@ -55,6 +58,19 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Actions & Status */}
       <div className="flex items-center gap-3">
+        {/* Universal Search Button / Trigger */}
+        <button
+          onClick={onOpenUniversalSearch}
+          className="flex items-center gap-2 px-3 py-1.5 bg-slate-100 hover:bg-slate-200/80 text-slate-500 rounded-lg text-xs font-medium border border-slate-200 transition-colors cursor-pointer group"
+          title="البحث الشامل عبر كل القضايا والموكلين والجلسات والمهام (Ctrl+K)"
+        >
+          <Search className="w-3.5 h-3.5 text-slate-400 group-hover:text-amber-600 transition-colors" />
+          <span className="hidden sm:inline">بحث شامل في كافة السجلات...</span>
+          <kbd className="hidden lg:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-mono font-semibold bg-white text-slate-500 border border-slate-200 rounded shadow-2xs">
+            Ctrl K
+          </kbd>
+        </button>
+
         {/* Date badge */}
         <div className="hidden md:flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 rounded-lg text-xs font-semibold text-slate-700 border border-slate-200">
           <Calendar className="w-3.5 h-3.5 text-amber-600" />

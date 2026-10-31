@@ -22,6 +22,7 @@ import {
 import { Client, ClientType } from '../../../shared/types';
 import { useClients } from '../../hooks/useClients';
 import { arabicIncludes } from '../../../shared/arabicUtils';
+import { ExportButton } from '../../components/Common/ExportButton';
 
 interface ClientsPageProps {
   onNavigateToCase?: (caseId: number) => void;
@@ -260,7 +261,26 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
             </button>
           </div>
 
-          {/* Add Client Button */}
+          {/* Add Client Button & Export */}
+          <ExportButton
+            fileName="سجل_الموكلين"
+            title="سجل الموكلين والشركات والتوكيلات القضائية"
+            headers={['م', 'اسم الموكل', 'النوع', 'الرقم القومي / السجل', 'الهاتف', 'الهاتف 2', 'رقم التوكيل', 'نوع التوكيل', 'مكتب التوثيق', 'انتهاء التوكيل', 'الحالة']}
+            rows={filteredClients.map((c, idx) => [
+              idx + 1,
+              c.name,
+              c.client_type === 'individual' ? 'فرد' : (c.client_type === 'company' ? 'شركة' : 'جهة'),
+              c.national_id_or_cr || '-',
+              c.phone || '-',
+              c.phone2 || '-',
+              c.poa_number || '-',
+              c.poa_type || '-',
+              c.poa_issuing_office || '-',
+              c.poa_expiry_date || '-',
+              c.status === 'active' ? 'نشط' : 'مؤرشف',
+            ])}
+          />
+
           <button
             onClick={handleOpenAddModal}
             className="flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors flex-shrink-0"

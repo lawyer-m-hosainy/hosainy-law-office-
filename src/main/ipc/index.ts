@@ -9,6 +9,10 @@ import { registerAppealsIpc } from './appealsIpc';
 import { registerFinanceIpc } from './financeIpc';
 import { registerExecutionsIpc } from './executionsIpc';
 import { registerTasksIpc } from './tasksIpc';
+import { registerDocumentsIpc } from './documentsIpc';
+import { registerNotesAndTimelineIpc } from './notesAndTimelineIpc';
+import { registerSearchIpc } from './searchIpc';
+import { registerExportIpc } from './exportIpc';
 
 export function registerAllIpcHandlers(): void {
   registerSettingsIpc();
@@ -21,6 +25,10 @@ export function registerAllIpcHandlers(): void {
   registerFinanceIpc();
   registerExecutionsIpc();
   registerTasksIpc();
+  registerDocumentsIpc();
+  registerNotesAndTimelineIpc();
+  registerSearchIpc();
+  registerExportIpc();
 
   ipcMain.handle('system:getAppVersion', async (): Promise<string> => {
     return app.getVersion();

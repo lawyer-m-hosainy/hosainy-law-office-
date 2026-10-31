@@ -42,6 +42,7 @@ import {
 } from '../../../shared/types';
 import { useTasks } from '../../hooks/useTasks';
 import { generateTasksReportHtml } from '../../services/tasksReportGenerator';
+import { ExportButton } from '../../components/Common/ExportButton';
 
 interface TasksPageProps {
   settings: OfficeSettings | null;
@@ -457,6 +458,25 @@ export const TasksPage: React.FC<TasksPageProps> = ({
 
           {/* Action Buttons */}
           <div className="flex items-center gap-2">
+            <ExportButton
+              fileName="قائمة_المهام"
+              title="سجل المهام والمأموريات القضائية"
+              headers={['م', 'عنوان المهمة', 'التصنيف', 'الأولوية', 'الحالة', 'تاريخ الاستحقاق', 'المكلف', 'رقم القضية', 'المدة التقديرية', 'ملاحظات النتيجة']}
+              rows={filteredTasks.map((t, idx) => [
+                idx + 1,
+                t.title,
+                t.category,
+                t.priority,
+                t.status,
+                t.due_date ? `${t.due_date} ${t.due_time || ''}`.trim() : '-',
+                t.assigned_to || '-',
+                t.case_number ? `${t.case_number}/${t.case_year}` : '-',
+                t.estimated_duration || '-',
+                t.result_notes || '-',
+              ])}
+              buttonLabel="تصدير المهام"
+            />
+
             <button
               onClick={handlePrintTasks}
               className="flex items-center gap-1.5 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition-colors"

@@ -23,6 +23,7 @@ import {
 } from '../../../shared/types';
 import { useHearings } from '../../hooks/useHearings';
 import { generateHearingRollHtml } from '../../services/hearingRollReportGenerator';
+import { ExportButton } from '../../components/Common/ExportButton';
 
 interface HearingsPageProps {
   courts: ConfigurableListItem[];
@@ -248,6 +249,28 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
 
         {/* Print Toolbar */}
         <div className="flex items-center gap-2">
+          <ExportButton
+            fileName="رول_الجلسات"
+            title="رول الجلسات القضائية"
+            headers={['م', 'التاريخ', 'المحكمة', 'الدائرة', 'القاعة', 'الرول', 'رقم القضية', 'السنة', 'الموكل', 'الخصم', 'الصفة', 'قرار المحكمة / سبب التأجيل', 'الحالة']}
+            rows={hearings.map((h, idx) => [
+              idx + 1,
+              h.hearing_date,
+              h.court_name,
+              h.court_circuit || '-',
+              h.court_hall || '-',
+              h.roll_number || '-',
+              h.case_number,
+              h.case_year,
+              h.primary_client_name || '-',
+              h.opponent_name || '-',
+              h.client_role || '-',
+              h.court_decision || h.adjournment_reason || '-',
+              h.status,
+            ])}
+            buttonLabel="تصدير الرول"
+          />
+
           <button
             onClick={() => handlePrintRoll('preview')}
             disabled={hearings.length === 0}

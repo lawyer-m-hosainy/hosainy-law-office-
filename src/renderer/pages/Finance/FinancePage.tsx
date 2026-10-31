@@ -40,6 +40,7 @@ import { useFinance } from '../../hooks/useFinance';
 import { generateGeneralFinancialReportHtml } from '../../services/generalFinancialReportGenerator';
 import { generateReceiptHtml } from '../../services/receiptReportGenerator';
 import { generateClientStatementHtml } from '../../services/clientStatementReportGenerator';
+import { ExportButton } from '../../components/Common/ExportButton';
 
 interface FinancePageProps {
   settings: OfficeSettings | null;
@@ -364,6 +365,26 @@ export const FinancePage: React.FC<FinancePageProps> = ({
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
+          <ExportButton
+            fileName="سجل_المالية"
+            title="سجل الحركات المالية والمقبوضات والمصروفات"
+            headers={['م', 'رقم الإيصال', 'التاريخ', 'الاتجاه', 'التصنيف', 'نوع الحركة', 'المبلغ (ج.م)', 'طريقة الدفع', 'البيان', 'الموكل', 'رقم القضية']}
+            rows={filteredTransactions.map((tx, idx) => [
+              idx + 1,
+              tx.receipt_number,
+              tx.transaction_date,
+              tx.direction === 'inflow' ? 'وارد' : 'صادر',
+              tx.category,
+              tx.transaction_type,
+              tx.amount,
+              tx.payment_method,
+              tx.description,
+              tx.client_name || '-',
+              tx.case_number ? `${tx.case_number}/${tx.case_year}` : '-',
+            ])}
+            buttonLabel="تصدير المالية"
+          />
+
           <button
             onClick={handlePrintGeneralReport}
             className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"

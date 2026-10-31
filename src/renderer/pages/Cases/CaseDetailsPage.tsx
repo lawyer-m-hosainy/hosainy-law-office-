@@ -40,6 +40,8 @@ import { CaseHearingsTab } from './components/CaseHearingsTab';
 import { CaseFinanceTab } from './components/CaseFinanceTab';
 import { CaseExecutionsTab } from './components/CaseExecutionsTab';
 import { CaseTasksTab } from './components/CaseTasksTab';
+import { CaseDocumentsTab } from './components/CaseDocumentsTab';
+import { CaseTimelineTab } from './components/CaseTimelineTab';
 
 interface CaseDetailsPageProps {
   caseId: number;
@@ -588,13 +590,15 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
       )}
 
       {activeTab === 'documents' && (
-        <div className="bg-white rounded-xl border border-slate-200 p-8 text-center space-y-3">
-          <FileText className="w-10 h-10 text-amber-600 mx-auto" />
-          <h4 className="text-base font-bold text-slate-800">تبويب المستندات والمرفقات المحلية</h4>
-          <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
-            مجدول ومخصص في <strong>المرحلة 7</strong>: تخزين مستندات القضية داخل مجلد LawOfficeData/attachments بروابط نسبية.
-          </p>
-        </div>
+        <CaseDocumentsTab
+          caseData={caseData}
+          settings={settings || {
+            office_name: 'مكتب المحاماة',
+            lawyer_name: '',
+            title: 'المحامي بالنقض'
+          } as any}
+          onCaseUpdated={loadCase}
+        />
       )}
 
       {/* TAB 6: Tasks & Checklists */}
@@ -612,13 +616,14 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
       )}
 
       {activeTab === 'timeline' && (
-        <div className="bg-white rounded-xl border border-slate-200 p-8 text-center space-y-3">
-          <History className="w-10 h-10 text-amber-600 mx-auto" />
-          <h4 className="text-base font-bold text-slate-800">تبويب السجل الزمني والملاحظات التراكمية</h4>
-          <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
-            مجدول ومخصص في <strong>المرحلة 8</strong>: سجل التدقيق وتاريخ التغييرات التي تمت على القضية.
-          </p>
-        </div>
+        <CaseTimelineTab
+          caseData={caseData}
+          settings={settings || {
+            office_name: 'مكتب المحاماة',
+            lawyer_name: '',
+            title: 'المحامي بالنقض'
+          } as any}
+        />
       )}
 
       {/* Edit Case Modal */}

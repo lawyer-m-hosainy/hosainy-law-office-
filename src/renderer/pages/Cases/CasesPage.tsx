@@ -29,6 +29,7 @@ import {
 } from '../../../shared/types';
 import { useCases } from '../../hooks/useCases';
 import { arabicIncludes } from '../../../shared/arabicUtils';
+import { ExportButton } from '../../components/Common/ExportButton';
 
 interface CasesPageProps {
   courts: ConfigurableListItem[];
@@ -224,13 +225,34 @@ export const CasesPage: React.FC<CasesPageProps> = ({
             />
           </div>
 
-          <button
-            onClick={handleOpenAddModal}
-            className="flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors flex-shrink-0"
-          >
-            <FolderPlus className="w-4 h-4" />
-            <span>إضافة ملف قضية جديد</span>
-          </button>
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <ExportButton
+              fileName="قضايا_المكتب"
+              title="سجل ملفات القضايا والدعاوى"
+              headers={['م', 'رقم القضية', 'السنة', 'المحكمة', 'الدائرة', 'نوع الدعوى', 'الموكل الرئيسي', 'الخصم', 'الحالة', 'الأهمية', 'تاريخ القيد']}
+              rows={filteredCases.map((c, idx) => [
+                idx + 1,
+                c.case_number,
+                c.case_year,
+                c.court_name,
+                c.court_circuit || '-',
+                c.case_type,
+                c.primary_client_name || '-',
+                c.opponents_summary || '-',
+                c.status,
+                c.priority,
+                c.filing_date || '-',
+              ])}
+            />
+
+            <button
+              onClick={handleOpenAddModal}
+              className="flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors flex-shrink-0"
+            >
+              <FolderPlus className="w-4 h-4" />
+              <span>إضافة ملف قضية جديد</span>
+            </button>
+          </div>
         </div>
 
         {/* Dropdown Filters */}

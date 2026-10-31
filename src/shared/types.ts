@@ -908,8 +908,175 @@ export interface IElectronAPI {
   markTaskReminderShown: (taskId: number) => Promise<void>;
   showDesktopNotification: (options: { title: string; body: string }) => Promise<boolean>;
 
+  // Documents & Attachments API (Phase 7)
+  selectFilesToAttach: () => Promise<string[]>;
+  attachDocument: (input: CreateDocumentInput) => Promise<CaseDocument>;
+  getCaseDocuments: (caseId: number, includeDeleted?: boolean) => Promise<CaseDocument[]>;
+  openDocument: (documentId: number) => Promise<{ success: boolean; error?: string }>;
+  showDocumentInFolder: (documentId: number) => Promise<{ success: boolean; error?: string }>;
+  updateDocument: (id: number, updates: UpdateDocumentInput) => Promise<CaseDocument>;
+  deleteDocument: (id: number, permanent?: boolean) => Promise<{ success: boolean }>;
+  restoreDocument: (id: number) => Promise<CaseDocument>;
+
+  // Case Notes API (Phase 7)
+  getCaseNotes: (caseId: number) => Promise<CaseNote[]>;
+  createCaseNote: (input: CreateCaseNoteInput) => Promise<CaseNote>;
+  updateCaseNote: (id: number, updates: UpdateCaseNoteInput) => Promise<CaseNote>;
+  deleteCaseNote: (id: number) => Promise<{ success: boolean }>;
+
+  // Universal Search API (Phase 7)
+  universalSearch: (query: string) => Promise<UniversalSearchResults>;
+
+  // Case Timeline & History API (Phase 7)
+  getCaseTimeline: (caseId: number) => Promise<{
+    items: CaseTimelineItem[];
+    stats: {
+      totalHearings: number;
+      adjournmentsCount: number;
+      topAdjournmentReason: string;
+      avgDaysBetweenHearings: number;
+    };
+  }>;
+
+  // Data Export API (Phase 7)
+  exportTableData: (input: ExportTableDataInput) => Promise<ExportResult>;
+  openExportedFile: (filePath: string) => Promise<{ success: boolean; error?: string }>;
+
   // System
   getAppVersion: () => Promise<string>;
+}
+
+// ==========================================
+// Phase 7 Entities: Documents, Notes, Search, Export
+// ==========================================
+
+export type CaseDocumentCategory =
+  | 'عريضة دعوى'
+  | 'توكيل قضايا'
+  | 'إنذار رسمي'
+  | 'تقرير خبير'
+  | 'محضر شرطة'
+  | 'حكم قضائي'
+  | 'مستندات موكل'
+  | 'مذكرات دفاع'
+  | 'مستندات خصم'
+  | 'إيصالات ورسوم'
+  | 'أخرى';
+
+export interface CaseDocument {
+  id: number;
+  case_id: number;
+  title: string;
+  category: string;
+  file_name: string;
+  file_extension: string;
+  relative_path: string;
+  file_size_bytes: number;
+  mime_type?: string | null;
+  description?: string | null;
+  is_deleted: number; // 0 for active, 1 for trash bin
+  deleted_at?: string | null;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface CreateDocumentInput {
+  case_id: number;
+  title: string;
+  category: string;
+  sourceFilePath: string;
+  description?: string;
+}
+
+export interface UpdateDocumentInput {
+  title?: string;
+  category?: string;
+  description?: string;
+}
+
+export type CaseNoteCategory =
+  | 'قانونية'
+  | 'إجرائية'
+  | 'موكل'
+  | 'تذكير'
+  | 'خطة دفاع'
+  | 'عامة';
+
+export interface CaseNote {
+  id: number;
+  case_id: number;
+  title: string;
+  content: string;
+  category: string;
+  is_pinned: number; // 1 or 0
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface CreateCaseNoteInput {
+  case_id: number;
+  title: string;
+  content: string;
+  category?: string;
+  is_pinned?: number;
+}
+
+export interface UpdateCaseNoteInput {
+  title?: string;
+  content?: string;
+  category?: string;
+  is_pinned?: number;
+}
+
+export type SearchResultEntityType =
+  | 'case'
+  | 'client'
+  | 'hearing'
+  | 'task'
+  | 'execution'
+  | 'finance'
+  | 'document';
+
+export interface SearchResultItem {
+  id: number;
+  entityType: SearchResultEntityType;
+  title: string;
+  subtitle?: string;
+  description?: string;
+  caseId?: number;
+  date?: string;
+  badge?: string;
+}
+
+export interface UniversalSearchResults {
+  query: string;
+  totalCount: number;
+  items: SearchResultItem[];
+}
+
+export interface CaseTimelineItem {
+  id: string;
+  date: string;
+  type: 'filing' | 'hearing' | 'finance' | 'execution' | 'document' | 'task' | 'note';
+  title: string;
+  description?: string;
+  statusBadge?: string;
+  badgeColor?: string;
+  extraInfo?: Record<string, any>;
+}
+
+export interface ExportTableDataInput {
+  fileName: string;
+  title: string;
+  headers: string[];
+  rows: (string | number | boolean | null | undefined)[][];
+  format: 'csv' | 'excel';
+}
+
+export interface ExportResult {
+  success: boolean;
+  filePath?: string;
+  error?: string;
 }
 
 declare global {

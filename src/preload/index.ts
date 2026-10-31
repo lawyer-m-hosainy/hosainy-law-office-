@@ -267,6 +267,64 @@ const api: IElectronAPI = {
   showDesktopNotification: (options: { title: string; body: string }): Promise<any> => {
     return ipcRenderer.invoke('tasks:showDesktopNotification', options);
   },
+
+  // Documents & Attachments API (Phase 7)
+  selectFilesToAttach: (): Promise<string[]> => {
+    return ipcRenderer.invoke('documents:selectFiles');
+  },
+  attachDocument: (input: any): Promise<any> => {
+    return ipcRenderer.invoke('documents:attach', input);
+  },
+  getCaseDocuments: (caseId: number, includeDeleted?: boolean): Promise<any> => {
+    return ipcRenderer.invoke('documents:getByCase', caseId, includeDeleted);
+  },
+  openDocument: (documentId: number): Promise<any> => {
+    return ipcRenderer.invoke('documents:open', documentId);
+  },
+  showDocumentInFolder: (documentId: number): Promise<any> => {
+    return ipcRenderer.invoke('documents:showInFolder', documentId);
+  },
+  updateDocument: (id: number, updates: any): Promise<any> => {
+    return ipcRenderer.invoke('documents:update', id, updates);
+  },
+  deleteDocument: (id: number, permanent?: boolean): Promise<any> => {
+    return ipcRenderer.invoke('documents:delete', id, permanent);
+  },
+  restoreDocument: (id: number): Promise<any> => {
+    return ipcRenderer.invoke('documents:restore', id);
+  },
+
+  // Case Notes API (Phase 7)
+  getCaseNotes: (caseId: number): Promise<any> => {
+    return ipcRenderer.invoke('caseNotes:getByCase', caseId);
+  },
+  createCaseNote: (input: any): Promise<any> => {
+    return ipcRenderer.invoke('caseNotes:create', input);
+  },
+  updateCaseNote: (id: number, updates: any): Promise<any> => {
+    return ipcRenderer.invoke('caseNotes:update', id, updates);
+  },
+  deleteCaseNote: (id: number): Promise<any> => {
+    return ipcRenderer.invoke('caseNotes:delete', id);
+  },
+
+  // Universal Search API (Phase 7)
+  universalSearch: (query: string): Promise<any> => {
+    return ipcRenderer.invoke('search:universal', query);
+  },
+
+  // Case Timeline & History API (Phase 7)
+  getCaseTimeline: (caseId: number): Promise<any> => {
+    return ipcRenderer.invoke('caseTimeline:get', caseId);
+  },
+
+  // Data Export API (Phase 7)
+  exportTableData: (input: any): Promise<any> => {
+    return ipcRenderer.invoke('export:tableData', input);
+  },
+  openExportedFile: (filePath: string): Promise<any> => {
+    return ipcRenderer.invoke('export:openFile', filePath);
+  },
 };
 
 contextBridge.exposeInMainWorld('electronAPI', api);

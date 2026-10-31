@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationTab } from '../shared/types';
 import { useSettings } from './hooks/useSettings';
 import { useClients } from './hooks/useClients';
 import { useCases } from './hooks/useCases';
 import { Sidebar } from './components/Layout/Sidebar';
 import { Header } from './components/Layout/Header';
+import { UniversalSearchModal } from './components/Search/UniversalSearchModal';
 import { DashboardPage } from './pages/Dashboard/DashboardPage';
 import { SettingsPage } from './pages/Settings/SettingsPage';
 import { ReportsPage } from './pages/Reports/ReportsPage';
@@ -22,6 +23,18 @@ import { Scale, Loader2, AlertCircle } from 'lucide-react';
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<NavigationTab>('dashboard');
   const [selectedCaseId, setSelectedCaseId] = useState<number | null>(null);
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsSearchModalOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const {
     settings,
@@ -120,6 +133,7 @@ export const App: React.FC = () => {
           settings={settings}
           onOpenDataDir={handleOpenDataDir}
           onOpenQuickPrint={handleOpenQuickPrint}
+          onOpenUniversalSearch={() => setIsSearchModalOpen(true)}
         />
 
         {/* Content View */}
@@ -205,6 +219,9 @@ export const App: React.FC = () => {
             <ReportsPage
               settings={settings}
               courtsList={lists.courts || []}
+              cases={cases}
+              clients={clients}
+              onNavigateToCase={handleNavigateToCase}
             />
           )}
 
@@ -228,6 +245,20 @@ export const App: React.FC = () => {
           )}
         </main>
       </div>
+
+      {/* Universal Search Modal (Ctrl+K) */}
+      <UniversalSearchModal
+        isOpen={isSearchModalOpen}
+        onClose={() => setIsSearchModalOpen(false)}
+        onNavigateToCase={(caseId) => {
+          setSelectedCaseId(caseId);
+          setActiveTab('cases');
+        }}
+        onNavigateToTab={(tab) => {
+          setActiveTab(tab);
+          setSelectedCaseId(null);
+        }}
+      />
     </div>
   );
 };
