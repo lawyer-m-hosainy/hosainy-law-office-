@@ -1,0 +1,44 @@
+{
+  "name": "law-office-management",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "برنامج إدارة مكتب المحاماة",
+  "main": "dist/main/index.cjs",
+  "scripts": {
+    "dev:renderer": "vite",
+    "dev:main": "node scripts/watch-main.js",
+    "dev": "node scripts/dev.js",
+    "build:renderer": "vite build",
+    "build:main": "node scripts/build-main.js",
+    "build": "npm run build:renderer && npm run build:main",
+    "start": "electron .",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "dependencies": {
+    "@fontsource/cairo": "^5.3.0",
+    "@fontsource/tajawal": "^5.3.0",
+    "better-sqlite3": "^11.8.1",
+    "lucide-react": "^0.460.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/node": "^20.14.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^9.0.1",
+    "cross-env": "^7.0.3",
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8",
+    "esbuild": "^0.24.0",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.14",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.8",
+    "wait-on": "^8.0.1"
+  }
+}
