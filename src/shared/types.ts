@@ -191,6 +191,10 @@ export interface CaseFilter {
   court_degree?: string;
   priority?: string;
   client_id?: number;
+  limit?: number;
+  offset?: number;
+  page?: number;
+  pageSize?: number;
 }
 
 export interface CreateCaseInput {

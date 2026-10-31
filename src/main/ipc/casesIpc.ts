@@ -72,6 +72,14 @@ export function registerCasesIpc(): void {
 
     const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
 
+    let paginationClause = '';
+    const limit = filter?.limit ?? filter?.pageSize;
+    if (limit && limit > 0) {
+      const offset = filter?.offset ?? (filter?.page && filter.page > 1 ? (filter.page - 1) * limit : 0);
+      paginationClause = ' LIMIT ? OFFSET ?';
+      params.push(limit, offset);
+    }
+
     const sql = `
       SELECT 
         c.*,
@@ -93,6 +101,7 @@ export function registerCasesIpc(): void {
       FROM cases c
       ${whereClause}
       ORDER BY c.case_year DESC, c.case_number DESC, c.id DESC
+      ${paginationClause}
     `;
 
     return db.prepare(sql).all(...params) as Case[];

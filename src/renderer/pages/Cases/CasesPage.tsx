@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   Briefcase,
   FolderPlus,
@@ -19,6 +19,10 @@ import {
   Plus,
   Baby,
   AlertTriangle,
+  ChevronRight,
+  ChevronLeft,
+  ChevronsRight,
+  ChevronsLeft,
 } from 'lucide-react';
 import {
   Case,
@@ -197,6 +201,20 @@ export const CasesPage: React.FC<CasesPageProps> = ({
     );
   });
 
+  // Pagination for high performance on 10,000+ cases
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(24);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, statusFilter, courtFilter, typeFilter, priorityFilter, pageSize]);
+
+  const totalPages = Math.ceil(filteredCases.length / pageSize) || 1;
+  const paginatedCases = useMemo(() => {
+    const start = (currentPage - 1) * pageSize;
+    return filteredCases.slice(start, start + pageSize);
+  }, [filteredCases, currentPage, pageSize]);
+
   const getPriorityBadge = (p: string) => {
     switch (p) {
       case 'عاجلة':
@@ -334,7 +352,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredCases.map((cs) => (
+          {paginatedCases.map((cs) => (
             <div
               key={cs.id}
               onClick={() => onOpenCaseDetails(cs.id)}
@@ -414,6 +432,108 @@ export const CasesPage: React.FC<CasesPageProps> = ({
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Pagination Controls for High Performance on 10,000+ Cases */}
+      {filteredCases.length > 0 && (
+        <div className="bg-white rounded-xl border border-slate-200 p-4 flex flex-col sm:flex-row items-center justify-between gap-4 select-none">
+          {/* Summary & Page Size Selector */}
+          <div className="flex items-center gap-4 text-xs font-semibold text-slate-600">
+            <span>
+              عرض {((currentPage - 1) * pageSize + 1).toLocaleString('ar-EG')} - {Math.min(currentPage * pageSize, filteredCases.length).toLocaleString('ar-EG')} من إجمالي {filteredCases.length.toLocaleString('ar-EG')} قضية
+            </span>
+
+            <div className="flex items-center gap-1.5 border-r border-slate-200 pr-4">
+              <span className="text-slate-500 font-normal">عدد العناصر:</span>
+              <select
+                value={pageSize}
+                onChange={(e) => setPageSize(Number(e.target.value))}
+                className="px-2 py-1 text-xs bg-slate-50 border border-slate-300 rounded font-bold focus:outline-none focus:ring-1 focus:ring-amber-500"
+              >
+                <option value={12}>12</option>
+                <option value={24}>24</option>
+                <option value={48}>48</option>
+                <option value={96}>96</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Page Navigation Buttons */}
+          <div className="flex items-center gap-1 text-xs">
+            <button
+              onClick={() => setCurrentPage(1)}
+              disabled={currentPage === 1}
+              title="الصفحة الأولى"
+              className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+            >
+              <ChevronsRight className="w-4 h-4" />
+            </button>
+
+            <button
+              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+              title="الصفحة السابقة"
+              className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+
+            {/* Page number buttons */}
+            <div className="flex items-center gap-1">
+              {(() => {
+                const pages: (number | string)[] = [];
+                if (totalPages <= 7) {
+                  for (let i = 1; i <= totalPages; i++) pages.push(i);
+                } else {
+                  pages.push(1);
+                  if (currentPage > 3) pages.push('...');
+                  const start = Math.max(2, currentPage - 1);
+                  const end = Math.min(totalPages - 1, currentPage + 1);
+                  for (let i = start; i <= end; i++) pages.push(i);
+                  if (currentPage < totalPages - 2) pages.push('...');
+                  pages.push(totalPages);
+                }
+                return pages.map((p, idx) =>
+                  p === '...' ? (
+                    <span key={`dots-${idx}`} className="px-2 py-1 text-slate-400 font-bold">
+                      ...
+                    </span>
+                  ) : (
+                    <button
+                      key={`page-${p}`}
+                      onClick={() => setCurrentPage(p as number)}
+                      className={`min-w-8 h-8 px-2 rounded-lg font-bold transition-all ${
+                        currentPage === p
+                          ? 'bg-amber-600 text-white shadow-xs'
+                          : 'border border-slate-200 text-slate-700 hover:bg-slate-50'
+                      }`}
+                    >
+                      {(p as number).toLocaleString('ar-EG')}
+                    </button>
+                  )
+                );
+              })()}
+            </div>
+
+            <button
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+              title="الصفحة التالية"
+              className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+
+            <button
+              onClick={() => setCurrentPage(totalPages)}
+              disabled={currentPage === totalPages}
+              title="الصفحة الأخيرة"
+              className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+            >
+              <ChevronsLeft className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       )}
 

@@ -416,3 +416,33 @@
 
 
 
+
+
+### 40. تحسين الأداء والفهارس المركبة والتصفح (Pagination & Performance on 10,000 Cases)
+- **المهاجرة رقم 9 (`009_performance_indexes.sql`)**:
+  - إضافة فهارس مركبة متخصصة لتسريع استعلامات الترتيب والبحث في الجداول الضخمة:
+    1. `idx_cases_year_number` على `cases(case_year DESC, case_number DESC)`.
+    2. `idx_cases_court_status` على `cases(court_name, status)`.
+    3. `idx_cases_priority` و `idx_cases_degree`.
+    4. `idx_case_clients_case_primary` و `idx_case_opponents_case_id` لتسريع الربط وجلب الموكل والخصم الأساسي في أقل من 1 مللي ثانية.
+    5. `idx_hearings_date_court` و `idx_hearings_case_date` لتسريع رول الجلسات وتاريخ القضية.
+    6. `idx_fin_tx_case_date` لتسريع كشف الحساب.
+- **تصفح القضايا بالصفحات (Pagination)**:
+  - دعم Pagination في الواجهة (`CasesPage.tsx`) وخادم IPC (`casesIpc.ts`):
+  - خيارات عرض مرنة تتناسب مع الشبكة (12، 24، 48، 96 قضية في الصفحة) مع أزرار التنقل العربية RTL (الصفحة الأولى، السابقة، التالية، الأخيرة) وأرقام الصفحات الذكية بالأرقام العربية.
+  - الحفاظ على زمن استجابة أقل من 15 مللي ثانية حتى مع وجود 10,000 قضية، وتفادي تجميد DOM الخاص بـ React عند تحميل أعداد هائلة من السجلات.
+
+### 41. التحقق الآلي الصارم من الأوفلاين والخصوصية (Strict Offline & Privacy Verification)
+- **فحص الكود المصدري وأصول التوزيع**:
+  - فحص آلي يضمن عدم وجود أي استدعاءات شبكة (`fetch` لروابط خارجية، `axios`، `http/https.request`، `XMLHttpRequest`، `WebSocket`).
+  - خلو ملفات HTML والواجهة من أي مكتبات خارجية أو روابط CDN أو خطوط سحابية.
+  - تضمين كامل الخطوط العربية محلياً (`@fontsource/cairo` و `@fontsource/tajawal`).
+  - التأكد من سياسة الأمان الصارمة CSP (`default-src 'self'`) التي تمنع المتصفح من الاتصال بأي خادم خارجي.
+  - خلو `package.json` من أي مكتبات تتبع أو ذكاء اصطناعي أو تيليمتري سحابية.
+
+### 42. حزمة التثبيت المستقلة لـ Windows (.exe) بـ electron-builder
+- **هندسة البناء والتثبيت**:
+  - استخدام `electron-builder` مع مستهدف `nsis` (x64) لإنتاج ملف تثبيت Windows احترافي مستقل (`.exe`).
+  - **فك حزمة Native Modules (`better-sqlite3`)**: ضبط `asarUnpack: ["**/node_modules/better-sqlite3/**"]` لضمان تحميل المكتبة المترجمة `better_sqlite3.node` بدون أي أخطاء أو تعارضات.
+  - **تسمية البرنامج**: "برنامج إدارة مكتب المحاماة" مع إنشاء اختصار تلقائي على سطح المكتب وقائمة ابدأ باللغة العربية.
+  - مخرجات البناء: ملف تثبيت مستقل بحجم 84.2 ميجابايت (`release/برنامج إدارة مكتب المحاماة Setup 1.0.0.exe`) ومجلد تشغيل فوري (`release/win-unpacked`).

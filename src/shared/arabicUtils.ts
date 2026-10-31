@@ -30,7 +30,13 @@ export function normalizeArabicText(text: string | null | undefined): string {
   // 6. توحيد الواو المهموزة (ؤ -> و)
   normalized = normalized.replace(/ؤ/g, 'و');
 
-  // 7. تحويل الأحرف اللاتينية إلى أحرف صغيرة وإزالة المسافات الزائدة
+  // 7. توحيد الأرقام المشرقية والعربية إلى أرقام قياسية (٠-٩ -> 0-9)
+  const easternDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+  for (let i = 0; i < 10; i++) {
+    normalized = normalized.replace(new RegExp(easternDigits[i], 'g'), String(i));
+  }
+
+  // 8. تحويل الأحرف اللاتينية إلى أحرف صغيرة وإزالة المسافات الزائدة
   normalized = normalized.toLowerCase().trim();
 
   return normalized;
@@ -47,6 +53,33 @@ export function matchesArabicSearch(target: string | null | undefined, query: st
   const normQuery = normalizeArabicText(query);
 
   return normTarget.includes(normQuery);
+}
+
+/**
+ * مطابقة البحث عن القضايا برقم القضية والسنة أو اسم المحكمة أو الموضوع
+ */
+export function matchesCaseSearch(
+  caseItem: { case_number?: string | number; case_year?: string | number; subject?: string; court_name?: string },
+  query: string
+): boolean {
+  if (!query) return true;
+  const normQuery = normalizeArabicText(query);
+
+  const num = normalizeArabicText(caseItem.case_number?.toString());
+  const year = normalizeArabicText(caseItem.case_year?.toString());
+  const combo1 = `${num}/${year}`;
+  const combo2 = `${num} لسنه ${year}`;
+  const subject = normalizeArabicText(caseItem.subject);
+  const court = normalizeArabicText(caseItem.court_name);
+
+  return (
+    combo1.includes(normQuery) ||
+    combo2.includes(normQuery) ||
+    num.includes(normQuery) ||
+    year.includes(normQuery) ||
+    subject.includes(normQuery) ||
+    court.includes(normQuery)
+  );
 }
 
 export const arabicIncludes = matchesArabicSearch;
