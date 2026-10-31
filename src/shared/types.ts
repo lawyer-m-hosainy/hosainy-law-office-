@@ -380,6 +380,7 @@ export interface FinancialTransaction {
   receipt_number: string;
   case_id?: number | null;
   client_id?: number | null;
+  execution_id?: number | null;
   hearing_id?: number | null;
   installment_id?: number | null;
   transaction_date: string; // YYYY-MM-DD
@@ -422,6 +423,7 @@ export interface CaseFinancialSummary {
 export interface FinancialFilter {
   case_id?: number;
   client_id?: number;
+  execution_id?: number;
   category?: string;
   direction?: string;
   payment_method?: string;
@@ -438,6 +440,192 @@ export interface GeneralFinancialStats {
   outstanding_fees: number;
   pending_cheques_count: number;
   pending_cheques_amount: number;
+}
+
+// ==========================================
+// Phase 5 Entities: Executions (التنفيذ الجبري)
+// ==========================================
+
+export type ExecutionDeedType = 
+  | 'حكم' 
+  | 'أمر أداء' 
+  | 'شيك' 
+  | 'كمبيالة' 
+  | 'عقد موثق' 
+  | 'محضر صلح' 
+  | 'أخرى';
+
+export type ExecutionStatus = 
+  | 'جديد' 
+  | 'جاري' 
+  | 'تم الصلح والتسوية' 
+  | 'تم التنفيذ كلياً' 
+  | 'موقوف' 
+  | 'مرفوض' 
+  | 'معلق';
+
+export type ExecutionActionType = 
+  | 'إعلان السند التنفيذي' 
+  | 'تكليف بالوفاء' 
+  | 'حجز تحفظي' 
+  | 'حجز تنفيذي' 
+  | 'حجز ما للمدين لدى الغير' 
+  | 'حجز على سيارة' 
+  | 'حجز عقاري' 
+  | 'بيع بالمزاد' 
+  | 'تسليم منقول' 
+  | 'إخلاء' 
+  | 'منع سفر' 
+  | 'ضبط وإحضار' 
+  | 'استشكال في التنفيذ' 
+  | 'دعوى استرداد' 
+  | 'مأمورية كسر وفتح بالقوة الجبرية' 
+  | 'أخرى';
+
+export type ExecutionActionStatus = 'تم' | 'مرفوض' | 'مؤجل' | 'جاري' | 'ملغى';
+
+export type ExecutionHearingStatus = 'محددة' | 'تمت' | 'مؤجلة' | 'محكوم فيها';
+
+export interface ExecutionFile {
+  id: number;
+  file_number: string;
+  year?: number | null;
+  case_id?: number | null;
+  client_id?: number | null;
+  deed_type: ExecutionDeedType;
+  deed_number?: string | null;
+  court: string;
+  execution_judge?: string | null;
+  execution_dept?: string | null;
+  applicant_name: string;
+  applicant_capacity?: string | null;
+  enforced_against: string;
+  enforced_against_capacity?: string | null;
+  enforced_against_address?: string | null;
+  enforced_against_phone?: string | null;
+  total_claimed_amount: number;
+  collected_amount: number;
+  remaining_amount: number;
+  announcement_date?: string | null;
+  status: ExecutionStatus;
+  settlement_minutes?: string | null;
+  settlement_date?: string | null;
+  notes?: string | null;
+  created_at?: string;
+  updated_at?: string;
+  // Join fields
+  case_number?: string;
+  case_year?: number;
+  court_name?: string;
+  client_name?: string;
+  actions_count?: number;
+  hearings_count?: number;
+}
+
+export interface ExecutionAction {
+  id: number;
+  execution_id: number;
+  action_type: ExecutionActionType;
+  action_date: string; // YYYY-MM-DD
+  status: ExecutionActionStatus;
+  police_report_or_bailiff_number?: string | null;
+  dept_or_bailiff_office?: string | null;
+  bailiff_name?: string | null;
+  amount_collected?: number;
+  details?: string | null;
+  notes?: string | null;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface ExecutionHearing {
+  id: number;
+  execution_id: number;
+  case_id?: number | null;
+  hearing_date: string; // YYYY-MM-DD
+  hearing_time?: string | null;
+  court_name?: string | null;
+  court_circuit?: string | null;
+  roll_number?: string | null;
+  attended: number; // 0 or 1
+  attended_by?: string | null;
+  proceedings?: string | null;
+  court_decision?: string | null;
+  adjournment_reason?: string | null;
+  next_hearing_date?: string | null;
+  status: ExecutionHearingStatus;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface ExecutionDetails extends ExecutionFile {
+  actions: ExecutionAction[];
+  hearings: ExecutionHearing[];
+  transactions: FinancialTransaction[];
+}
+
+export interface ExecutionFilter {
+  caseId?: number;
+  clientId?: number;
+  status?: string;
+  deedType?: string;
+  search?: string;
+  startDate?: string;
+  endDate?: string;
+}
+
+export interface CreateExecutionFileInput {
+  file_number: string;
+  year?: number | null;
+  case_id?: number | null;
+  client_id?: number | null;
+  deed_type: ExecutionDeedType;
+  deed_number?: string | null;
+  court: string;
+  execution_judge?: string | null;
+  execution_dept?: string | null;
+  applicant_name: string;
+  applicant_capacity?: string | null;
+  enforced_against: string;
+  enforced_against_capacity?: string | null;
+  enforced_against_address?: string | null;
+  enforced_against_phone?: string | null;
+  total_claimed_amount: number;
+  announcement_date?: string | null;
+  status?: ExecutionStatus;
+  settlement_minutes?: string | null;
+  settlement_date?: string | null;
+  notes?: string | null;
+}
+
+export interface CreateExecutionActionInput {
+  execution_id: number;
+  action_type: ExecutionActionType;
+  action_date: string;
+  status: ExecutionActionStatus;
+  police_report_or_bailiff_number?: string | null;
+  dept_or_bailiff_office?: string | null;
+  bailiff_name?: string | null;
+  amount_collected?: number;
+  details?: string | null;
+  notes?: string | null;
+}
+
+export interface CreateExecutionHearingInput {
+  execution_id: number;
+  case_id?: number | null;
+  hearing_date: string;
+  hearing_time?: string | null;
+  court_name?: string | null;
+  court_circuit?: string | null;
+  roll_number?: string | null;
+  attended?: number;
+  attended_by?: string | null;
+  proceedings?: string | null;
+  court_decision?: string | null;
+  adjournment_reason?: string | null;
+  next_hearing_date?: string | null;
+  status?: ExecutionHearingStatus;
 }
 
 export interface IElectronAPI {
@@ -546,6 +734,41 @@ export interface IElectronAPI {
   updateChequeStatus: (id: number, status: ChequeStatus, collected_date?: string) => Promise<ChequeDetail>;
   getGeneralFinancialStats: (period?: { startDate?: string; endDate?: string }) => Promise<GeneralFinancialStats>;
   getNextReceiptNumber: () => Promise<string>;
+
+  // Executions API (Phase 5)
+  getExecutionFiles: (filter?: ExecutionFilter) => Promise<ExecutionFile[]>;
+  getExecutionFileById: (id: number) => Promise<ExecutionDetails | null>;
+  createExecutionFile: (input: CreateExecutionFileInput) => Promise<ExecutionFile>;
+  updateExecutionFile: (id: number, updates: Partial<CreateExecutionFileInput>) => Promise<ExecutionFile>;
+  deleteExecutionFile: (id: number) => Promise<{ success: boolean; message?: string }>;
+  recordExecutionSettlement: (id: number, settlementMinutes: string, settlementDate?: string) => Promise<ExecutionFile>;
+  getExecutionActions: (executionId: number) => Promise<ExecutionAction[]>;
+  createExecutionAction: (input: CreateExecutionActionInput) => Promise<ExecutionAction>;
+  updateExecutionAction: (id: number, updates: Partial<ExecutionAction>) => Promise<ExecutionAction>;
+  deleteExecutionAction: (id: number) => Promise<{ success: boolean }>;
+  getExecutionHearings: (executionId: number) => Promise<ExecutionHearing[]>;
+  createExecutionHearing: (input: CreateExecutionHearingInput) => Promise<ExecutionHearing>;
+  updateExecutionHearing: (id: number, updates: Partial<ExecutionHearing>) => Promise<ExecutionHearing>;
+  deleteExecutionHearing: (id: number) => Promise<{ success: boolean }>;
+  recordExecutionHearingOutcome: (hearingId: number, outcome: {
+    attended: number;
+    attended_by?: string;
+    proceedings?: string;
+    court_decision: string;
+    adjournment_reason?: string;
+    next_hearing_date?: string;
+    status: ExecutionHearingStatus;
+  }) => Promise<{ currentHearing: ExecutionHearing; nextHearing?: ExecutionHearing }>;
+  recordExecutionPayment: (params: {
+    executionId: number;
+    amount: number;
+    direction: TransactionDirection;
+    transactionType: string;
+    paymentMethod: PaymentMethod;
+    description: string;
+    date?: string;
+    notes?: string;
+  }) => Promise<FinancialTransaction>;
 
   // System
   getAppVersion: () => Promise<string>;

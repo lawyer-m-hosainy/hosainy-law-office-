@@ -172,6 +172,7 @@ export function registerFinanceIpc(): void {
   ipcMain.handle('finance:createTransaction', async (_event, tx: {
     case_id?: number | null;
     client_id?: number | null;
+    execution_id?: number | null;
     hearing_id?: number | null;
     installment_id?: number | null;
     transaction_date: string;
@@ -196,11 +197,11 @@ export function registerFinanceIpc(): void {
 
       const stmt = db.prepare(`
         INSERT INTO financial_transactions (
-          receipt_number, case_id, client_id, hearing_id, installment_id,
+          receipt_number, case_id, client_id, execution_id, hearing_id, installment_id,
           transaction_date, category, transaction_type, direction,
           amount, payment_method, description, notes
         ) VALUES (
-          @receipt_number, @case_id, @client_id, @hearing_id, @installment_id,
+          @receipt_number, @case_id, @client_id, @execution_id, @hearing_id, @installment_id,
           @transaction_date, @category, @transaction_type, @direction,
           @amount, @payment_method, @description, @notes
         )
@@ -210,6 +211,7 @@ export function registerFinanceIpc(): void {
         receipt_number: receiptNumber,
         case_id: tx.case_id || null,
         client_id: tx.client_id || null,
+        execution_id: tx.execution_id || null,
         hearing_id: tx.hearing_id || null,
         installment_id: tx.installment_id || null,
         transaction_date: tx.transaction_date,
@@ -223,6 +225,17 @@ export function registerFinanceIpc(): void {
       });
 
       const txId = res.lastInsertRowid as number;
+
+      // If linked to execution file and is collection inflow, update execution collected amount
+      if (tx.execution_id && tx.direction === 'وارد' && tx.category === 'تنفيذ') {
+        const sumRow = db.prepare(`
+          SELECT COALESCE(SUM(amount), 0) as total
+          FROM financial_transactions
+          WHERE execution_id = ? AND direction = 'وارد' AND is_reversed = 0
+        `).get(tx.execution_id) as { total: number };
+        db.prepare('UPDATE execution_files SET collected_amount = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
+          .run(sumRow.total, tx.execution_id);
+      }
 
       // If linked to an installment and is fee inflow, update installment payment status
       if (tx.installment_id && tx.category === 'أتعاب' && tx.direction === 'وارد') {
@@ -292,11 +305,11 @@ export function registerFinanceIpc(): void {
       // 1. Create reversal transaction
       const reversalRes = db.prepare(`
         INSERT INTO financial_transactions (
-          receipt_number, case_id, client_id, hearing_id, installment_id,
+          receipt_number, case_id, client_id, execution_id, hearing_id, installment_id,
           transaction_date, category, transaction_type, direction,
           amount, payment_method, description, notes, reversal_of_id
         ) VALUES (
-          @receipt_number, @case_id, @client_id, @hearing_id, @installment_id,
+          @receipt_number, @case_id, @client_id, @execution_id, @hearing_id, @installment_id,
           @transaction_date, @category, @transaction_type, @direction,
           @amount, @payment_method, @description, @notes, @reversal_of_id
         )
@@ -304,6 +317,7 @@ export function registerFinanceIpc(): void {
         receipt_number: reversalReceipt,
         case_id: original.case_id,
         client_id: original.client_id,
+        execution_id: original.execution_id || null,
         hearing_id: original.hearing_id,
         installment_id: original.installment_id,
         transaction_date: todayStr,
@@ -343,6 +357,17 @@ export function registerFinanceIpc(): void {
         }
       }
 
+      // 3b. If linked to execution file, adjust execution collected amount
+      if (original.execution_id) {
+        const sumRow = db.prepare(`
+          SELECT COALESCE(SUM(amount), 0) as total
+          FROM financial_transactions
+          WHERE execution_id = ? AND direction = 'وارد' AND is_reversed = 0
+        `).get(original.execution_id) as { total: number };
+        db.prepare('UPDATE execution_files SET collected_amount = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
+          .run(sumRow.total, original.execution_id);
+      }
+
       // 4. If linked to cheque, mark cheque as bounced or cancelled
       db.prepare(`
         UPDATE cheque_details SET
@@ -378,6 +403,11 @@ export function registerFinanceIpc(): void {
     if (filter?.client_id) {
       conditions.push('ft.client_id = ?');
       params.push(filter.client_id);
+    }
+
+    if (filter?.execution_id) {
+      conditions.push('ft.execution_id = ?');
+      params.push(filter.execution_id);
     }
 
     if (filter?.category && filter.category !== 'الكل') {

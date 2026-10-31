@@ -14,6 +14,7 @@ import { CaseDetailsPage } from './pages/Cases/CaseDetailsPage';
 import { HearingsPage } from './pages/Hearings/HearingsPage';
 import { CalendarPage } from './pages/Calendar/CalendarPage';
 import { FinancePage } from './pages/Finance/FinancePage';
+import { ExecutionsPage } from './pages/Executions/ExecutionsPage';
 import { GenericPlaceholder } from './pages/GenericPlaceholder';
 import { Scale, Loader2, AlertCircle } from 'lucide-react';
 
@@ -205,7 +206,16 @@ export const App: React.FC = () => {
             />
           )}
 
-          {['executions', 'tasks'].includes(activeTab) && (
+          {activeTab === 'executions' && (
+            <ExecutionsPage
+              settings={settings}
+              clients={clients}
+              cases={cases}
+              onNavigateToCase={handleNavigateToCase}
+            />
+          )}
+
+          {activeTab === 'tasks' && (
             <GenericPlaceholder tab={activeTab} onNavigateToSettings={() => setActiveTab('settings')} />
           )}
         </main>

@@ -173,6 +173,56 @@ const api: IElectronAPI = {
   getNextReceiptNumber: (): Promise<string> => {
     return ipcRenderer.invoke('finance:getNextReceiptNumber');
   },
+
+  // Executions API (Phase 5)
+  getExecutionFiles: (filter?: any): Promise<any> => {
+    return ipcRenderer.invoke('executions:getFiles', filter);
+  },
+  getExecutionFileById: (id: number): Promise<any> => {
+    return ipcRenderer.invoke('executions:getById', id);
+  },
+  createExecutionFile: (input: any): Promise<any> => {
+    return ipcRenderer.invoke('executions:createFile', input);
+  },
+  updateExecutionFile: (id: number, updates: any): Promise<any> => {
+    return ipcRenderer.invoke('executions:updateFile', id, updates);
+  },
+  deleteExecutionFile: (id: number): Promise<any> => {
+    return ipcRenderer.invoke('executions:deleteFile', id);
+  },
+  recordExecutionSettlement: (id: number, settlementMinutes: string, settlementDate?: string): Promise<any> => {
+    return ipcRenderer.invoke('executions:recordSettlement', id, settlementMinutes, settlementDate);
+  },
+  getExecutionActions: (executionId: number): Promise<any> => {
+    return ipcRenderer.invoke('executions:getActions', executionId);
+  },
+  createExecutionAction: (input: any): Promise<any> => {
+    return ipcRenderer.invoke('executions:createAction', input);
+  },
+  updateExecutionAction: (id: number, updates: any): Promise<any> => {
+    return ipcRenderer.invoke('executions:updateAction', id, updates);
+  },
+  deleteExecutionAction: (id: number): Promise<any> => {
+    return ipcRenderer.invoke('executions:deleteAction', id);
+  },
+  getExecutionHearings: (executionId: number): Promise<any> => {
+    return ipcRenderer.invoke('executions:getHearings', executionId);
+  },
+  createExecutionHearing: (input: any): Promise<any> => {
+    return ipcRenderer.invoke('executions:createHearing', input);
+  },
+  updateExecutionHearing: (id: number, updates: any): Promise<any> => {
+    return ipcRenderer.invoke('executions:updateHearing', id, updates);
+  },
+  deleteExecutionHearing: (id: number): Promise<any> => {
+    return ipcRenderer.invoke('executions:deleteHearing', id);
+  },
+  recordExecutionHearingOutcome: (hearingId: number, outcome: any): Promise<any> => {
+    return ipcRenderer.invoke('executions:recordHearingOutcome', hearingId, outcome);
+  },
+  recordExecutionPayment: (params: any): Promise<any> => {
+    return ipcRenderer.invoke('executions:recordPayment', params);
+  },
 };
 
 contextBridge.exposeInMainWorld('electronAPI', api);
