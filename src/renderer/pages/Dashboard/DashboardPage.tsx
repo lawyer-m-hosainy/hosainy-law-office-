@@ -15,7 +15,8 @@ import {
   ShieldAlert,
   ChevronLeft,
   Eye,
-  FileDown
+  FileDown,
+  Coins
 } from 'lucide-react';
 import {
   Client,
@@ -171,6 +172,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             >
               <Calendar className="w-4 h-4 text-indigo-400" />
               <span>التقويم</span>
+            </button>
+            <button
+              onClick={() => onNavigate('finance')}
+              className="flex items-center gap-2 px-4 py-2.5 bg-slate-800/90 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl border border-slate-600/60 transition-all"
+            >
+              <Coins className="w-4 h-4 text-emerald-400" />
+              <span>المالية</span>
             </button>
           </div>
         </div>

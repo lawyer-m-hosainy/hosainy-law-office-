@@ -6,6 +6,7 @@ import { registerClientsIpc } from './clientsIpc';
 import { registerCasesIpc } from './casesIpc';
 import { registerHearingsIpc } from './hearingsIpc';
 import { registerAppealsIpc } from './appealsIpc';
+import { registerFinanceIpc } from './financeIpc';
 
 export function registerAllIpcHandlers(): void {
   registerSettingsIpc();
@@ -15,6 +16,7 @@ export function registerAllIpcHandlers(): void {
   registerCasesIpc();
   registerHearingsIpc();
   registerAppealsIpc();
+  registerFinanceIpc();
 
   ipcMain.handle('system:getAppVersion', async (): Promise<string> => {
     return app.getVersion();

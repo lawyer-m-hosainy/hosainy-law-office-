@@ -239,6 +239,97 @@ const MIGRATIONS: Migration[] = [
       CREATE INDEX IF NOT EXISTS idx_appeals_case ON case_appeal_deadlines(case_id);
       CREATE INDEX IF NOT EXISTS idx_appeals_deadline ON case_appeal_deadlines(deadline_date);
     `
+  },
+  {
+    version: 4,
+    name: '004_financial_system',
+    sql: `
+      CREATE TABLE IF NOT EXISTS case_fee_agreements (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          case_id INTEGER NOT NULL REFERENCES cases(id) ON DELETE CASCADE,
+          client_id INTEGER REFERENCES clients(id) ON DELETE SET NULL,
+          agreement_type TEXT NOT NULL DEFAULT 'مبلغ مقطوع',
+          total_amount REAL NOT NULL DEFAULT 0,
+          percentage REAL,
+          amount_per_session REAL,
+          monthly_amount REAL,
+          terms_notes TEXT,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+          updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+          UNIQUE(case_id)
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_fee_agreements_case ON case_fee_agreements(case_id);
+
+      CREATE TABLE IF NOT EXISTS fee_installments (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          agreement_id INTEGER NOT NULL REFERENCES case_fee_agreements(id) ON DELETE CASCADE,
+          case_id INTEGER NOT NULL REFERENCES cases(id) ON DELETE CASCADE,
+          title TEXT NOT NULL,
+          amount REAL NOT NULL,
+          due_date TEXT,
+          status TEXT NOT NULL DEFAULT 'غير مسددة',
+          paid_amount REAL NOT NULL DEFAULT 0,
+          notes TEXT,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_installments_agreement ON fee_installments(agreement_id);
+      CREATE INDEX IF NOT EXISTS idx_installments_case ON fee_installments(case_id);
+
+      CREATE TABLE IF NOT EXISTS financial_transactions (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          receipt_number TEXT UNIQUE NOT NULL,
+          case_id INTEGER REFERENCES cases(id) ON DELETE SET NULL,
+          client_id INTEGER REFERENCES clients(id) ON DELETE SET NULL,
+          hearing_id INTEGER REFERENCES hearings(id) ON DELETE SET NULL,
+          installment_id INTEGER REFERENCES fee_installments(id) ON DELETE SET NULL,
+          transaction_date TEXT NOT NULL,
+          category TEXT NOT NULL,
+          transaction_type TEXT NOT NULL,
+          direction TEXT NOT NULL,
+          amount REAL NOT NULL,
+          payment_method TEXT NOT NULL DEFAULT 'نقدي',
+          description TEXT NOT NULL,
+          notes TEXT,
+          is_reversed INTEGER DEFAULT 0,
+          reversed_at DATETIME,
+          reversed_by_id INTEGER REFERENCES financial_transactions(id),
+          reversal_of_id INTEGER REFERENCES financial_transactions(id),
+          reversal_reason TEXT,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+          updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_fin_tx_case ON financial_transactions(case_id);
+      CREATE INDEX IF NOT EXISTS idx_fin_tx_client ON financial_transactions(client_id);
+      CREATE INDEX IF NOT EXISTS idx_fin_tx_date ON financial_transactions(transaction_date);
+      CREATE INDEX IF NOT EXISTS idx_fin_tx_category ON financial_transactions(category);
+      CREATE INDEX IF NOT EXISTS idx_fin_tx_direction ON financial_transactions(direction);
+      CREATE INDEX IF NOT EXISTS idx_fin_tx_receipt ON financial_transactions(receipt_number);
+      CREATE INDEX IF NOT EXISTS idx_fin_tx_reversed ON financial_transactions(is_reversed);
+
+      CREATE TABLE IF NOT EXISTS cheque_details (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          transaction_id INTEGER NOT NULL REFERENCES financial_transactions(id) ON DELETE CASCADE,
+          case_id INTEGER REFERENCES cases(id) ON DELETE SET NULL,
+          client_id INTEGER REFERENCES clients(id) ON DELETE SET NULL,
+          cheque_number TEXT NOT NULL,
+          bank_name TEXT NOT NULL,
+          drawer_name TEXT,
+          amount REAL NOT NULL,
+          due_date TEXT NOT NULL,
+          collected_date TEXT,
+          status TEXT NOT NULL DEFAULT 'تحت التحصيل',
+          notes TEXT,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+          updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_cheques_status ON cheque_details(status);
+      CREATE INDEX IF NOT EXISTS idx_cheques_due_date ON cheque_details(due_date);
+      CREATE INDEX IF NOT EXISTS idx_cheques_tx ON cheque_details(transaction_id);
+    `
   }
 ];
 

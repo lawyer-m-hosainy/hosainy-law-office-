@@ -138,6 +138,41 @@ const api: IElectronAPI = {
   deleteAppealDeadline: (id: number): Promise<any> => {
     return ipcRenderer.invoke('appeals:delete', id);
   },
+
+  // Finance API (Phase 4)
+  getFeeAgreement: (caseId: number): Promise<any> => {
+    return ipcRenderer.invoke('finance:getFeeAgreement', caseId);
+  },
+  saveFeeAgreement: (agreement: any): Promise<any> => {
+    return ipcRenderer.invoke('finance:saveFeeAgreement', agreement);
+  },
+  getFinancialTransactions: (filter?: any): Promise<any> => {
+    return ipcRenderer.invoke('finance:getTransactions', filter);
+  },
+  createFinancialTransaction: (tx: any, cheque?: any): Promise<any> => {
+    return ipcRenderer.invoke('finance:createTransaction', tx, cheque);
+  },
+  reverseFinancialTransaction: (transactionId: number, reason: string): Promise<any> => {
+    return ipcRenderer.invoke('finance:reverseTransaction', transactionId, reason);
+  },
+  getCaseFinancialSummary: (caseId: number): Promise<any> => {
+    return ipcRenderer.invoke('finance:getCaseSummary', caseId);
+  },
+  getClientFinancialSummary: (clientId: number): Promise<any> => {
+    return ipcRenderer.invoke('finance:getClientSummary', clientId);
+  },
+  getCheques: (filter?: any): Promise<any> => {
+    return ipcRenderer.invoke('finance:getCheques', filter);
+  },
+  updateChequeStatus: (id: number, status: any, collectedDate?: string): Promise<any> => {
+    return ipcRenderer.invoke('finance:updateChequeStatus', id, status, collectedDate);
+  },
+  getGeneralFinancialStats: (period?: any): Promise<any> => {
+    return ipcRenderer.invoke('finance:getGeneralStats', period);
+  },
+  getNextReceiptNumber: (): Promise<string> => {
+    return ipcRenderer.invoke('finance:getNextReceiptNumber');
+  },
 };
 
 contextBridge.exposeInMainWorld('electronAPI', api);

@@ -315,6 +315,131 @@ export interface AppealDeadline {
   is_expired?: boolean;
 }
 
+// ==========================================
+// Phase 4 Entities: Financial System
+// ==========================================
+
+export type TransactionCategory = 'أتعاب' | 'رسوم قضائية' | 'مصاريف' | 'تنفيذ';
+export type TransactionDirection = 'وارد' | 'صادر';
+export type PaymentMethod = 'نقدي' | 'تحويل بنكي' | 'شيك' | 'فودافون كاش' | 'إنستاباي';
+export type FeeAgreementType = 'مبلغ مقطوع' | 'على مراحل' | 'نسبة من المحكوم به' | 'بالجلسة' | 'شهري';
+export type ChequeStatus = 'تحت التحصيل' | 'محصل' | 'مرتد';
+
+export interface FeeInstallment {
+  id: number;
+  agreement_id: number;
+  case_id: number;
+  title: string;
+  amount: number;
+  due_date?: string | null;
+  status: 'غير مسددة' | 'مسددة جزئياً' | 'مسددة بالكامل';
+  paid_amount: number;
+  notes?: string | null;
+  created_at?: string;
+}
+
+export interface CaseFeeAgreement {
+  id: number;
+  case_id: number;
+  client_id?: number | null;
+  agreement_type: FeeAgreementType;
+  total_amount: number;
+  percentage?: number | null;
+  amount_per_session?: number | null;
+  monthly_amount?: number | null;
+  terms_notes?: string | null;
+  installments?: FeeInstallment[];
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface ChequeDetail {
+  id: number;
+  transaction_id: number;
+  case_id?: number | null;
+  client_id?: number | null;
+  cheque_number: string;
+  bank_name: string;
+  drawer_name?: string | null;
+  amount: number;
+  due_date: string; // YYYY-MM-DD
+  collected_date?: string | null;
+  status: ChequeStatus;
+  notes?: string | null;
+  case_number?: string;
+  case_year?: number;
+  client_name?: string;
+  created_at?: string;
+  updated_at?: string;
+  days_until_due?: number;
+  is_overdue?: boolean;
+}
+
+export interface FinancialTransaction {
+  id: number;
+  receipt_number: string;
+  case_id?: number | null;
+  client_id?: number | null;
+  hearing_id?: number | null;
+  installment_id?: number | null;
+  transaction_date: string; // YYYY-MM-DD
+  category: TransactionCategory;
+  transaction_type: string;
+  direction: TransactionDirection;
+  amount: number;
+  payment_method: PaymentMethod;
+  description: string;
+  notes?: string | null;
+  is_reversed: number; // 0 or 1
+  reversed_at?: string | null;
+  reversed_by_id?: number | null;
+  reversal_of_id?: number | null;
+  reversal_reason?: string | null;
+  cheque_details?: ChequeDetail | null;
+  case_number?: string;
+  case_year?: number;
+  court_name?: string;
+  client_name?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface CaseFinancialSummary {
+  total_agreed_fees: number;
+  paid_fees: number;
+  remaining_fees: number;
+  total_court_fees_inflow: number;
+  total_court_fees_outflow: number;
+  total_expenses_inflow: number;
+  total_expenses_outflow: number;
+  total_execution_inflow: number;
+  total_execution_outflow: number;
+  total_inflow: number;
+  total_outflow: number;
+  net_balance: number; // positive = credit (له), negative = debit (عليه)
+}
+
+export interface FinancialFilter {
+  case_id?: number;
+  client_id?: number;
+  category?: string;
+  direction?: string;
+  payment_method?: string;
+  startDate?: string;
+  endDate?: string;
+  query?: string;
+  includeReversed?: boolean;
+}
+
+export interface GeneralFinancialStats {
+  total_income: number;
+  total_expense: number;
+  net_profit: number;
+  outstanding_fees: number;
+  pending_cheques_count: number;
+  pending_cheques_amount: number;
+}
+
 export interface IElectronAPI {
   // Settings
   getOfficeSettings: () => Promise<OfficeSettings>;
@@ -379,6 +504,48 @@ export interface IElectronAPI {
   getAppealDeadlines: (caseId?: number) => Promise<AppealDeadline[]>;
   saveAppealDeadline: (deadline: Omit<AppealDeadline, 'id' | 'created_at' | 'days_remaining' | 'is_expired'>) => Promise<AppealDeadline>;
   deleteAppealDeadline: (id: number) => Promise<{ success: boolean }>;
+
+  // Finance API (Phase 4)
+  getFeeAgreement: (caseId: number) => Promise<CaseFeeAgreement | null>;
+  saveFeeAgreement: (agreement: {
+    case_id: number;
+    client_id?: number | null;
+    agreement_type: FeeAgreementType;
+    total_amount: number;
+    percentage?: number | null;
+    amount_per_session?: number | null;
+    monthly_amount?: number | null;
+    terms_notes?: string | null;
+    installments?: { title: string; amount: number; due_date?: string | null; notes?: string | null }[];
+  }) => Promise<CaseFeeAgreement>;
+  getFinancialTransactions: (filter?: FinancialFilter) => Promise<FinancialTransaction[]>;
+  createFinancialTransaction: (tx: {
+    case_id?: number | null;
+    client_id?: number | null;
+    hearing_id?: number | null;
+    installment_id?: number | null;
+    transaction_date: string;
+    category: TransactionCategory;
+    transaction_type: string;
+    direction: TransactionDirection;
+    amount: number;
+    payment_method: PaymentMethod;
+    description: string;
+    notes?: string | null;
+  }, cheque?: {
+    cheque_number: string;
+    bank_name: string;
+    drawer_name?: string;
+    due_date: string;
+    notes?: string;
+  }) => Promise<FinancialTransaction>;
+  reverseFinancialTransaction: (transactionId: number, reason: string) => Promise<{ original: FinancialTransaction; reversal: FinancialTransaction }>;
+  getCaseFinancialSummary: (caseId: number) => Promise<CaseFinancialSummary>;
+  getClientFinancialSummary: (clientId: number) => Promise<{ total_agreed_fees: number; paid_fees: number; remaining_fees: number; net_balance: number }>;
+  getCheques: (filter?: { status?: string; startDate?: string; endDate?: string }) => Promise<ChequeDetail[]>;
+  updateChequeStatus: (id: number, status: ChequeStatus, collected_date?: string) => Promise<ChequeDetail>;
+  getGeneralFinancialStats: (period?: { startDate?: string; endDate?: string }) => Promise<GeneralFinancialStats>;
+  getNextReceiptNumber: () => Promise<string>;
 
   // System
   getAppVersion: () => Promise<string>;

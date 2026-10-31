@@ -37,6 +37,7 @@ import {
 import { useCases } from '../../hooks/useCases';
 import { generateCaseSheetHtml } from '../../services/caseReportGenerator';
 import { CaseHearingsTab } from './components/CaseHearingsTab';
+import { CaseFinanceTab } from './components/CaseFinanceTab';
 
 interface CaseDetailsPageProps {
   caseId: number;
@@ -556,14 +557,17 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
         />
       )}
 
+      {/* TAB 3: Finance and Accounts */}
       {activeTab === 'finance' && (
-        <div className="bg-white rounded-xl border border-slate-200 p-8 text-center space-y-3">
-          <Coins className="w-10 h-10 text-amber-600 mx-auto" />
-          <h4 className="text-base font-bold text-slate-800">تبويب المالية وحسابات القضية</h4>
-          <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
-            مجدول ومخصص في <strong>المرحلة 4</strong>: الأتعاب والاتفاقات، الرسوم القضائية، المصاريف الإدارية، إيصالات القبض، وكشف حساب الموكل.
-          </p>
-        </div>
+        <CaseFinanceTab
+          caseData={caseData}
+          settings={settings || {
+            office_name: 'مكتب المحاماة',
+            lawyer_name: '',
+            lawyer_title: 'المحامي بالنقض'
+          } as any}
+          onCaseUpdated={loadCaseData}
+        />
       )}
 
       {activeTab === 'executions' && (

@@ -13,6 +13,7 @@ import { CasesPage } from './pages/Cases/CasesPage';
 import { CaseDetailsPage } from './pages/Cases/CaseDetailsPage';
 import { HearingsPage } from './pages/Hearings/HearingsPage';
 import { CalendarPage } from './pages/Calendar/CalendarPage';
+import { FinancePage } from './pages/Finance/FinancePage';
 import { GenericPlaceholder } from './pages/GenericPlaceholder';
 import { Scale, Loader2, AlertCircle } from 'lucide-react';
 
@@ -174,6 +175,15 @@ export const App: React.FC = () => {
             />
           )}
 
+          {activeTab === 'finance' && (
+            <FinancePage
+              settings={settings}
+              clients={clients}
+              cases={cases}
+              onNavigateToCase={handleNavigateToCase}
+            />
+          )}
+
           {activeTab === 'settings' && (
             <SettingsPage
               settings={settings}
@@ -195,7 +205,7 @@ export const App: React.FC = () => {
             />
           )}
 
-          {['finance', 'executions', 'tasks'].includes(activeTab) && (
+          {['executions', 'tasks'].includes(activeTab) && (
             <GenericPlaceholder tab={activeTab} onNavigateToSettings={() => setActiveTab('settings')} />
           )}
         </main>
