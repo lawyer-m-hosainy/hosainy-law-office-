@@ -1,22 +1,28 @@
 import React, { useState } from 'react';
 import { NavigationTab } from '../shared/types';
 import { useSettings } from './hooks/useSettings';
+import { useClients } from './hooks/useClients';
+import { useCases } from './hooks/useCases';
 import { Sidebar } from './components/Layout/Sidebar';
 import { Header } from './components/Layout/Header';
 import { DashboardPage } from './pages/Dashboard/DashboardPage';
 import { SettingsPage } from './pages/Settings/SettingsPage';
 import { ReportsPage } from './pages/Reports/ReportsPage';
+import { ClientsPage } from './pages/Clients/ClientsPage';
+import { CasesPage } from './pages/Cases/CasesPage';
+import { CaseDetailsPage } from './pages/Cases/CaseDetailsPage';
 import { GenericPlaceholder } from './pages/GenericPlaceholder';
 import { Scale, Loader2, AlertCircle } from 'lucide-react';
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<NavigationTab>('dashboard');
+  const [selectedCaseId, setSelectedCaseId] = useState<number | null>(null);
 
   const {
     settings,
     lists,
     dataDirInfo,
-    loading,
+    loading: settingsLoading,
     error,
     reload,
     updateSettings,
@@ -26,6 +32,9 @@ export const App: React.FC = () => {
     resetList,
     refreshDataDirInfo,
   } = useSettings();
+
+  const { clients } = useClients();
+  const { cases } = useCases();
 
   const handleOpenDataDir = async () => {
     try {
@@ -42,7 +51,12 @@ export const App: React.FC = () => {
     setActiveTab('reports');
   };
 
-  if (loading) {
+  const handleNavigateToCase = (caseId: number) => {
+    setSelectedCaseId(caseId);
+    setActiveTab('cases');
+  };
+
+  if (settingsLoading) {
     return (
       <div className="h-screen w-screen flex flex-col items-center justify-center bg-slate-900 text-white space-y-4 select-none">
         <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-600 to-amber-800 flex items-center justify-center text-white shadow-xl animate-pulse">
@@ -83,7 +97,12 @@ export const App: React.FC = () => {
       {/* Sidebar Navigation on Right (RTL) */}
       <Sidebar
         activeTab={activeTab}
-        onTabChange={setActiveTab}
+        onTabChange={(tab) => {
+          setActiveTab(tab);
+          if (tab !== 'cases') {
+            setSelectedCaseId(null);
+          }
+        }}
         settings={settings}
         dbPath={dataDirInfo?.dbPath}
       />
@@ -105,10 +124,36 @@ export const App: React.FC = () => {
               settings={settings}
               courtsCount={lists.courts?.length || 0}
               caseTypesCount={lists.case_types?.length || 0}
+              clientsCount={clients.length}
+              casesCount={cases.length}
               dataDirInfo={dataDirInfo}
               onNavigate={setActiveTab}
               onOpenDataDir={handleOpenDataDir}
             />
+          )}
+
+          {activeTab === 'clients' && (
+            <ClientsPage onNavigateToCase={handleNavigateToCase} />
+          )}
+
+          {activeTab === 'cases' && (
+            selectedCaseId ? (
+              <CaseDetailsPage
+                caseId={selectedCaseId}
+                settings={settings}
+                courts={lists.courts || []}
+                caseTypes={lists.case_types || []}
+                clients={clients}
+                onBack={() => setSelectedCaseId(null)}
+              />
+            ) : (
+              <CasesPage
+                courts={lists.courts || []}
+                caseTypes={lists.case_types || []}
+                clients={clients}
+                onOpenCaseDetails={(id) => setSelectedCaseId(id)}
+              />
+            )
           )}
 
           {activeTab === 'settings' && (
@@ -132,7 +177,7 @@ export const App: React.FC = () => {
             />
           )}
 
-          {['clients', 'cases', 'hearings', 'calendar', 'finance', 'executions', 'tasks'].includes(activeTab) && (
+          {['hearings', 'calendar', 'finance', 'executions', 'tasks'].includes(activeTab) && (
             <GenericPlaceholder tab={activeTab} onNavigateToSettings={() => setActiveTab('settings')} />
           )}
         </main>

@@ -64,6 +64,46 @@ const api: IElectronAPI = {
   getAppVersion: (): Promise<string> => {
     return ipcRenderer.invoke('system:getAppVersion');
   },
+
+  // Clients API (Phase 2)
+  getClients: (filter?: any): Promise<any> => {
+    return ipcRenderer.invoke('clients:getClients', filter);
+  },
+  getClientById: (id: number): Promise<any> => {
+    return ipcRenderer.invoke('clients:getClientById', id);
+  },
+  createClient: (client: any): Promise<any> => {
+    return ipcRenderer.invoke('clients:createClient', client);
+  },
+  updateClient: (id: number, updates: any): Promise<any> => {
+    return ipcRenderer.invoke('clients:updateClient', id, updates);
+  },
+  archiveClient: (id: number, archive: boolean): Promise<any> => {
+    return ipcRenderer.invoke('clients:archiveClient', id, archive);
+  },
+  deleteClient: (id: number): Promise<any> => {
+    return ipcRenderer.invoke('clients:deleteClient', id);
+  },
+  getExpiringPoaClients: (daysThreshold?: number): Promise<any> => {
+    return ipcRenderer.invoke('clients:getExpiringPoa', daysThreshold);
+  },
+
+  // Cases API (Phase 2)
+  getCases: (filter?: any): Promise<any> => {
+    return ipcRenderer.invoke('cases:getCases', filter);
+  },
+  getCaseById: (id: number): Promise<any> => {
+    return ipcRenderer.invoke('cases:getCaseById', id);
+  },
+  createCase: (input: any): Promise<any> => {
+    return ipcRenderer.invoke('cases:createCase', input);
+  },
+  updateCase: (id: number, input: any): Promise<any> => {
+    return ipcRenderer.invoke('cases:updateCase', id, input);
+  },
+  deleteCase: (id: number): Promise<any> => {
+    return ipcRenderer.invoke('cases:deleteCase', id);
+  },
 };
 
 contextBridge.exposeInMainWorld('electronAPI', api);

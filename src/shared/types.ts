@@ -77,6 +77,163 @@ export type NavigationTab =
   | 'reports'
   | 'settings';
 
+// ==========================================
+// Phase 2 Entities: Clients & Cases
+// ==========================================
+
+export type ClientType = 'individual' | 'company' | 'entity';
+
+export interface Client {
+  id: number;
+  name: string;
+  client_type: ClientType;
+  national_id_or_cr?: string | null;
+  phone: string;
+  phone2?: string | null;
+  whatsapp?: string | null;
+  address?: string | null;
+  email?: string | null;
+  poa_number?: string | null;
+  poa_type?: string | null;
+  poa_date?: string | null;
+  poa_issuing_office?: string | null;
+  poa_expiry_date?: string | null;
+  representation_type?: string | null; // أصيل، ولي طبيعي، وصي، قيّم، وكيل عن شركة
+  represented_name?: string | null;
+  notes?: string | null;
+  status: 'active' | 'archived';
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface CaseClient {
+  id: number;
+  case_id: number;
+  client_id: number;
+  role_capacity: string; // مدعي، مدعى عليه، متهم، مجني عليه، طاعن، مطعون ضده، مستأنف...
+  is_primary: number; // 1 or 0
+  client_name?: string;
+  client_phone?: string;
+  client_type?: ClientType;
+  poa_number?: string;
+}
+
+export interface CaseOpponent {
+  id: number;
+  case_id: number;
+  name: string;
+  role_capacity: string;
+  national_id?: string | null;
+  phone?: string | null;
+  address?: string | null;
+  lawyer_name?: string | null;
+  lawyer_phone?: string | null;
+  notes?: string | null;
+}
+
+export interface Case {
+  id: number;
+  case_number: string;
+  case_year: number;
+  court_name: string;
+  court_circuit?: string | null;
+  court_degree: string; // 'أول درجة' | 'استئناف' | 'نقض'
+  case_type: string;
+  table_number?: string | null;
+  police_report_number?: string | null;
+  filing_date?: string | null;
+  subject: string;
+  claims?: string | null;
+  description?: string | null;
+  status: string; // متداولة، محجوزة للحكم، محكوم فيها، مشطوبة، موقوفة، مستأنفة، منقوضة، منتهية، مؤرشفة
+  priority: 'عادية' | 'مهمة' | 'عاجلة';
+  assigned_lawyer?: string | null;
+  colleague_lawyers?: string | null;
+  parent_case_id?: number | null;
+  // Juvenile court specific fields
+  is_juvenile: number; // 1 or 0
+  juvenile_name?: string | null;
+  juvenile_age?: number | null;
+  juvenile_charge?: string | null;
+  guardian_name?: string | null;
+  guardian_relation?: string | null;
+  probation_officer?: string | null;
+  care_facility?: string | null;
+  imposed_measures?: string | null;
+  created_at?: string;
+  updated_at?: string;
+  // Extra computed fields for list views
+  primary_client_name?: string;
+  primary_opponent_name?: string;
+  clients_count?: number;
+}
+
+export interface CaseDetails extends Case {
+  clients: CaseClient[];
+  opponents: CaseOpponent[];
+  parent_case?: { id: number; case_number: string; case_year: number; court_name: string } | null;
+}
+
+export interface ClientDetails extends Client {
+  cases: (Case & { role_capacity: string })[];
+}
+
+export interface ClientFilter {
+  query?: string;
+  status?: 'active' | 'archived' | 'all';
+  type?: ClientType;
+}
+
+export interface CaseFilter {
+  query?: string;
+  status?: string;
+  court_name?: string;
+  case_type?: string;
+  court_degree?: string;
+  priority?: string;
+  client_id?: number;
+}
+
+export interface CreateCaseInput {
+  case_number: string;
+  case_year: number;
+  court_name: string;
+  court_circuit?: string;
+  court_degree: string;
+  case_type: string;
+  table_number?: string;
+  police_report_number?: string;
+  filing_date?: string;
+  subject: string;
+  claims?: string;
+  description?: string;
+  status?: string;
+  priority?: 'عادية' | 'مهمة' | 'عاجلة';
+  assigned_lawyer?: string;
+  colleague_lawyers?: string;
+  parent_case_id?: number | null;
+  is_juvenile?: number;
+  juvenile_name?: string;
+  juvenile_age?: number;
+  juvenile_charge?: string;
+  guardian_name?: string;
+  guardian_relation?: string;
+  probation_officer?: string;
+  care_facility?: string;
+  imposed_measures?: string;
+  clients: { client_id: number; role_capacity: string; is_primary?: boolean }[];
+  opponents: {
+    name: string;
+    role_capacity: string;
+    national_id?: string;
+    phone?: string;
+    address?: string;
+    lawyer_name?: string;
+    lawyer_phone?: string;
+    notes?: string;
+  }[];
+}
+
 export interface IElectronAPI {
   // Settings
   getOfficeSettings: () => Promise<OfficeSettings>;
@@ -99,6 +256,22 @@ export interface IElectronAPI {
   // Printing Service
   executePrint: (options: PrintOptions) => Promise<PrintResult>;
   selectLogoFile: () => Promise<{ canceled: boolean; filePath?: string; fileDataUrl?: string }>;
+
+  // Clients API (Phase 2)
+  getClients: (filter?: ClientFilter) => Promise<Client[]>;
+  getClientById: (id: number) => Promise<ClientDetails | null>;
+  createClient: (client: Omit<Client, 'id' | 'created_at' | 'updated_at'>) => Promise<Client>;
+  updateClient: (id: number, updates: Partial<Client>) => Promise<Client>;
+  archiveClient: (id: number, archive: boolean) => Promise<Client>;
+  deleteClient: (id: number) => Promise<{ success: boolean; message?: string }>;
+  getExpiringPoaClients: (daysThreshold?: number) => Promise<Client[]>;
+
+  // Cases API (Phase 2)
+  getCases: (filter?: CaseFilter) => Promise<Case[]>;
+  getCaseById: (id: number) => Promise<CaseDetails | null>;
+  createCase: (input: CreateCaseInput) => Promise<CaseDetails>;
+  updateCase: (id: number, input: Partial<CreateCaseInput>) => Promise<CaseDetails>;
+  deleteCase: (id: number) => Promise<{ success: boolean; message?: string }>;
 
   // System
   getAppVersion: () => Promise<string>;

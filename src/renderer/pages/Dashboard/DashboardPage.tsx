@@ -24,6 +24,8 @@ interface DashboardPageProps {
   settings: OfficeSettings | null;
   courtsCount: number;
   caseTypesCount: number;
+  clientsCount?: number;
+  casesCount?: number;
   dataDirInfo: DataDirInfo | null;
   onNavigate: (tab: NavigationTab) => void;
   onOpenDataDir: () => void;
@@ -33,6 +35,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   settings,
   courtsCount,
   caseTypesCount,
+  clientsCount = 0,
+  casesCount = 0,
   dataDirInfo,
   onNavigate,
   onOpenDataDir,
@@ -91,38 +95,42 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
       {/* Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex items-center justify-between">
+        <div
+          onClick={() => onNavigate('clients')}
+          className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs hover:border-amber-400 cursor-pointer transition-all flex items-center justify-between"
+        >
           <div>
-            <span className="text-xs font-bold text-slate-500 block mb-1">المحاكم المعتمدة</span>
-            <span className="text-2xl font-black text-slate-800">{courtsCount}</span>
-            <span className="text-[11px] text-emerald-600 font-semibold block mt-0.5">جاهزة في القوائم</span>
+            <span className="text-xs font-bold text-slate-500 block mb-1">الموكلون المسجلون</span>
+            <span className="text-2xl font-black text-slate-800">{clientsCount}</span>
+            <span className="text-[11px] text-amber-600 font-semibold block mt-0.5">سجل الموكلين ←</span>
           </div>
           <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center">
-            <Building className="w-6 h-6" />
+            <Users className="w-6 h-6" />
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex items-center justify-between">
+        <div
+          onClick={() => onNavigate('cases')}
+          className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs hover:border-amber-400 cursor-pointer transition-all flex items-center justify-between"
+        >
           <div>
-            <span className="text-xs font-bold text-slate-500 block mb-1">أنواع القضايا</span>
-            <span className="text-2xl font-black text-slate-800">{caseTypesCount}</span>
-            <span className="text-[11px] text-amber-600 font-semibold block mt-0.5">مدني، جنح، أسرة، إلخ</span>
+            <span className="text-xs font-bold text-slate-500 block mb-1">ملفات القضايا</span>
+            <span className="text-2xl font-black text-slate-800">{casesCount}</span>
+            <span className="text-[11px] text-blue-600 font-semibold block mt-0.5">مركز القضايا ←</span>
           </div>
           <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
-            <Layers className="w-6 h-6" />
+            <Briefcase className="w-6 h-6" />
           </div>
         </div>
 
         <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex items-center justify-between">
           <div>
-            <span className="text-xs font-bold text-slate-500 block mb-1">وضع قاعدة البيانات</span>
-            <span className="text-base font-bold text-emerald-700 block">SQLite WAL</span>
-            <span className="text-[11px] text-slate-400 block mt-0.5 font-mono">
-              {dataDirInfo ? `${(dataDirInfo.dbSizeBytes / 1024).toFixed(1)} KB` : 'متصل'}
-            </span>
+            <span className="text-xs font-bold text-slate-500 block mb-1">المحاكم والجهات</span>
+            <span className="text-2xl font-black text-slate-800">{courtsCount}</span>
+            <span className="text-[11px] text-emerald-600 font-semibold block mt-0.5">معتمدة في النظام</span>
           </div>
           <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
-            <ShieldCheck className="w-6 h-6" />
+            <Building className="w-6 h-6" />
           </div>
         </div>
 

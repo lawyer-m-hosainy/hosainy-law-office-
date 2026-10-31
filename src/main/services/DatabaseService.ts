@@ -1,6 +1,7 @@
 import Database from 'better-sqlite3';
 import { DataDirService } from './DataDirService';
 import { MigrationService } from './MigrationService';
+import { normalizeArabic } from '../../shared/arabicUtils';
 
 export class DatabaseService {
   private static instance: DatabaseService;
@@ -29,6 +30,12 @@ export class DatabaseService {
     this.db.pragma('journal_mode = WAL');
     this.db.pragma('foreign_keys = ON');
     this.db.pragma('synchronous = NORMAL');
+
+    // Register custom SQLite function for Arabic normalized text searching
+    this.db.function('normalize_arabic', (val: any) => {
+      if (val === null || val === undefined) return '';
+      return normalizeArabic(String(val));
+    });
 
     console.log(`✓ Connected to SQLite database at: ${dbPath}`);
 
