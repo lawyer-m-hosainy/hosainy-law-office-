@@ -104,6 +104,40 @@ const api: IElectronAPI = {
   deleteCase: (id: number): Promise<any> => {
     return ipcRenderer.invoke('cases:deleteCase', id);
   },
+
+  // Hearings API (Phase 3)
+  getHearingsByCase: (caseId: number): Promise<any> => {
+    return ipcRenderer.invoke('hearings:getByCase', caseId);
+  },
+  getHearingStatsByCase: (caseId: number): Promise<any> => {
+    return ipcRenderer.invoke('hearings:getStats', caseId);
+  },
+  getHearingRoll: (filter?: any): Promise<any> => {
+    return ipcRenderer.invoke('hearings:getRoll', filter);
+  },
+  createHearing: (hearing: any): Promise<any> => {
+    return ipcRenderer.invoke('hearings:create', hearing);
+  },
+  recordHearingOutcome: (hearingId: number, outcome: any): Promise<any> => {
+    return ipcRenderer.invoke('hearings:recordOutcome', hearingId, outcome);
+  },
+  updateHearing: (id: number, updates: any): Promise<any> => {
+    return ipcRenderer.invoke('hearings:update', id, updates);
+  },
+  deleteHearing: (id: number): Promise<any> => {
+    return ipcRenderer.invoke('hearings:delete', id);
+  },
+
+  // Appeal Deadlines Calculator (Phase 3)
+  getAppealDeadlines: (caseId?: number): Promise<any> => {
+    return ipcRenderer.invoke('appeals:getDeadlines', caseId);
+  },
+  saveAppealDeadline: (deadline: any): Promise<any> => {
+    return ipcRenderer.invoke('appeals:save', deadline);
+  },
+  deleteAppealDeadline: (id: number): Promise<any> => {
+    return ipcRenderer.invoke('appeals:delete', id);
+  },
 };
 
 contextBridge.exposeInMainWorld('electronAPI', api);

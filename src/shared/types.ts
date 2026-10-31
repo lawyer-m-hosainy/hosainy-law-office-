@@ -110,8 +110,8 @@ export interface CaseClient {
   id: number;
   case_id: number;
   client_id: number;
-  role_capacity: string; // مدعي، مدعى عليه، متهم، مجني عليه، طاعن، مطعون ضده، مستأنف...
-  is_primary: number; // 1 or 0
+  role_capacity: string;
+  is_primary: number;
   client_name?: string;
   client_phone?: string;
   client_type?: ClientType;
@@ -137,7 +137,7 @@ export interface Case {
   case_year: number;
   court_name: string;
   court_circuit?: string | null;
-  court_degree: string; // 'أول درجة' | 'استئناف' | 'نقض'
+  court_degree: string;
   case_type: string;
   table_number?: string | null;
   police_report_number?: string | null;
@@ -145,13 +145,12 @@ export interface Case {
   subject: string;
   claims?: string | null;
   description?: string | null;
-  status: string; // متداولة، محجوزة للحكم، محكوم فيها، مشطوبة، موقوفة، مستأنفة، منقوضة، منتهية، مؤرشفة
+  status: string;
   priority: 'عادية' | 'مهمة' | 'عاجلة';
   assigned_lawyer?: string | null;
   colleague_lawyers?: string | null;
   parent_case_id?: number | null;
-  // Juvenile court specific fields
-  is_juvenile: number; // 1 or 0
+  is_juvenile: number;
   juvenile_name?: string | null;
   juvenile_age?: number | null;
   juvenile_charge?: string | null;
@@ -162,7 +161,6 @@ export interface Case {
   imposed_measures?: string | null;
   created_at?: string;
   updated_at?: string;
-  // Extra computed fields for list views
   primary_client_name?: string;
   primary_opponent_name?: string;
   clients_count?: number;
@@ -234,6 +232,89 @@ export interface CreateCaseInput {
   }[];
 }
 
+// ==========================================
+// Phase 3 Entities: Hearings & Adjournments
+// ==========================================
+
+export type HearingStatus = 'محددة' | 'تمت' | 'مؤجلة' | 'محجوزة للحكم' | 'صدر حكم' | 'ملغاة';
+
+export interface Hearing {
+  id: number;
+  case_id: number;
+  hearing_date: string; // YYYY-MM-DD
+  hearing_time?: string | null;
+  court_name: string;
+  court_circuit?: string | null;
+  court_hall?: string | null;
+  roll_number?: number | null;
+  attended: number; // 1 or 0
+  attended_by?: string | null;
+  proceedings?: string | null;
+  court_decision?: string | null;
+  adjournment_reason?: string | null;
+  adjournment_notes?: string | null;
+  next_hearing_date?: string | null;
+  requests?: string | null;
+  submitted_documents?: string | null;
+  notes?: string | null;
+  is_judgment_hearing: number; // 1 or 0
+  judgment_date?: string | null;
+  judgment_text?: string | null;
+  status: HearingStatus;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface HearingWithCase extends Hearing {
+  case_number: string;
+  case_year: number;
+  case_type: string;
+  subject: string;
+  priority: string;
+  primary_client_name?: string;
+  primary_client_role?: string;
+  primary_opponent_name?: string;
+  primary_opponent_role?: string;
+  previous_hearing_date?: string;
+  previous_decision?: string;
+  previous_adjournment_reason?: string;
+}
+
+export interface HearingRollFilter {
+  date?: string; // specific day YYYY-MM-DD
+  startDate?: string;
+  endDate?: string;
+  court_name?: string;
+  court_circuit?: string;
+  status?: string;
+}
+
+export interface CaseHearingStats {
+  total_hearings: number;
+  postponement_count: number;
+  most_frequent_reason?: string;
+  most_frequent_reason_count?: number;
+  avg_days_between_hearings?: number;
+  first_hearing_date?: string;
+  last_hearing_date?: string;
+}
+
+export interface AppealDeadline {
+  id?: number;
+  case_id: number;
+  judgment_date: string;
+  announcement_date?: string | null;
+  appeal_type: string;
+  days_allowed: number;
+  deadline_date: string;
+  is_appeal_filed: number;
+  appeal_case_number?: string | null;
+  notes?: string | null;
+  created_at?: string;
+  days_remaining?: number;
+  is_expired?: boolean;
+}
+
 export interface IElectronAPI {
   // Settings
   getOfficeSettings: () => Promise<OfficeSettings>;
@@ -272,6 +353,32 @@ export interface IElectronAPI {
   createCase: (input: CreateCaseInput) => Promise<CaseDetails>;
   updateCase: (id: number, input: Partial<CreateCaseInput>) => Promise<CaseDetails>;
   deleteCase: (id: number) => Promise<{ success: boolean; message?: string }>;
+
+  // Hearings API (Phase 3)
+  getHearingsByCase: (caseId: number) => Promise<Hearing[]>;
+  getHearingStatsByCase: (caseId: number) => Promise<CaseHearingStats>;
+  getHearingRoll: (filter: HearingRollFilter) => Promise<HearingWithCase[]>;
+  createHearing: (hearing: Omit<Hearing, 'id' | 'created_at' | 'updated_at'>) => Promise<Hearing>;
+  recordHearingOutcome: (hearingId: number, outcome: {
+    attended: number;
+    attended_by?: string;
+    proceedings?: string;
+    court_decision: string;
+    adjournment_reason?: string;
+    adjournment_notes?: string;
+    next_hearing_date?: string;
+    status: HearingStatus;
+    is_judgment_hearing?: number;
+    judgment_date?: string;
+    judgment_text?: string;
+  }) => Promise<{ currentHearing: Hearing; nextHearing?: Hearing }>;
+  updateHearing: (id: number, updates: Partial<Hearing>) => Promise<Hearing>;
+  deleteHearing: (id: number) => Promise<{ success: boolean }>;
+
+  // Appeal Deadlines Calculator (Phase 3)
+  getAppealDeadlines: (caseId?: number) => Promise<AppealDeadline[]>;
+  saveAppealDeadline: (deadline: Omit<AppealDeadline, 'id' | 'created_at' | 'days_remaining' | 'is_expired'>) => Promise<AppealDeadline>;
+  deleteAppealDeadline: (id: number) => Promise<{ success: boolean }>;
 
   // System
   getAppVersion: () => Promise<string>;

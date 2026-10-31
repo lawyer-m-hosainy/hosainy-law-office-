@@ -11,6 +11,8 @@ import { ReportsPage } from './pages/Reports/ReportsPage';
 import { ClientsPage } from './pages/Clients/ClientsPage';
 import { CasesPage } from './pages/Cases/CasesPage';
 import { CaseDetailsPage } from './pages/Cases/CaseDetailsPage';
+import { HearingsPage } from './pages/Hearings/HearingsPage';
+import { CalendarPage } from './pages/Calendar/CalendarPage';
 import { GenericPlaceholder } from './pages/GenericPlaceholder';
 import { Scale, Loader2, AlertCircle } from 'lucide-react';
 
@@ -129,6 +131,7 @@ export const App: React.FC = () => {
               dataDirInfo={dataDirInfo}
               onNavigate={setActiveTab}
               onOpenDataDir={handleOpenDataDir}
+              onNavigateToCase={handleNavigateToCase}
             />
           )}
 
@@ -156,6 +159,21 @@ export const App: React.FC = () => {
             )
           )}
 
+          {activeTab === 'hearings' && (
+            <HearingsPage
+              courts={lists.courts || []}
+              settings={settings}
+              onNavigateToCase={handleNavigateToCase}
+            />
+          )}
+
+          {activeTab === 'calendar' && (
+            <CalendarPage
+              settings={settings}
+              onNavigateToCase={handleNavigateToCase}
+            />
+          )}
+
           {activeTab === 'settings' && (
             <SettingsPage
               settings={settings}
@@ -177,7 +195,7 @@ export const App: React.FC = () => {
             />
           )}
 
-          {['hearings', 'calendar', 'finance', 'executions', 'tasks'].includes(activeTab) && (
+          {['finance', 'executions', 'tasks'].includes(activeTab) && (
             <GenericPlaceholder tab={activeTab} onNavigateToSettings={() => setActiveTab('settings')} />
           )}
         </main>

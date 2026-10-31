@@ -36,6 +36,7 @@ import {
 } from '../../../shared/types';
 import { useCases } from '../../hooks/useCases';
 import { generateCaseSheetHtml } from '../../services/caseReportGenerator';
+import { CaseHearingsTab } from './components/CaseHearingsTab';
 
 interface CaseDetailsPageProps {
   caseId: number;
@@ -535,15 +536,24 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
         </div>
       )}
 
-      {/* TABS 2-7: Placeholders with phase roadmap information */}
+      {/* TAB 2: Hearings and Adjournments */}
       {activeTab === 'hearings' && (
-        <div className="bg-white rounded-xl border border-slate-200 p-8 text-center space-y-3">
-          <Gavel className="w-10 h-10 text-amber-600 mx-auto" />
-          <h4 className="text-base font-bold text-slate-800">تبويب الجلسات والتأجيلات ورول المحكمة</h4>
-          <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
-            وفقًا لخطة العمل في SPEC.md: هذا التبويب مجدول ومخصص في <strong>المرحلة 3</strong>، وسيتضمن رول الجلسات التاريخي، قرارات المحكمة، أسباب التأجيل، والتوليد التلقائي للجلسة القادمة.
-          </p>
-        </div>
+        <CaseHearingsTab
+          caseData={caseData}
+          settings={settings || {
+            office_name: 'مكتب المحاماة',
+            lawyer_name: '',
+            lawyer_title: 'المحامي بالنقض',
+            appeal_deadline_civil: 40,
+            appeal_deadline_misdemeanor: 10,
+            appeal_deadline_cassation: 60,
+            appeal_deadline_urgent: 15,
+            appeal_deadline_family: 40,
+            appeal_deadline_admin: 60,
+            hearing_alert_days: 1
+          } as any}
+          onCaseUpdated={loadCaseData}
+        />
       )}
 
       {activeTab === 'finance' && (
