@@ -540,6 +540,45 @@ const MIGRATIONS: Migration[] = [
 
       CREATE INDEX IF NOT EXISTS idx_case_notes_case ON case_notes(case_id, is_pinned, created_at DESC);
     `
+  },
+  {
+    version: 8,
+    name: '008_security_and_audit',
+    sql: `
+      CREATE TABLE IF NOT EXISTS app_security (
+          id INTEGER PRIMARY KEY CHECK (id = 1),
+          is_password_enabled INTEGER NOT NULL DEFAULT 0,
+          password_hash TEXT DEFAULT '',
+          auto_lock_minutes INTEGER NOT NULL DEFAULT 15,
+          auto_backup_enabled INTEGER NOT NULL DEFAULT 1,
+          auto_backup_frequency TEXT NOT NULL DEFAULT 'daily',
+          backup_custom_path TEXT DEFAULT '',
+          encrypt_backups INTEGER NOT NULL DEFAULT 0,
+          last_backup_date DATETIME DEFAULT NULL,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+          updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      );
+
+      INSERT OR IGNORE INTO app_security (
+          id, is_password_enabled, password_hash, auto_lock_minutes,
+          auto_backup_enabled, auto_backup_frequency, backup_custom_path, encrypt_backups
+      ) VALUES (
+          1, 0, '', 15, 1, 'daily', '', 0
+      );
+
+      CREATE TABLE IF NOT EXISTS audit_logs (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          action_type TEXT NOT NULL,
+          entity_type TEXT NOT NULL,
+          entity_id INTEGER DEFAULT NULL,
+          entity_name TEXT NOT NULL,
+          details TEXT DEFAULT '',
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_audit_logs_created ON audit_logs(created_at DESC);
+      CREATE INDEX IF NOT EXISTS idx_audit_logs_entity ON audit_logs(entity_type, action_type);
+    `
   }
 ];
 

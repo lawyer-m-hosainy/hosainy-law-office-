@@ -325,6 +325,68 @@ const api: IElectronAPI = {
   openExportedFile: (filePath: string): Promise<any> => {
     return ipcRenderer.invoke('export:openFile', filePath);
   },
+
+  // Security & Password Lock (Phase 8)
+  getSecuritySettings: (): Promise<any> => {
+    return ipcRenderer.invoke('security:getSettings');
+  },
+  updateSecuritySettings: (settings: any): Promise<any> => {
+    return ipcRenderer.invoke('security:updateSettings', settings);
+  },
+  setPassword: (newPassword: string, currentPassword?: string): Promise<any> => {
+    return ipcRenderer.invoke('security:setPassword', newPassword, currentPassword);
+  },
+  removePassword: (currentPassword: string): Promise<any> => {
+    return ipcRenderer.invoke('security:removePassword', currentPassword);
+  },
+  verifyPassword: (password: string): Promise<any> => {
+    return ipcRenderer.invoke('security:verifyPassword', password);
+  },
+  checkIsLocked: (): Promise<any> => {
+    return ipcRenderer.invoke('security:checkIsLocked');
+  },
+  setAppLocked: (locked: boolean): Promise<any> => {
+    return ipcRenderer.invoke('security:setAppLocked', locked);
+  },
+
+  // Backup & Restore (Phase 8)
+  createBackup: (options?: any): Promise<any> => {
+    return ipcRenderer.invoke('backup:create', options);
+  },
+  getBackupsList: (): Promise<any> => {
+    return ipcRenderer.invoke('backup:getList');
+  },
+  selectBackupDirectory: (): Promise<any> => {
+    return ipcRenderer.invoke('backup:selectDirectory');
+  },
+  selectBackupFileToRestore: (): Promise<any> => {
+    return ipcRenderer.invoke('backup:selectRestoreFile');
+  },
+  restoreBackup: (backupFilePath: string, password?: string): Promise<any> => {
+    return ipcRenderer.invoke('backup:restore', backupFilePath, password);
+  },
+
+  // Audit Logs (Phase 8)
+  getAuditLogs: (filter?: any): Promise<any> => {
+    return ipcRenderer.invoke('audit:getLogs', filter);
+  },
+  createAuditLog: (entry: any): Promise<any> => {
+    return ipcRenderer.invoke('audit:createLog', entry);
+  },
+
+  // Trash Bin (Phase 8)
+  getTrashBinItems: (): Promise<any> => {
+    return ipcRenderer.invoke('trash:getItems');
+  },
+  restoreTrashItem: (entityType: string, entityId: number): Promise<any> => {
+    return ipcRenderer.invoke('trash:restore', entityType, entityId);
+  },
+  permanentDeleteTrashItem: (entityType: string, entityId: number): Promise<any> => {
+    return ipcRenderer.invoke('trash:deletePermanent', entityType, entityId);
+  },
+  emptyTrashBin: (): Promise<any> => {
+    return ipcRenderer.invoke('trash:empty');
+  },
 };
 
 contextBridge.exposeInMainWorld('electronAPI', api);

@@ -75,6 +75,7 @@ export type NavigationTab =
   | 'executions'
   | 'tasks'
   | 'reports'
+  | 'trash'
   | 'settings';
 
 // ==========================================
@@ -942,6 +943,32 @@ export interface IElectronAPI {
   exportTableData: (input: ExportTableDataInput) => Promise<ExportResult>;
   openExportedFile: (filePath: string) => Promise<{ success: boolean; error?: string }>;
 
+  // Security & Password Lock (Phase 8)
+  getSecuritySettings: () => Promise<AppSecuritySettings>;
+  updateSecuritySettings: (settings: Partial<AppSecuritySettings>) => Promise<AppSecuritySettings>;
+  setPassword: (newPassword: string, currentPassword?: string) => Promise<{ success: boolean; error?: string }>;
+  removePassword: (currentPassword: string) => Promise<{ success: boolean; error?: string }>;
+  verifyPassword: (password: string) => Promise<{ success: boolean; error?: string }>;
+  checkIsLocked: () => Promise<boolean>;
+  setAppLocked: (locked: boolean) => Promise<boolean>;
+
+  // Backup & Restore (Phase 8)
+  createBackup: (options?: { destinationDir?: string; encrypt?: boolean; password?: string }) => Promise<{ success: boolean; backupPath?: string; error?: string }>;
+  getBackupsList: () => Promise<BackupFileInfo[]>;
+  selectBackupDirectory: () => Promise<string | null>;
+  selectBackupFileToRestore: () => Promise<string | null>;
+  restoreBackup: (backupFilePath: string, password?: string) => Promise<{ success: boolean; message?: string; error?: string }>;
+
+  // Audit Logs (Phase 8)
+  getAuditLogs: (filter?: AuditLogFilter) => Promise<AuditLog[]>;
+  createAuditLog: (entry: { action_type: string; entity_type: string; entity_id?: number | null; entity_name: string; details?: string }) => Promise<AuditLog>;
+
+  // Trash Bin (Phase 8)
+  getTrashBinItems: () => Promise<TrashBinItem[]>;
+  restoreTrashItem: (entityType: string, entityId: number) => Promise<{ success: boolean }>;
+  permanentDeleteTrashItem: (entityType: string, entityId: number) => Promise<{ success: boolean }>;
+  emptyTrashBin: () => Promise<{ success: boolean; count: number }>;
+
   // System
   getAppVersion: () => Promise<string>;
 }
@@ -1077,6 +1104,68 @@ export interface ExportResult {
   success: boolean;
   filePath?: string;
   error?: string;
+}
+
+// ==========================================
+// Phase 8 Entities: Security, Backups, Audit Logs, Trash
+// ==========================================
+
+export interface AppSecuritySettings {
+  is_password_enabled: number; // 1 or 0
+  has_password: boolean;
+  auto_lock_minutes: number;
+  auto_backup_enabled: number;
+  auto_backup_frequency: 'daily' | 'weekly' | 'monthly' | 'on_close';
+  backup_custom_path?: string;
+  encrypt_backups: number; // 1 or 0
+  last_backup_date?: string | null;
+}
+
+export interface AuditLog {
+  id: number;
+  action_type: 'create' | 'update' | 'delete' | 'reverse' | 'backup' | 'restore' | 'lock' | 'unlock' | 'security';
+  entity_type: 'case' | 'client' | 'hearing' | 'finance' | 'execution' | 'task' | 'document' | 'system';
+  entity_id?: number | null;
+  entity_name: string;
+  details?: string;
+  created_at: string;
+}
+
+export interface AuditLogFilter {
+  action_type?: string;
+  entity_type?: string;
+  startDate?: string;
+  endDate?: string;
+  query?: string;
+}
+
+export interface BackupMetadata {
+  backupId: string;
+  createdAt: string;
+  appVersion: string;
+  officeName: string;
+  dbSizeBytes: number;
+  attachmentsCount: number;
+  attachmentsSizeBytes: number;
+  isEncrypted: boolean;
+}
+
+export interface BackupFileInfo {
+  fileName: string;
+  filePath: string;
+  sizeBytes: number;
+  createdAt: string;
+  isEncrypted: boolean;
+  metadata?: BackupMetadata;
+}
+
+export interface TrashBinItem {
+  id: string; // e.g. "doc-12", "case-3"
+  entityType: 'document' | 'case' | 'client' | 'task';
+  entityId: number;
+  title: string;
+  details: string;
+  deletedAt: string;
 }
 
 declare global {

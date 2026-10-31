@@ -13,6 +13,10 @@ import { registerDocumentsIpc } from './documentsIpc';
 import { registerNotesAndTimelineIpc } from './notesAndTimelineIpc';
 import { registerSearchIpc } from './searchIpc';
 import { registerExportIpc } from './exportIpc';
+import { registerSecurityIpc } from './securityIpc';
+import { registerBackupIpc } from './backupIpc';
+import { registerAuditLogsIpc } from './auditLogsIpc';
+import { registerTrashBinIpc } from './trashBinIpc';
 
 export function registerAllIpcHandlers(): void {
   registerSettingsIpc();
@@ -29,6 +33,10 @@ export function registerAllIpcHandlers(): void {
   registerNotesAndTimelineIpc();
   registerSearchIpc();
   registerExportIpc();
+  registerSecurityIpc();
+  registerBackupIpc();
+  registerAuditLogsIpc();
+  registerTrashBinIpc();
 
   ipcMain.handle('system:getAppVersion', async (): Promise<string> => {
     return app.getVersion();

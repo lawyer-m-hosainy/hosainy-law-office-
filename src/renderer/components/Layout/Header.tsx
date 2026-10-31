@@ -5,6 +5,7 @@ import {
   ShieldCheck,
   Calendar,
   Search,
+  Lock,
 } from 'lucide-react';
 import { NavigationTab, OfficeSettings } from '../../../shared/types';
 
@@ -14,6 +15,8 @@ interface HeaderProps {
   onOpenDataDir: () => void;
   onOpenQuickPrint: () => void;
   onOpenUniversalSearch: () => void;
+  onLockApp?: () => void;
+  hasPassword?: boolean;
 }
 
 const tabTitles: Record<NavigationTab, { title: string; subtitle: string }> = {
@@ -26,7 +29,8 @@ const tabTitles: Record<NavigationTab, { title: string; subtitle: string }> = {
   executions: { title: 'إجراءات التنفيذ', subtitle: 'ملفات التنفيذ الجبري، الأوامر، الحجوزات، والمحاضر' },
   tasks: { title: 'قائمة المهام والمأموريات', subtitle: 'مأموريات المحاكم والنيابة والشهر العقاري والأعمال الإدارية' },
   reports: { title: 'التقارير والطباعة الرسمية', subtitle: 'خدمة الطباعة الموحدة، كشوف الحسابات، وملفات القضايا' },
-  settings: { title: 'إعدادات النظام والمكتب', subtitle: 'بيانات المكتب، مجلد البيانات، والقوائم القابلة للتعديل' },
+  trash: { title: 'سلة المحذوفات والأرشيف', subtitle: 'استعراض واسترجاع المستندات والقضايا والمهام المحذوفة' },
+  settings: { title: 'إعدادات النظام والمكتب', subtitle: 'بيانات المكتب، الأمان والنسخ الاحتياطي، وسجل التدقيق' },
 };
 
 export const Header: React.FC<HeaderProps> = ({
@@ -34,6 +38,8 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenDataDir,
   onOpenQuickPrint,
   onOpenUniversalSearch,
+  onLockApp,
+  hasPassword,
 }) => {
   const currentTabInfo = tabTitles[activeTab] || { title: '', subtitle: '' };
 
@@ -92,6 +98,18 @@ export const Header: React.FC<HeaderProps> = ({
           <FolderOpen className="w-3.5 h-3.5 text-slate-600" />
           <span className="hidden lg:inline">مجلد البيانات</span>
         </button>
+
+        {/* Quick Lock Button if Protected */}
+        {hasPassword && onLockApp && (
+          <button
+            onClick={onLockApp}
+            title="قفل البرنامج فوراً (Lock Screen)"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-lg transition-colors cursor-pointer"
+          >
+            <Lock className="w-3.5 h-3.5 text-slate-700" />
+            <span className="hidden md:inline">قفل</span>
+          </button>
+        )}
 
         {/* Quick Print Button */}
         <button

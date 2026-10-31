@@ -15,6 +15,10 @@ import {
   AlertTriangle,
   Upload,
   Info,
+  Lock,
+  Archive,
+  History,
+  ShieldCheck,
 } from 'lucide-react';
 import {
   ConfigurableListItem,
@@ -22,6 +26,9 @@ import {
   DataDirInfo,
   OfficeSettings,
 } from '../../../shared/types';
+import { SecuritySettingsTab } from './components/SecuritySettingsTab';
+import { BackupSettingsTab } from './components/BackupSettingsTab';
+import { AuditLogsTab } from './components/AuditLogsTab';
 
 interface SettingsPageProps {
   settings: OfficeSettings | null;
@@ -35,7 +42,7 @@ interface SettingsPageProps {
   onRefreshDataDir: () => void;
 }
 
-type SettingsTab = 'office' | 'storage' | 'lists' | 'deadlines';
+type SettingsTab = 'office' | 'security' | 'backups' | 'audit' | 'storage' | 'lists' | 'deadlines';
 
 const listTypeLabels: Record<ConfigurableListType, { label: string; desc: string }> = {
   courts: { label: 'المحاكم والهيئات القضائية', desc: 'المحاكم الجزئية، الابتدائية، الاستئناف، النقض، ومجلس الدولة' },
@@ -228,6 +235,42 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
         >
           <Building2 className="w-4 h-4" />
           <span>بيانات المكتب والترويسة</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('security')}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-bold transition-all ${
+            activeTab === 'security'
+              ? 'bg-amber-600 text-white shadow-sm'
+              : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+          }`}
+        >
+          <Lock className="w-4 h-4" />
+          <span>الأمان وقفل البرنامج</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('backups')}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-bold transition-all ${
+            activeTab === 'backups'
+              ? 'bg-amber-600 text-white shadow-sm'
+              : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+          }`}
+        >
+          <Archive className="w-4 h-4" />
+          <span>النسخ الاحتياطي والاستعادة</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('audit')}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-bold transition-all ${
+            activeTab === 'audit'
+              ? 'bg-amber-600 text-white shadow-sm'
+              : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+          }`}
+        >
+          <History className="w-4 h-4" />
+          <span>سجل التدقيق والتغييرات</span>
         </button>
 
         <button
@@ -444,6 +487,15 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
           </div>
         </form>
       )}
+
+      {/* TAB: Security & Password Lock */}
+      {activeTab === 'security' && <SecuritySettingsTab />}
+
+      {/* TAB: Backups & Restore */}
+      {activeTab === 'backups' && <BackupSettingsTab />}
+
+      {/* TAB: Audit Logs */}
+      {activeTab === 'audit' && <AuditLogsTab />}
 
       {/* TAB 2: Storage & LawOfficeData */}
       {activeTab === 'storage' && (

@@ -17,6 +17,9 @@ import { CalendarPage } from './pages/Calendar/CalendarPage';
 import { FinancePage } from './pages/Finance/FinancePage';
 import { ExecutionsPage } from './pages/Executions/ExecutionsPage';
 import { TasksPage } from './pages/Tasks/TasksPage';
+import { TrashBinPage } from './pages/Trash/TrashBinPage';
+import { LockScreenModal } from './components/Security/LockScreenModal';
+import { useSecurityAndBackup } from './hooks/useSecurityAndBackup';
 import { GenericPlaceholder } from './pages/GenericPlaceholder';
 import { Scale, Loader2, AlertCircle } from 'lucide-react';
 
@@ -53,6 +56,12 @@ export const App: React.FC = () => {
 
   const { clients } = useClients();
   const { cases } = useCases();
+  const {
+    securitySettings,
+    isLocked,
+    unlockApp,
+    lockApp,
+  } = useSecurityAndBackup();
 
   const handleOpenDataDir = async () => {
     try {
@@ -134,6 +143,8 @@ export const App: React.FC = () => {
           onOpenDataDir={handleOpenDataDir}
           onOpenQuickPrint={handleOpenQuickPrint}
           onOpenUniversalSearch={() => setIsSearchModalOpen(true)}
+          onLockApp={lockApp}
+          hasPassword={Boolean(securitySettings?.has_password && securitySettings?.is_password_enabled === 1)}
         />
 
         {/* Content View */}
@@ -243,6 +254,12 @@ export const App: React.FC = () => {
               onNavigateToCase={handleNavigateToCase}
             />
           )}
+
+          {activeTab === 'trash' && (
+            <TrashBinPage
+              onNavigateToCase={handleNavigateToCase}
+            />
+          )}
         </main>
       </div>
 
@@ -258,6 +275,13 @@ export const App: React.FC = () => {
           setActiveTab(tab);
           setSelectedCaseId(null);
         }}
+      />
+
+      {/* App Lock Screen Modal */}
+      <LockScreenModal
+        isOpen={isLocked}
+        settings={settings}
+        onUnlock={unlockApp}
       />
     </div>
   );

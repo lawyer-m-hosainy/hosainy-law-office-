@@ -9,6 +9,7 @@ import {
   FileCheck2,
   CheckSquare,
   FileText,
+  Trash2,
   Settings as SettingsIcon,
   Scale,
   HardDrive,
@@ -32,6 +33,7 @@ const navItems: { id: NavigationTab; label: string; icon: React.ComponentType<{ 
   { id: 'executions', label: 'التنفيذات', icon: FileCheck2 },
   { id: 'tasks', label: 'المهام', icon: CheckSquare },
   { id: 'reports', label: 'التقارير والطباعة', icon: FileText },
+  { id: 'trash', label: 'سلة المحذوفات', icon: Trash2 },
   { id: 'settings', label: 'الإعدادات', icon: SettingsIcon },
 ];
 

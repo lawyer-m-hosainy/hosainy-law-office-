@@ -53,6 +53,10 @@ export class DatabaseService {
     return this.db;
   }
 
+  public getDatabase(): Database.Database {
+    return this.getDb();
+  }
+
   public transaction<T>(fn: () => T): T {
     const db = this.getDb();
     const execute = db.transaction(fn);
