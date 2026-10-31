@@ -223,6 +223,50 @@ const api: IElectronAPI = {
   recordExecutionPayment: (params: any): Promise<any> => {
     return ipcRenderer.invoke('executions:recordPayment', params);
   },
+
+  // Tasks API (Phase 6)
+  getTasks: (filter?: any): Promise<any> => {
+    return ipcRenderer.invoke('tasks:getTasks', filter);
+  },
+  getTaskById: (id: number): Promise<any> => {
+    return ipcRenderer.invoke('tasks:getById', id);
+  },
+  createTask: (input: any): Promise<any> => {
+    return ipcRenderer.invoke('tasks:create', input);
+  },
+  updateTask: (id: number, updates: any): Promise<any> => {
+    return ipcRenderer.invoke('tasks:update', id, updates);
+  },
+  toggleTaskChecklistItem: (itemId: number, isCompleted: boolean): Promise<any> => {
+    return ipcRenderer.invoke('tasks:toggleChecklistItem', itemId, isCompleted);
+  },
+  deleteTask: (id: number): Promise<any> => {
+    return ipcRenderer.invoke('tasks:delete', id);
+  },
+  getTaskTemplates: (): Promise<any> => {
+    return ipcRenderer.invoke('tasks:getTemplates');
+  },
+  getTaskTemplateById: (id: number): Promise<any> => {
+    return ipcRenderer.invoke('tasks:getTemplateById', id);
+  },
+  createTaskTemplate: (input: any): Promise<any> => {
+    return ipcRenderer.invoke('tasks:createTemplate', input);
+  },
+  deleteTaskTemplate: (id: number): Promise<any> => {
+    return ipcRenderer.invoke('tasks:deleteTemplate', id);
+  },
+  applyTaskTemplate: (params: any): Promise<any> => {
+    return ipcRenderer.invoke('tasks:applyTemplate', params);
+  },
+  getDueTaskReminders: (): Promise<any> => {
+    return ipcRenderer.invoke('tasks:getDueReminders');
+  },
+  markTaskReminderShown: (taskId: number): Promise<any> => {
+    return ipcRenderer.invoke('tasks:markReminderShown', taskId);
+  },
+  showDesktopNotification: (options: { title: string; body: string }): Promise<any> => {
+    return ipcRenderer.invoke('tasks:showDesktopNotification', options);
+  },
 };
 
 contextBridge.exposeInMainWorld('electronAPI', api);

@@ -15,6 +15,7 @@ import { HearingsPage } from './pages/Hearings/HearingsPage';
 import { CalendarPage } from './pages/Calendar/CalendarPage';
 import { FinancePage } from './pages/Finance/FinancePage';
 import { ExecutionsPage } from './pages/Executions/ExecutionsPage';
+import { TasksPage } from './pages/Tasks/TasksPage';
 import { GenericPlaceholder } from './pages/GenericPlaceholder';
 import { Scale, Loader2, AlertCircle } from 'lucide-react';
 
@@ -148,6 +149,7 @@ export const App: React.FC = () => {
                 settings={settings}
                 courts={lists.courts || []}
                 caseTypes={lists.case_types || []}
+                taskCategories={lists.task_categories || []}
                 clients={clients}
                 onBack={() => setSelectedCaseId(null)}
               />
@@ -216,7 +218,13 @@ export const App: React.FC = () => {
           )}
 
           {activeTab === 'tasks' && (
-            <GenericPlaceholder tab={activeTab} onNavigateToSettings={() => setActiveTab('settings')} />
+            <TasksPage
+              settings={settings}
+              cases={cases}
+              clients={clients}
+              taskCategories={lists.task_categories || []}
+              onNavigateToCase={handleNavigateToCase}
+            />
           )}
         </main>
       </div>

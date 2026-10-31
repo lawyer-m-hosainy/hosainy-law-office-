@@ -628,6 +628,122 @@ export interface CreateExecutionHearingInput {
   status?: ExecutionHearingStatus;
 }
 
+// ==========================================
+// Phase 6 Entities: Tasks & Administrative Work (المهام والعمل الإداري)
+// ==========================================
+
+export type TaskPriority = 'عاجلة' | 'مهمة' | 'عادية';
+export type TaskStatus = 'جديدة' | 'جارية' | 'مؤجلة' | 'منتهية' | 'ملغاة';
+export type TaskRecurrence = 'لا يتكرر' | 'يومي' | 'أسبوعي' | 'شهري' | 'مخصص';
+
+export interface TaskChecklistItem {
+  id: number;
+  task_id: number;
+  title: string;
+  is_completed: number; // 0 or 1
+  sort_order: number;
+  created_at?: string;
+}
+
+export interface Task {
+  id: number;
+  title: string;
+  description?: string | null;
+  case_id?: number | null;
+  client_id?: number | null;
+  category: string;
+  priority: TaskPriority;
+  due_date: string; // YYYY-MM-DD
+  due_time?: string | null; // HH:MM
+  recurrence: TaskRecurrence;
+  recurrence_interval?: number | null;
+  status: TaskStatus;
+  completed_at?: string | null;
+  assigned_to?: string | null;
+  estimated_duration?: string | null;
+  result_notes?: string | null;
+  reminder_minutes_before: number;
+  reminder_shown: number;
+  created_at?: string;
+  updated_at?: string;
+  // Joins & computed
+  case_number?: string;
+  case_year?: number;
+  court_name?: string;
+  client_name?: string;
+  checklists?: TaskChecklistItem[];
+  total_items?: number;
+  completed_items?: number;
+  is_overdue?: boolean;
+}
+
+export interface TaskTemplateItem {
+  id: number;
+  template_id: number;
+  title: string;
+  category: string;
+  priority: TaskPriority;
+  days_offset: number;
+  estimated_duration?: string | null;
+  checklist_items?: string | null; // newline-delimited or JSON
+  sort_order: number;
+}
+
+export interface TaskTemplate {
+  id: number;
+  name: string;
+  description?: string | null;
+  is_default: number; // 1 or 0
+  items?: TaskTemplateItem[];
+  items_count?: number;
+  created_at?: string;
+}
+
+export interface TaskFilter {
+  caseId?: number;
+  clientId?: number;
+  category?: string;
+  priority?: string;
+  status?: string;
+  assignedTo?: string;
+  period?: 'today' | 'week' | 'overdue' | 'all' | 'custom';
+  startDate?: string;
+  endDate?: string;
+  search?: string;
+}
+
+export interface CreateTaskInput {
+  title: string;
+  description?: string | null;
+  case_id?: number | null;
+  client_id?: number | null;
+  category: string;
+  priority?: TaskPriority;
+  due_date: string;
+  due_time?: string | null;
+  recurrence?: TaskRecurrence;
+  recurrence_interval?: number | null;
+  status?: TaskStatus;
+  assigned_to?: string | null;
+  estimated_duration?: string | null;
+  reminder_minutes_before?: number;
+  checklist_titles?: string[];
+}
+
+export interface CreateTaskTemplateInput {
+  name: string;
+  description?: string | null;
+  items: {
+    title: string;
+    category: string;
+    priority: TaskPriority;
+    days_offset: number;
+    estimated_duration?: string | null;
+    checklist_items?: string | null;
+    sort_order?: number;
+  }[];
+}
+
 export interface IElectronAPI {
   // Settings
   getOfficeSettings: () => Promise<OfficeSettings>;
@@ -769,6 +885,28 @@ export interface IElectronAPI {
     date?: string;
     notes?: string;
   }) => Promise<FinancialTransaction>;
+
+  // Tasks API (Phase 6)
+  getTasks: (filter?: TaskFilter) => Promise<Task[]>;
+  getTaskById: (id: number) => Promise<Task | null>;
+  createTask: (input: CreateTaskInput) => Promise<Task>;
+  updateTask: (id: number, updates: Partial<CreateTaskInput> & { status?: TaskStatus; result_notes?: string; completed_at?: string }) => Promise<Task>;
+  toggleTaskChecklistItem: (itemId: number, isCompleted: boolean) => Promise<TaskChecklistItem>;
+  deleteTask: (id: number) => Promise<{ success: boolean }>;
+  getTaskTemplates: () => Promise<TaskTemplate[]>;
+  getTaskTemplateById: (id: number) => Promise<TaskTemplate | null>;
+  createTaskTemplate: (input: CreateTaskTemplateInput) => Promise<TaskTemplate>;
+  deleteTaskTemplate: (id: number) => Promise<{ success: boolean; message?: string }>;
+  applyTaskTemplate: (params: {
+    templateId: number;
+    caseId?: number;
+    clientId?: number;
+    baseDate?: string;
+    assignedTo?: string;
+  }) => Promise<Task[]>;
+  getDueTaskReminders: () => Promise<Task[]>;
+  markTaskReminderShown: (taskId: number) => Promise<void>;
+  showDesktopNotification: (options: { title: string; body: string }) => Promise<boolean>;
 
   // System
   getAppVersion: () => Promise<string>;

@@ -39,12 +39,14 @@ import { generateCaseSheetHtml } from '../../services/caseReportGenerator';
 import { CaseHearingsTab } from './components/CaseHearingsTab';
 import { CaseFinanceTab } from './components/CaseFinanceTab';
 import { CaseExecutionsTab } from './components/CaseExecutionsTab';
+import { CaseTasksTab } from './components/CaseTasksTab';
 
 interface CaseDetailsPageProps {
   caseId: number;
   settings: OfficeSettings | null;
   courts: ConfigurableListItem[];
   caseTypes: ConfigurableListItem[];
+  taskCategories?: ConfigurableListItem[];
   clients: Client[];
   onBack: () => void;
 }
@@ -56,6 +58,7 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
   settings,
   courts,
   caseTypes,
+  taskCategories,
   clients,
   onBack,
 }) => {
@@ -594,14 +597,18 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
         </div>
       )}
 
+      {/* TAB 6: Tasks & Checklists */}
       {activeTab === 'tasks' && (
-        <div className="bg-white rounded-xl border border-slate-200 p-8 text-center space-y-3">
-          <CheckSquare className="w-10 h-10 text-amber-600 mx-auto" />
-          <h4 className="text-base font-bold text-slate-800">تبويب المهام والمأموريات المرتبطة</h4>
-          <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
-            مجدول ومخصص في <strong>المرحلة 6</strong>: مأموريات المحكمة والنيابة والشهر العقاري الخاصة بهذه القضية.
-          </p>
-        </div>
+        <CaseTasksTab
+          caseData={caseData}
+          taskCategories={taskCategories || []}
+          settings={settings || {
+            office_name: 'مكتب المحاماة',
+            lawyer_name: '',
+            title: 'المحامي بالنقض'
+          } as any}
+          onCaseUpdated={loadCase}
+        />
       )}
 
       {activeTab === 'timeline' && (

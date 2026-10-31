@@ -16,7 +16,9 @@ import {
   ChevronLeft,
   Eye,
   FileDown,
-  Coins
+  Coins,
+  CheckSquare,
+  Check
 } from 'lucide-react';
 import {
   Client,
@@ -24,7 +26,8 @@ import {
   HearingWithCase,
   NavigationTab,
   OfficeSettings,
-  AppealDeadline
+  AppealDeadline,
+  Task
 } from '../../../shared/types';
 import { useHearings } from '../../hooks/useHearings';
 import { useClients } from '../../hooks/useClients';
@@ -61,6 +64,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const [pendingJudgments, setPendingJudgments] = useState<HearingWithCase[]>([]);
   const [upcomingAppeals, setUpcomingAppeals] = useState<AppealDeadline[]>([]);
   const [expiringClients, setExpiringClients] = useState<Client[]>([]);
+  const [dashboardTasks, setDashboardTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
 
   const todayStr = new Date().toISOString().split('T')[0];
@@ -78,12 +82,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const loadDashboardData = useCallback(async () => {
     setLoading(true);
     try {
-      const [todayRoll, tomorrowRoll, allJudgmentHearings, allAppeals, poaClients] = await Promise.all([
+      const [todayRoll, tomorrowRoll, allJudgmentHearings, allAppeals, poaClients, dueTasks, overdueTasks] = await Promise.all([
         getHearingRoll({ date: todayStr }),
         getHearingRoll({ date: tomorrowStr }),
         getHearingRoll({ status: 'محجوزة للحكم' }),
         getAppealDeadlines(),
-        getExpiringPoaClients(30)
+        getExpiringPoaClients(30),
+        window.electronAPI.getTasks({ period: 'today' }),
+        window.electronAPI.getTasks({ period: 'overdue' })
       ]);
 
       setTodayHearings(todayRoll);
@@ -94,6 +100,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       const urgentAppeals = allAppeals.filter(a => !a.is_appeal_filed && (a.days_remaining ?? 999) <= 20);
       setUpcomingAppeals(urgentAppeals);
       setExpiringClients(poaClients);
+
+      // Combine today's tasks and pending overdue tasks
+      const combinedTasks = [...overdueTasks, ...dueTasks.filter(t => !overdueTasks.some(o => o.id === t.id))];
+      setDashboardTasks(combinedTasks.slice(0, 8));
     } catch (err) {
       console.error('Error loading dashboard data:', err);
     } finally {
@@ -359,6 +369,78 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                 ))}
               </tbody>
             </table>
+          </div>
+        )}
+      </div>
+
+      {/* 3b. Today & Urgent Tasks Section */}
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+          <div className="flex items-center gap-2">
+            <CheckSquare className="w-5 h-5 text-amber-600" />
+            <h3 className="text-base font-bold text-slate-800">
+              مهام ومأموريات اليوم والمتأخرة ({dashboardTasks.length})
+            </h3>
+          </div>
+          <button
+            onClick={() => onNavigate('tasks')}
+            className="text-xs text-amber-600 font-bold hover:underline"
+          >
+            سجل المهام الكامل ←
+          </button>
+        </div>
+
+        {dashboardTasks.length === 0 ? (
+          <div className="text-center py-6 text-xs text-slate-400">
+            لا توجد مهام أو مأموريات عاجلة مطلوبة لليوم 🎉
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {dashboardTasks.map(task => (
+              <div
+                key={task.id}
+                className={`p-3 rounded-xl border flex items-start gap-3 transition-all ${
+                  task.is_overdue
+                    ? 'bg-red-50/40 border-red-200'
+                    : 'bg-slate-50 border-slate-200/80 hover:bg-slate-100/60'
+                }`}
+              >
+                <button
+                  onClick={async () => {
+                    await window.electronAPI.updateTask(task.id, { status: 'منتهية' });
+                    loadDashboardData();
+                  }}
+                  className="w-5 h-5 rounded-md border border-slate-300 hover:border-emerald-600 bg-white flex items-center justify-center mt-0.5"
+                  title="تأشير المهمة كمنجزة فوراً"
+                >
+                  <Check className="w-3.5 h-3.5 text-emerald-600 opacity-30 hover:opacity-100" />
+                </button>
+
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-slate-900 text-xs truncate">
+                      {task.title}
+                    </span>
+                    <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded ${
+                      task.priority === 'عاجلة' ? 'bg-red-100 text-red-800' :
+                      task.priority === 'مهمة' ? 'bg-amber-100 text-amber-800' : 'bg-slate-200 text-slate-700'
+                    }`}>
+                      {task.priority}
+                    </span>
+                    {task.is_overdue && (
+                      <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-red-600 text-white">
+                        متأخرة
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-3 text-[11px] text-slate-500 mt-1">
+                    <span>{task.category}</span>
+                    <span>الاستحقاق: <strong>{task.due_date}</strong></span>
+                    <span>المكلف: <strong>{task.assigned_to || 'أنا'}</strong></span>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>

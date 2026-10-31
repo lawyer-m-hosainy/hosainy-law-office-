@@ -8,6 +8,7 @@ import { registerHearingsIpc } from './hearingsIpc';
 import { registerAppealsIpc } from './appealsIpc';
 import { registerFinanceIpc } from './financeIpc';
 import { registerExecutionsIpc } from './executionsIpc';
+import { registerTasksIpc } from './tasksIpc';
 
 export function registerAllIpcHandlers(): void {
   registerSettingsIpc();
@@ -19,6 +20,7 @@ export function registerAllIpcHandlers(): void {
   registerAppealsIpc();
   registerFinanceIpc();
   registerExecutionsIpc();
+  registerTasksIpc();
 
   ipcMain.handle('system:getAppVersion', async (): Promise<string> => {
     return app.getVersion();
