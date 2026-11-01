@@ -45,6 +45,13 @@ interface DashboardPageProps {
   onNavigateToCase?: (caseId: number) => void;
 }
 
+const formatLocalDate = (d: Date = new Date()): string => {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 export const DashboardPage: React.FC<DashboardPageProps> = ({
   settings,
   courtsCount,
@@ -67,10 +74,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const [dashboardTasks, setDashboardTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = formatLocalDate(new Date());
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
-  const tomorrowStr = tomorrow.toISOString().split('T')[0];
+  const tomorrowStr = formatLocalDate(tomorrow);
 
   const todayFormatted = new Date().toLocaleDateString('ar-EG', {
     weekday: 'long',
@@ -92,17 +99,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         window.electronAPI.getTasks({ period: 'overdue' })
       ]);
 
-      setTodayHearings(todayRoll);
-      setTomorrowHearings(tomorrowRoll);
-      setPendingJudgments(allJudgmentHearings);
+      setTodayHearings(Array.isArray(todayRoll) ? todayRoll : []);
+      setTomorrowHearings(Array.isArray(tomorrowRoll) ? tomorrowRoll : []);
+      setPendingJudgments(Array.isArray(allJudgmentHearings) ? allJudgmentHearings : []);
       
       // Filter upcoming appeals: not filed and remaining days <= 20
-      const urgentAppeals = allAppeals.filter(a => !a.is_appeal_filed && (a.days_remaining ?? 999) <= 20);
+      const appealsList = Array.isArray(allAppeals) ? allAppeals : [];
+      const urgentAppeals = appealsList.filter(a => !a.is_appeal_filed && (a.days_remaining ?? 999) <= 20);
       setUpcomingAppeals(urgentAppeals);
-      setExpiringClients(poaClients);
+      setExpiringClients(Array.isArray(poaClients) ? poaClients : []);
 
       // Combine today's tasks and pending overdue tasks
-      const combinedTasks = [...overdueTasks, ...dueTasks.filter(t => !overdueTasks.some(o => o.id === t.id))];
+      const safeOverdue = Array.isArray(overdueTasks) ? overdueTasks : [];
+      const safeDue = Array.isArray(dueTasks) ? dueTasks : [];
+      const combinedTasks = [...safeOverdue, ...safeDue.filter(t => !safeOverdue.some(o => o.id === t.id))];
       setDashboardTasks(combinedTasks.slice(0, 8));
     } catch (err) {
       console.error('Error loading dashboard data:', err);
@@ -116,18 +126,19 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   }, [loadDashboardData]);
 
   // Direct print today's roll
-  const handlePrintTodayRoll = async (mode: 'preview' | 'print' | 'pdf') => {
+  const handlePrintTodayRoll = async (action: 'preview' | 'print' | 'pdf') => {
     if (!settings || todayHearings.length === 0) return;
-    const html = generateHearingRollHtml(todayHearings, settings, {
+    const htmlContent = generateHearingRollHtml(todayHearings, settings, {
       title: 'رول جلسات اليوم',
       filterSummary: `رول جلسات اليوم: ${todayFormatted}`,
       orientation: 'landscape'
     });
 
     await window.electronAPI.executePrint({
-      html,
-      mode,
-      pdfSuggestedFilename: `رول_جلسات_اليوم_${todayStr}.pdf`
+      htmlContent,
+      title: 'رول جلسات اليوم',
+      action,
+      suggestedFileName: `رول_جلسات_اليوم_${todayStr}.pdf`
     });
   };
 

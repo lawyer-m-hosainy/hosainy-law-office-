@@ -17,7 +17,12 @@ export class PrintService {
   }
 
   public async execute(options: PrintOptions, parentWindow?: BrowserWindow | null): Promise<PrintResult> {
-    const { htmlContent, title = 'تقرير', landscape = false, action, suggestedFileName } = options;
+    const rawOptions = options as any;
+    const htmlContent = options.htmlContent || rawOptions.html || '';
+    const title = options.title || 'تقرير';
+    const landscape = options.landscape || false;
+    const action = options.action || rawOptions.mode || 'preview';
+    const suggestedFileName = options.suggestedFileName || rawOptions.pdfSuggestedFilename;
 
     // Create a hidden window for rendering the report
     const printWindow = new BrowserWindow({

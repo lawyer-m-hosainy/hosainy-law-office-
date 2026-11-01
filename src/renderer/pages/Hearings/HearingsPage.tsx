@@ -153,9 +153,9 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
   }, [dateFilterType, specificDate, startDate, endDate, selectedCourt, courtCircuitQuery, selectedStatus]);
 
   // Print Handling (Preview / Print / PDF)
-  const handlePrintRoll = async (mode: 'preview' | 'print' | 'pdf') => {
+  const handlePrintRoll = async (action: 'preview' | 'print' | 'pdf') => {
     if (!settings) return;
-    const html = generateHearingRollHtml(hearings, settings, {
+    const htmlContent = generateHearingRollHtml(hearings, settings, {
       title: 'رول الجلسات القضائية',
       filterSummary: filterSummaryText,
       orientation: 'landscape'
@@ -163,9 +163,10 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
 
     const dateTag = dateFilterType === 'today' ? 'اليوم' : specificDate || 'رول';
     await window.electronAPI.executePrint({
-      html,
-      mode,
-      pdfSuggestedFilename: `رول_الجلسات_${dateTag}.pdf`
+      htmlContent,
+      title: 'رول الجلسات القضائية',
+      action,
+      suggestedFileName: `رول_الجلسات_${dateTag}.pdf`
     });
   };
 

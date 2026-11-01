@@ -21,6 +21,7 @@ import { TrashBinPage } from './pages/Trash/TrashBinPage';
 import { LockScreenModal } from './components/Security/LockScreenModal';
 import { useSecurityAndBackup } from './hooks/useSecurityAndBackup';
 import { GenericPlaceholder } from './pages/GenericPlaceholder';
+import { ErrorBoundary } from './components/Common/ErrorBoundary';
 import { Scale, Loader2, AlertCircle } from 'lucide-react';
 
 export const App: React.FC = () => {
@@ -149,117 +150,119 @@ export const App: React.FC = () => {
 
         {/* Content View */}
         <main className="flex-1 overflow-y-auto bg-slate-100/60">
-          {activeTab === 'dashboard' && (
-            <DashboardPage
-              settings={settings}
-              courtsCount={lists.courts?.length || 0}
-              caseTypesCount={lists.case_types?.length || 0}
-              clientsCount={clients.length}
-              casesCount={cases.length}
-              dataDirInfo={dataDirInfo}
-              onNavigate={setActiveTab}
-              onOpenDataDir={handleOpenDataDir}
-              onNavigateToCase={handleNavigateToCase}
-            />
-          )}
-
-          {activeTab === 'clients' && (
-            <ClientsPage onNavigateToCase={handleNavigateToCase} />
-          )}
-
-          {activeTab === 'cases' && (
-            selectedCaseId ? (
-              <CaseDetailsPage
-                caseId={selectedCaseId}
+          <ErrorBoundary>
+            {activeTab === 'dashboard' && (
+              <DashboardPage
                 settings={settings}
+                courtsCount={lists.courts?.length || 0}
+                caseTypesCount={lists.case_types?.length || 0}
+                clientsCount={clients.length}
+                casesCount={cases.length}
+                dataDirInfo={dataDirInfo}
+                onNavigate={setActiveTab}
+                onOpenDataDir={handleOpenDataDir}
+                onNavigateToCase={handleNavigateToCase}
+              />
+            )}
+
+            {activeTab === 'clients' && (
+              <ClientsPage onNavigateToCase={handleNavigateToCase} />
+            )}
+
+            {activeTab === 'cases' && (
+              selectedCaseId ? (
+                <CaseDetailsPage
+                  caseId={selectedCaseId}
+                  settings={settings}
+                  courts={lists.courts || []}
+                  caseTypes={lists.case_types || []}
+                  taskCategories={lists.task_categories || []}
+                  clients={clients}
+                  onBack={() => setSelectedCaseId(null)}
+                />
+              ) : (
+                <CasesPage
+                  courts={lists.courts || []}
+                  caseTypes={lists.case_types || []}
+                  clients={clients}
+                  onOpenCaseDetails={(id) => setSelectedCaseId(id)}
+                />
+              )
+            )}
+
+            {activeTab === 'hearings' && (
+              <HearingsPage
                 courts={lists.courts || []}
-                caseTypes={lists.case_types || []}
+                settings={settings}
+                onNavigateToCase={handleNavigateToCase}
+              />
+            )}
+
+            {activeTab === 'calendar' && (
+              <CalendarPage
+                settings={settings}
+                onNavigateToCase={handleNavigateToCase}
+              />
+            )}
+
+            {activeTab === 'finance' && (
+              <FinancePage
+                settings={settings}
+                clients={clients}
+                cases={cases}
+                onNavigateToCase={handleNavigateToCase}
+              />
+            )}
+
+            {activeTab === 'settings' && (
+              <SettingsPage
+                settings={settings}
+                lists={lists}
+                dataDirInfo={dataDirInfo}
+                onUpdateSettings={updateSettings}
+                onCreateListItem={createListItem}
+                onUpdateListItem={updateListItem}
+                onDeleteListItem={deleteListItem}
+                onResetList={resetList}
+                onRefreshDataDir={refreshDataDirInfo}
+              />
+            )}
+
+            {activeTab === 'reports' && (
+              <ReportsPage
+                settings={settings}
+                courtsList={lists.courts || []}
+                cases={cases}
+                clients={clients}
+                onNavigateToCase={handleNavigateToCase}
+              />
+            )}
+
+            {activeTab === 'executions' && (
+              <ExecutionsPage
+                settings={settings}
+                clients={clients}
+                cases={cases}
+                onNavigateToCase={handleNavigateToCase}
+              />
+            )}
+
+            {activeTab === 'tasks' && (
+              <TasksPage
+                settings={settings}
+                cases={cases}
+                clients={clients}
                 taskCategories={lists.task_categories || []}
-                clients={clients}
-                onBack={() => setSelectedCaseId(null)}
+                onNavigateToCase={handleNavigateToCase}
               />
-            ) : (
-              <CasesPage
-                courts={lists.courts || []}
-                caseTypes={lists.case_types || []}
-                clients={clients}
-                onOpenCaseDetails={(id) => setSelectedCaseId(id)}
+            )}
+
+            {activeTab === 'trash' && (
+              <TrashBinPage
+                onNavigateToCase={handleNavigateToCase}
               />
-            )
-          )}
-
-          {activeTab === 'hearings' && (
-            <HearingsPage
-              courts={lists.courts || []}
-              settings={settings}
-              onNavigateToCase={handleNavigateToCase}
-            />
-          )}
-
-          {activeTab === 'calendar' && (
-            <CalendarPage
-              settings={settings}
-              onNavigateToCase={handleNavigateToCase}
-            />
-          )}
-
-          {activeTab === 'finance' && (
-            <FinancePage
-              settings={settings}
-              clients={clients}
-              cases={cases}
-              onNavigateToCase={handleNavigateToCase}
-            />
-          )}
-
-          {activeTab === 'settings' && (
-            <SettingsPage
-              settings={settings}
-              lists={lists}
-              dataDirInfo={dataDirInfo}
-              onUpdateSettings={updateSettings}
-              onCreateListItem={createListItem}
-              onUpdateListItem={updateListItem}
-              onDeleteListItem={deleteListItem}
-              onResetList={resetList}
-              onRefreshDataDir={refreshDataDirInfo}
-            />
-          )}
-
-          {activeTab === 'reports' && (
-            <ReportsPage
-              settings={settings}
-              courtsList={lists.courts || []}
-              cases={cases}
-              clients={clients}
-              onNavigateToCase={handleNavigateToCase}
-            />
-          )}
-
-          {activeTab === 'executions' && (
-            <ExecutionsPage
-              settings={settings}
-              clients={clients}
-              cases={cases}
-              onNavigateToCase={handleNavigateToCase}
-            />
-          )}
-
-          {activeTab === 'tasks' && (
-            <TasksPage
-              settings={settings}
-              cases={cases}
-              clients={clients}
-              taskCategories={lists.task_categories || []}
-              onNavigateToCase={handleNavigateToCase}
-            />
-          )}
-
-          {activeTab === 'trash' && (
-            <TrashBinPage
-              onNavigateToCase={handleNavigateToCase}
-            />
-          )}
+            )}
+          </ErrorBoundary>
         </main>
       </div>
 

@@ -42,6 +42,13 @@ import { generateReceiptHtml } from '../../services/receiptReportGenerator';
 import { generateClientStatementHtml } from '../../services/clientStatementReportGenerator';
 import { ExportButton } from '../../components/Common/ExportButton';
 
+function formatLocalDate(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
 interface FinancePageProps {
   settings: OfficeSettings | null;
   clients: Client[];
@@ -116,7 +123,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
     category: 'أتعاب' as TransactionCategory,
     transaction_type: 'أتعاب - دفعة مرحلية',
     amount: '',
-    transaction_date: new Date().toISOString().split('T')[0],
+    transaction_date: formatLocalDate(new Date()),
     payment_method: 'نقدي' as PaymentMethod,
     description: '',
     notes: '',
@@ -124,7 +131,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
     cheque_number: '',
     bank_name: '',
     drawer_name: '',
-    due_date: new Date().toISOString().split('T')[0]
+    due_date: formatLocalDate(new Date())
   });
 
   // Calculate Dates for Period Filter
@@ -134,13 +141,13 @@ export const FinancePage: React.FC<FinancePageProps> = ({
     const month = now.getMonth();
 
     if (periodFilter === 'month') {
-      const start = new Date(year, month, 1).toISOString().split('T')[0];
-      const end = new Date(year, month + 1, 0).toISOString().split('T')[0];
+      const start = formatLocalDate(new Date(year, month, 1));
+      const end = formatLocalDate(new Date(year, month + 1, 0));
       return { startDate: start, endDate: end, label: 'هذا الشهر' };
     } else if (periodFilter === 'quarter') {
       const qMonth = Math.floor(month / 3) * 3;
-      const start = new Date(year, qMonth, 1).toISOString().split('T')[0];
-      const end = new Date(year, qMonth + 3, 0).toISOString().split('T')[0];
+      const start = formatLocalDate(new Date(year, qMonth, 1));
+      const end = formatLocalDate(new Date(year, qMonth + 3, 0));
       return { startDate: start, endDate: end, label: 'الربع الجاري' };
     } else if (periodFilter === 'year') {
       const start = `${year}-01-01`;
@@ -162,9 +169,9 @@ export const FinancePage: React.FC<FinancePageProps> = ({
         getFinancialTransactions({
           startDate: dateRange.startDate,
           endDate: dateRange.endDate,
-          category: selectedCategory,
-          direction: selectedDirection,
-          payment_method: selectedMethod,
+          category: selectedCategory !== 'الكل' ? (selectedCategory as TransactionCategory) : undefined,
+          direction: selectedDirection !== 'الكل' ? (selectedDirection as TransactionDirection) : undefined,
+          payment_method: selectedMethod !== 'الكل' ? (selectedMethod as PaymentMethod) : undefined,
           query: searchQuery,
           includeReversed: true
         }),
@@ -173,9 +180,18 @@ export const FinancePage: React.FC<FinancePageProps> = ({
         })
       ]);
 
-      setStats(statsData);
-      setTransactions(txList);
-      setCheques(chqList);
+      if (statsData) {
+        setStats({
+          total_income: Number(statsData.total_income) || 0,
+          total_expense: Number(statsData.total_expense) || 0,
+          net_profit: Number(statsData.net_profit) || 0,
+          outstanding_fees: Number(statsData.outstanding_fees) || 0,
+          pending_cheques_count: Number(statsData.pending_cheques_count) || 0,
+          pending_cheques_amount: Number(statsData.pending_cheques_amount) || 0
+        });
+      }
+      setTransactions(Array.isArray(txList) ? txList : []);
+      setCheques(Array.isArray(chqList) ? chqList : []);
     } catch (err) {
       console.error('Failed to load finance data:', err);
     } finally {
@@ -302,27 +318,29 @@ export const FinancePage: React.FC<FinancePageProps> = ({
   // Print Receipt
   const handlePrintReceipt = async (tx: FinancialTransaction) => {
     if (!settings) return;
-    const html = generateReceiptHtml(tx, settings);
+    const htmlContent = generateReceiptHtml(tx, settings);
     await window.electronAPI.executePrint({
-      html,
-      mode: 'preview',
-      pdfSuggestedFilename: `إيصال_${tx.receipt_number}.pdf`
+      htmlContent,
+      title: `إيصال_${tx.receipt_number}`,
+      action: 'preview',
+      suggestedFileName: `إيصال_${tx.receipt_number}.pdf`
     });
   };
 
   // Print General Financial Report
   const handlePrintGeneralReport = async () => {
     if (!settings) return;
-    const html = generateGeneralFinancialReportHtml(stats, transactions, settings, {
+    const htmlContent = generateGeneralFinancialReportHtml(stats, transactions, settings, {
       periodTitle: dateRange.label,
       startDate: dateRange.startDate,
       endDate: dateRange.endDate
     });
 
     await window.electronAPI.executePrint({
-      html,
-      mode: 'preview',
-      pdfSuggestedFilename: `تقرير_مالي_${dateRange.label.replace(/\s+/g, '_')}.pdf`
+      htmlContent,
+      title: `تقرير_مالي_${dateRange.label.replace(/\s+/g, '_')}`,
+      action: 'preview',
+      suggestedFileName: `تقرير_مالي_${dateRange.label.replace(/\s+/g, '_')}.pdf`
     });
   };
 
@@ -369,11 +387,11 @@ export const FinancePage: React.FC<FinancePageProps> = ({
             fileName="سجل_المالية"
             title="سجل الحركات المالية والمقبوضات والمصروفات"
             headers={['م', 'رقم الإيصال', 'التاريخ', 'الاتجاه', 'التصنيف', 'نوع الحركة', 'المبلغ (ج.م)', 'طريقة الدفع', 'البيان', 'الموكل', 'رقم القضية']}
-            rows={filteredTransactions.map((tx, idx) => [
+            rows={(transactions || []).map((tx, idx) => [
               idx + 1,
               tx.receipt_number,
               tx.transaction_date,
-              tx.direction === 'inflow' ? 'وارد' : 'صادر',
+              tx.direction,
               tx.category,
               tx.transaction_type,
               tx.amount,
@@ -420,7 +438,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
             <ArrowDownLeft className="w-4 h-4 text-emerald-600" />
           </div>
           <div className="text-xl font-extrabold text-emerald-700">
-            {stats.total_income.toLocaleString('ar-EG', { minimumFractionDigits: 0 })} <span className="text-xs font-normal text-slate-500">ج.م</span>
+            {(stats?.total_income || 0).toLocaleString('ar-EG', { minimumFractionDigits: 0 })} <span className="text-xs font-normal text-slate-500">ج.م</span>
           </div>
           <div className="text-[11px] text-slate-400 mt-1">خلال {dateRange.label}</div>
         </div>
@@ -432,7 +450,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
             <ArrowUpRight className="w-4 h-4 text-rose-600" />
           </div>
           <div className="text-xl font-extrabold text-rose-700">
-            {stats.total_expense.toLocaleString('ar-EG', { minimumFractionDigits: 0 })} <span className="text-xs font-normal text-slate-500">ج.م</span>
+            {(stats?.total_expense || 0).toLocaleString('ar-EG', { minimumFractionDigits: 0 })} <span className="text-xs font-normal text-slate-500">ج.م</span>
           </div>
           <div className="text-[11px] text-slate-400 mt-1">رسوم ومصروفات فعلية</div>
         </div>
@@ -443,8 +461,8 @@ export const FinancePage: React.FC<FinancePageProps> = ({
             <span className="text-xs font-semibold">صافي الفائض / الأرباح</span>
             <Coins className="w-4 h-4 text-indigo-600" />
           </div>
-          <div className={`text-xl font-extrabold ${stats.net_profit >= 0 ? 'text-indigo-700' : 'text-red-700'}`}>
-            {stats.net_profit.toLocaleString('ar-EG', { minimumFractionDigits: 0 })} <span className="text-xs font-normal text-slate-500">ج.م</span>
+          <div className={`text-xl font-extrabold ${(stats?.net_profit || 0) >= 0 ? 'text-indigo-700' : 'text-red-700'}`}>
+            {(stats?.net_profit || 0).toLocaleString('ar-EG', { minimumFractionDigits: 0 })} <span className="text-xs font-normal text-slate-500">ج.م</span>
           </div>
           <div className="text-[11px] text-slate-400 mt-1">الوارد مطروحًا منه الصادر</div>
         </div>
@@ -456,7 +474,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
             <Clock className="w-4 h-4 text-amber-600" />
           </div>
           <div className="text-xl font-extrabold text-amber-700">
-            {stats.outstanding_fees.toLocaleString('ar-EG', { minimumFractionDigits: 0 })} <span className="text-xs font-normal text-slate-500">ج.م</span>
+            {(stats?.outstanding_fees || 0).toLocaleString('ar-EG', { minimumFractionDigits: 0 })} <span className="text-xs font-normal text-slate-500">ج.م</span>
           </div>
           <div className="text-[11px] text-slate-400 mt-1">متبقي من اتفاقات القضايا</div>
         </div>
@@ -468,10 +486,10 @@ export const FinancePage: React.FC<FinancePageProps> = ({
             <CreditCard className="w-4 h-4 text-blue-600" />
           </div>
           <div className="text-xl font-extrabold text-blue-700">
-            {stats.pending_cheques_amount.toLocaleString('ar-EG', { minimumFractionDigits: 0 })} <span className="text-xs font-normal text-slate-500">ج.م</span>
+            {(stats?.pending_cheques_amount || 0).toLocaleString('ar-EG', { minimumFractionDigits: 0 })} <span className="text-xs font-normal text-slate-500">ج.م</span>
           </div>
           <div className="text-[11px] text-slate-400 mt-1">
-            إجمالي {stats.pending_cheques_count} شيكات مؤجلة
+            إجمالي {stats?.pending_cheques_count || 0} شيكات مؤجلة
           </div>
         </div>
       </div>
@@ -906,16 +924,17 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                         net_balance: clientSummary.net_balance
                       };
 
-                      const html = generateClientStatementHtml(fakeSummary, txs, settings, {
+                      const htmlContent = generateClientStatementHtml(fakeSummary, txs, settings, {
                         clientName: client.name,
                         clientPhone: client.phone,
                         periodText: 'كشف حساب شامل لكافة قضايا الموكل'
                       });
 
                       await window.electronAPI.executePrint({
-                        html,
-                        mode: 'preview',
-                        pdfSuggestedFilename: `كشف_حساب_${client.name}.pdf`
+                        htmlContent,
+                        title: `كشف_حساب_${client.name}`,
+                        action: 'preview',
+                        suggestedFileName: `كشف_حساب_${client.name}.pdf`
                       });
                     }}
                     className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-slate-800 hover:bg-slate-900 rounded-lg shadow-sm"

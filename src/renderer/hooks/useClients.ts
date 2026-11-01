@@ -59,6 +59,10 @@ export function useClients() {
     }
   };
 
+  const getExpiringPoaClients = async (days = 45) => {
+    return await window.electronAPI.getExpiringPoaClients(days);
+  };
+
   const deleteClient = async (id: number) => {
     try {
       const res = await window.electronAPI.deleteClient(id);
@@ -81,5 +85,6 @@ export function useClients() {
     updateClient,
     archiveClient,
     deleteClient,
+    getExpiringPoaClients,
   };
 }

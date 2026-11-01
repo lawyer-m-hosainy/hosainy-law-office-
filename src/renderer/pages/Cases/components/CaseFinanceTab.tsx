@@ -314,18 +314,19 @@ export const CaseFinanceTab: React.FC<CaseFinanceTabProps> = ({
 
   // Print Receipt
   const handlePrintReceipt = async (tx: FinancialTransaction) => {
-    const html = generateReceiptHtml(tx, settings);
+    const htmlContent = generateReceiptHtml(tx, settings);
     await window.electronAPI.executePrint({
-      html,
-      mode: 'preview',
-      pdfSuggestedFilename: `إيصال_${tx.receipt_number}.pdf`
+      htmlContent,
+      title: `إيصال_${tx.receipt_number}`,
+      action: 'preview',
+      suggestedFileName: `إيصال_${tx.receipt_number}.pdf`
     });
   };
 
   // Print Statement of Account
   const handlePrintStatement = async () => {
     const clientName = caseData.clients?.[0]?.name || 'الموكل';
-    const html = generateClientStatementHtml(summary, transactions, settings, {
+    const htmlContent = generateClientStatementHtml(summary, transactions, settings, {
       clientName,
       clientPhone: caseData.clients?.[0]?.phone,
       caseNumber: caseData.case_number,
@@ -336,9 +337,10 @@ export const CaseFinanceTab: React.FC<CaseFinanceTabProps> = ({
     });
 
     await window.electronAPI.executePrint({
-      html,
-      mode: 'preview',
-      pdfSuggestedFilename: `كشف_حساب_${clientName}_${caseData.case_number}.pdf`
+      htmlContent,
+      title: `كشف_حساب_${clientName}_${caseData.case_number}`,
+      action: 'preview',
+      suggestedFileName: `كشف_حساب_${clientName}_${caseData.case_number}.pdf`
     });
   };
 

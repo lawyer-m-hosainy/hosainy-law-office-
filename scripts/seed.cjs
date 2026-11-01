@@ -178,14 +178,15 @@ function seedDatabase(options = {}) {
   }
 
   // تحديد أعداد البيانات حسب الحجم
+  const isEmpty = size === 'empty';
   const isLarge = size === 'large';
   const counts = {
-    clients: isLarge ? 2000 : 25,
-    cases: isLarge ? 10000 : 50,
-    hearings: isLarge ? 100000 : 150,
-    transactions: isLarge ? 50000 : 100,
-    executions: isLarge ? 2000 : 15,
-    tasks: isLarge ? 5000 : 40,
+    clients: isEmpty ? 0 : (isLarge ? 2000 : 25),
+    cases: isEmpty ? 0 : (isLarge ? 10000 : 50),
+    hearings: isEmpty ? 0 : (isLarge ? 100000 : 150),
+    transactions: isEmpty ? 0 : (isLarge ? 50000 : 100),
+    executions: isEmpty ? 0 : (isLarge ? 2000 : 15),
+    tasks: isEmpty ? 0 : (isLarge ? 5000 : 40),
   };
 
   console.log(`[Seed] بدء توليد البيانات بالحجم: ${size} (بذرة: ${seedNum}) إلى ${targetDbPath}...`);

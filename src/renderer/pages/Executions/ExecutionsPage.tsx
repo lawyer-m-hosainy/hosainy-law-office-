@@ -622,8 +622,10 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
               <div className="divide-y divide-slate-100">
                 {filteredFiles.map(file => {
                   const isSelected = selectedFileId === file.id;
-                  const pct = file.total_claimed_amount > 0
-                    ? Math.min(100, Math.round((file.collected_amount / file.total_claimed_amount) * 100))
+                  const claimed = file.total_claimed_amount || 0;
+                  const collected = file.collected_amount || 0;
+                  const pct = claimed > 0
+                    ? Math.min(100, Math.round((collected / claimed) * 100))
                     : 0;
 
                   return (
@@ -677,8 +679,8 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                       <div className="flex items-center justify-between text-xs text-slate-500 mb-1.5">
                         <span className="text-[11px]">{file.court}</span>
                         <div className="space-x-3 space-x-reverse text-xs">
-                          <span>المطلوب: <strong className="text-slate-800">{file.total_claimed_amount.toLocaleString('ar-EG')}</strong></span>
-                          <span>المحصل: <strong className="text-emerald-700">{file.collected_amount.toLocaleString('ar-EG')}</strong></span>
+                          <span>المطلوب: <strong className="text-slate-800">{(file.total_claimed_amount || 0).toLocaleString('ar-EG')}</strong></span>
+                          <span>المحصل: <strong className="text-emerald-700">{(file.collected_amount || 0).toLocaleString('ar-EG')}</strong></span>
                         </div>
                       </div>
 
@@ -793,7 +795,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                         : 'text-slate-600 hover:bg-slate-200/60'
                     }`}
                   >
-                    الإجراءات ({selectedFileDetails.actions.length})
+                    الإجراءات ({(selectedFileDetails.actions || []).length})
                   </button>
 
                   <button
@@ -804,7 +806,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                         : 'text-slate-600 hover:bg-slate-200/60'
                     }`}
                   >
-                    الجلسات ({selectedFileDetails.hearings.length})
+                    الجلسات ({(selectedFileDetails.hearings || []).length})
                   </button>
 
                   <button
@@ -815,7 +817,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                         : 'text-slate-600 hover:bg-slate-200/60'
                     }`}
                   >
-                    المالية ({selectedFileDetails.transactions.length})
+                    المالية ({(selectedFileDetails.transactions || []).length})
                   </button>
 
                   <button
@@ -841,19 +843,19 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                       <div>
                         <span className="text-[10px] text-slate-500 block mb-0.5">المطلوب</span>
                         <span className="font-bold text-slate-900 dir-ltr text-xs block">
-                          {selectedFileDetails.total_claimed_amount.toLocaleString('ar-EG')} ج.م
+                          {(selectedFileDetails.total_claimed_amount || 0).toLocaleString('ar-EG')} ج.م
                         </span>
                       </div>
                       <div>
                         <span className="text-[10px] text-emerald-700 font-bold block mb-0.5">المحصل</span>
                         <span className="font-bold text-emerald-700 dir-ltr text-xs block">
-                          {selectedFileDetails.collected_amount.toLocaleString('ar-EG')} ج.م
+                          {(selectedFileDetails.collected_amount || 0).toLocaleString('ar-EG')} ج.م
                         </span>
                       </div>
                       <div>
                         <span className="text-[10px] text-red-700 font-bold block mb-0.5">المتبقي</span>
                         <span className="font-bold text-red-700 dir-ltr text-xs block">
-                          {selectedFileDetails.remaining_amount.toLocaleString('ar-EG')} ج.م
+                          {(selectedFileDetails.remaining_amount || 0).toLocaleString('ar-EG')} ج.م
                         </span>
                       </div>
                     </div>
@@ -931,13 +933,13 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                       </button>
                     </div>
 
-                    {selectedFileDetails.actions.length === 0 ? (
+                    {(selectedFileDetails.actions || []).length === 0 ? (
                       <div className="p-6 bg-slate-50 rounded-xl text-center text-slate-400">
                         لم يتم تسجيل أي إجراءات حتى الآن (إعلان، حجز، بيع بالمزاد...)
                       </div>
                     ) : (
                       <div className="space-y-2">
-                        {selectedFileDetails.actions.map(act => (
+                        {(selectedFileDetails.actions || []).map(act => (
                           <div key={act.id} className="p-3 bg-slate-50 rounded-lg border border-slate-200/70 space-y-1">
                             <div className="flex items-center justify-between">
                               <span className="font-bold text-slate-900">{act.action_type}</span>
@@ -1003,13 +1005,13 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                       </button>
                     </div>
 
-                    {selectedFileDetails.hearings.length === 0 ? (
+                    {(selectedFileDetails.hearings || []).length === 0 ? (
                       <div className="p-6 bg-slate-50 rounded-xl text-center text-slate-400">
                         لا توجد جلسات إشكالات أو منازعات مسجلة
                       </div>
                     ) : (
                       <div className="space-y-2">
-                        {selectedFileDetails.hearings.map(h => (
+                        {(selectedFileDetails.hearings || []).map(h => (
                           <div key={h.id} className="p-3 bg-slate-50 rounded-lg border border-slate-200/70 space-y-1.5">
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-1.5">
@@ -1078,13 +1080,13 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                       </button>
                     </div>
 
-                    {selectedFileDetails.transactions.length === 0 ? (
+                    {(selectedFileDetails.transactions || []).length === 0 ? (
                       <div className="p-6 bg-slate-50 rounded-xl text-center text-slate-400">
                         لا توجد حركات مالية مسجلة بعد
                       </div>
                     ) : (
                       <div className="space-y-2">
-                        {selectedFileDetails.transactions.map(tx => (
+                        {(selectedFileDetails.transactions || []).map(tx => (
                           <div
                             key={tx.id}
                             className={`p-3 rounded-lg border text-xs space-y-1 ${

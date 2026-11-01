@@ -125,10 +125,10 @@ export const CaseHearingsTab: React.FC<CaseHearingsTabProps> = ({
         window.electronAPI.getListItems('adjournment_reasons')
       ]);
 
-      setHearings(hList);
+      setHearings(Array.isArray(hList) ? hList : []);
       if (hStats) setStats(hStats);
-      setAppealDeadlines(aDeadlines);
-      setAdjournmentReasons(reasonsList.map(item => item.name));
+      setAppealDeadlines(Array.isArray(aDeadlines) ? aDeadlines : []);
+      setAdjournmentReasons(Array.isArray(reasonsList) ? reasonsList.map(item => item.name) : []);
     } catch (err: any) {
       setError(err?.message || 'حدث خطأ أثناء تحميل بيانات الجلسات');
     } finally {
@@ -361,12 +361,13 @@ export const CaseHearingsTab: React.FC<CaseHearingsTabProps> = ({
   };
 
   // Print Adjournments Timeline Report
-  const handlePrintTimelineReport = async (mode: 'preview' | 'print' | 'pdf') => {
-    const html = generateAdjournmentsReportHtml(caseData, hearings, stats, settings);
+  const handlePrintTimelineReport = async (action: 'preview' | 'print' | 'pdf') => {
+    const htmlContent = generateAdjournmentsReportHtml(caseData, hearings, stats, settings);
     await window.electronAPI.executePrint({
-      html,
-      mode,
-      pdfSuggestedFilename: `تقرير_جلسات_${caseData.case_number}_${caseData.case_year}.pdf`
+      htmlContent,
+      title: 'تقرير الجلسات',
+      action,
+      suggestedFileName: `تقرير_جلسات_${caseData.case_number}_${caseData.case_year}.pdf`
     });
   };
 

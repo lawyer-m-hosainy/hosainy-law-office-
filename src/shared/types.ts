@@ -52,11 +52,14 @@ export interface DataDirInfo {
 }
 
 export interface PrintOptions {
-  htmlContent: string;
+  htmlContent?: string;
+  html?: string;
   title?: string;
   landscape?: boolean;
-  action: 'preview' | 'print' | 'pdf';
+  action?: 'preview' | 'print' | 'pdf';
+  mode?: 'preview' | 'print' | 'pdf';
   suggestedFileName?: string;
+  pdfSuggestedFilename?: string;
 }
 
 export interface PrintResult {

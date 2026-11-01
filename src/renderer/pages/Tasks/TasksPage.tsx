@@ -44,6 +44,13 @@ import { useTasks } from '../../hooks/useTasks';
 import { generateTasksReportHtml } from '../../services/tasksReportGenerator';
 import { ExportButton } from '../../components/Common/ExportButton';
 
+function formatLocalDate(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
 interface TasksPageProps {
   settings: OfficeSettings | null;
   cases: Case[];
@@ -100,9 +107,9 @@ export const TasksPage: React.FC<TasksPageProps> = ({
     description: '',
     case_id: '' as string | number,
     client_id: '' as string | number,
-    category: taskCategories[0]?.name || 'مأمورية محكمة',
+    category: taskCategories?.[0]?.name || 'مأمورية محكمة',
     priority: 'عادية' as TaskPriority,
-    due_date: new Date().toISOString().split('T')[0],
+    due_date: formatLocalDate(new Date()),
     due_time: '10:00',
     recurrence: 'لا يتكرر' as TaskRecurrence,
     recurrence_interval: 1,
@@ -116,7 +123,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
     templateId: '' as string | number,
     caseId: '' as string | number,
     clientId: '' as string | number,
-    baseDate: new Date().toISOString().split('T')[0],
+    baseDate: formatLocalDate(new Date()),
     assignedTo: 'أنا'
   });
 
@@ -127,7 +134,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
     items: [
       {
         title: '',
-        category: taskCategories[0]?.name || 'مأمورية محكمة',
+        category: taskCategories?.[0]?.name || 'مأمورية محكمة',
         priority: 'عادية' as TaskPriority,
         days_offset: 0,
         estimated_duration: 'ساعة',
@@ -138,7 +145,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
 
   // Calendar view state (Selected month & day)
   const [calendarDate, setCalendarDate] = useState(new Date());
-  const [selectedCalendarDay, setSelectedCalendarDay] = useState<string>(new Date().toISOString().split('T')[0]);
+  const [selectedCalendarDay, setSelectedCalendarDay] = useState<string>(formatLocalDate(new Date()));
 
   // Load initial tasks & templates
   useEffect(() => {
@@ -462,7 +469,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
               fileName="قائمة_المهام"
               title="سجل المهام والمأموريات القضائية"
               headers={['م', 'عنوان المهمة', 'التصنيف', 'الأولوية', 'الحالة', 'تاريخ الاستحقاق', 'المكلف', 'رقم القضية', 'المدة التقديرية', 'ملاحظات النتيجة']}
-              rows={filteredTasks.map((t, idx) => [
+              rows={(tasks || []).map((t, idx) => [
                 idx + 1,
                 t.title,
                 t.category,
@@ -535,9 +542,18 @@ export const TasksPage: React.FC<TasksPageProps> = ({
               className="p-1.5 border border-slate-200 rounded-lg text-xs bg-white"
             >
               <option value="all">كل التصنيفات</option>
-              {taskCategories.map(cat => (
-                <option key={cat.id} value={cat.name}>{cat.name}</option>
-              ))}
+              {taskCategories && taskCategories.length > 0 ? (
+                taskCategories.map(cat => (
+                  <option key={cat.id} value={cat.name}>{cat.name}</option>
+                ))
+              ) : (
+                <>
+                  <option value="مأمورية محكمة">مأمورية محكمة</option>
+                  <option value="إدارة مكتب وأعمال سكرتارية">إدارة مكتب وأعمال سكرتارية</option>
+                  <option value="تحرير وإيداع صحيفة دعوى / طعن">تحرير وإيداع صحيفة دعوى / طعن</option>
+                  <option value="سداد رسوم وأمانات قضائية">سداد رسوم وأمانات قضائية</option>
+                </>
+              )}
             </select>
           </div>
 
@@ -857,8 +873,8 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                   {/* Mini Calendar / Days with task counts */}
                   <div className="space-y-2 border-l border-slate-100 pl-4">
                     <span className="text-xs font-bold text-slate-600 block mb-2">أيام بها مهام قادمة</span>
-                    {Array.from(new Set(tasks.map(t => t.due_date))).sort().map(dateStr => {
-                      const count = tasks.filter(t => t.due_date === dateStr).length;
+                    {Array.from(new Set((tasks || []).map(t => t.due_date).filter(Boolean))).sort().map(dateStr => {
+                      const count = (tasks || []).filter(t => t.due_date === dateStr).length;
                       const isSelected = selectedCalendarDay === dateStr;
 
                       return (

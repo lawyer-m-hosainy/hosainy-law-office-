@@ -22,6 +22,10 @@ export class DataDirService {
   }
 
   private resolveDataDirectory(): string {
+    if (process.env.TEST_DATA_DIR) {
+      return process.env.TEST_DATA_DIR;
+    }
+
     try {
       if (fs.existsSync(this.configFilePath)) {
         const configData = JSON.parse(fs.readFileSync(this.configFilePath, 'utf-8'));
