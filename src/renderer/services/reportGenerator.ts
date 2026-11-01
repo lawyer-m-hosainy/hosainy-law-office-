@@ -1,4 +1,5 @@
 import { OfficeSettings } from '../../shared/types';
+import { escapeHtml } from '../../shared/htmlUtils';
 
 export interface ReportContentOptions {
   settings: OfficeSettings;
@@ -36,7 +37,7 @@ export function generateReportHtml(options: ReportContentOptions): string {
     <table class="report-table">
       <thead>
         <tr>
-          ${tableHeaders.map((h) => `<th>${h}</th>`).join('')}
+          ${tableHeaders.map((h) => `<th>${escapeHtml(h)}</th>`).join('')}
         </tr>
       </thead>
       <tbody>
@@ -44,7 +45,7 @@ export function generateReportHtml(options: ReportContentOptions): string {
           .map(
             (row, idx) => `
           <tr class="${idx % 2 === 1 ? 'even-row' : ''}">
-            ${row.map((cell) => `<td>${cell !== null && cell !== undefined ? cell : '-'}</td>`).join('')}
+            ${row.map((cell) => `<td>${cell !== null && cell !== undefined ? escapeHtml(cell) : '-'}</td>`).join('')}
           </tr>
         `
           )
@@ -317,8 +318,8 @@ export function generateReportHtml(options: ReportContentOptions): string {
 
     <!-- Title Block -->
     <div class="title-block">
-      <div class="report-title">${title}</div>
-      ${subtitle ? `<div class="report-subtitle">${subtitle}</div>` : ''}
+      <div class="report-title">${escapeHtml(title)}</div>
+      ${subtitle ? `<div class="report-subtitle">${escapeHtml(subtitle)}</div>` : ''}
       <div class="report-meta">
         <span>تاريخ التقرير: ${printDate}</span>
         <span>برنامج إدارة مكتب المحاماة - النسخة المعتمدة</span>
@@ -329,7 +330,7 @@ export function generateReportHtml(options: ReportContentOptions): string {
     ${customBodyHtml || ''}
     ${tableHtml}
 
-    ${notes ? `<div class="notes-box"><strong>ملاحظات قانونية:</strong> ${notes}</div>` : ''}
+    ${notes ? `<div class="notes-box"><strong>ملاحظات قانونية:</strong> ${escapeHtml(notes)}</div>` : ''}
 
     <!-- Signatures -->
     <div class="signature-area">

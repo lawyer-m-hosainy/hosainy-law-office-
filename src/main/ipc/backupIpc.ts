@@ -5,6 +5,7 @@ import zlib from 'zlib';
 import crypto from 'crypto';
 import { DatabaseService } from '../services/DatabaseService';
 import { DataDirService } from '../services/DataDirService';
+import { AutoBackupService } from '../services/AutoBackupService';
 import { BackupFileInfo, BackupMetadata } from '../../shared/types';
 
 const MAGIC_BAK = Buffer.from('AGY_BAK1'); // 8 bytes unencrypted
@@ -164,6 +165,9 @@ export function registerBackupIpc(): void {
       const finalOutputPath = path.join(targetDir, outputFileName);
 
       fs.writeFileSync(finalOutputPath, finalBuffer);
+
+      // Enforce retention policy (keep maximum 10 most recent backups)
+      AutoBackupService.getInstance().enforceRetention(targetDir, 10);
 
       // 6. Update last_backup_date in security table
       db.prepare(`

@@ -92,11 +92,10 @@ export function registerDocumentsIpc(): void {
   // 3. Get Documents for a Case (Active or Trash Bin)
   ipcMain.handle('documents:getByCase', async (_, caseId: number, includeDeleted: boolean = false) => {
     const isDeletedFlag = includeDeleted ? 1 : 0;
-    const stmt = db.prepare(`
-      SELECT * FROM case_documents
-      WHERE case_id = ? AND is_deleted = ?
-      ORDER BY ${includeDeleted ? 'deleted_at DESC' : 'created_at DESC'}
-    `);
+    const sql = includeDeleted
+      ? 'SELECT * FROM case_documents WHERE case_id = ? AND is_deleted = ? ORDER BY deleted_at DESC'
+      : 'SELECT * FROM case_documents WHERE case_id = ? AND is_deleted = ? ORDER BY created_at DESC';
+    const stmt = db.prepare(sql);
 
     return stmt.all(caseId, isDeletedFlag) as CaseDocument[];
   });
@@ -109,8 +108,11 @@ export function registerDocumentsIpc(): void {
     }
 
     const dataDir = dataDirService.getDataDirectory();
-    // Normalize path separators
-    const fullPath = path.join(dataDir, doc.relative_path);
+    // Normalize and verify path does not escape data directory (Path traversal prevention)
+    const fullPath = path.resolve(dataDir, doc.relative_path);
+    if (!fullPath.startsWith(path.resolve(dataDir))) {
+      return { success: false, error: 'المسار المطلوب غير مصرح به خارج مجلد البيانات' };
+    }
 
     if (!fs.existsSync(fullPath)) {
       return { success: false, error: `الملف غير موجود بالمسار: ${fullPath}` };
@@ -132,7 +134,10 @@ export function registerDocumentsIpc(): void {
     }
 
     const dataDir = dataDirService.getDataDirectory();
-    const fullPath = path.join(dataDir, doc.relative_path);
+    const fullPath = path.resolve(dataDir, doc.relative_path);
+    if (!fullPath.startsWith(path.resolve(dataDir))) {
+      return { success: false, error: 'المسار المطلوب غير مصرح به خارج مجلد البيانات' };
+    }
 
     if (fs.existsSync(fullPath)) {
       shell.showItemInFolder(fullPath);

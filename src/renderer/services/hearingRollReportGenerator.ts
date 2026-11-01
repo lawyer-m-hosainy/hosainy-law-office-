@@ -1,4 +1,5 @@
 import { HearingWithCase, OfficeSettings } from '../../shared/types';
+import { escapeHtml } from '../../shared/htmlUtils';
 
 export interface HearingRollReportOptions {
   title?: string;
@@ -29,36 +30,36 @@ export function generateHearingRollHtml(
     ? `<tr><td colspan="9" style="text-align: center; padding: 25px; color: #64748b;">لا توجد جلسات مسجلة وفق الفلاتر المحددة</td></tr>`
     : hearings.map((h, idx) => {
         const clientText = h.primary_client_name 
-          ? `<strong>${h.primary_client_name}</strong>${h.primary_client_role ? `<br><span class="role-badge">(${h.primary_client_role})</span>` : ''}`
+          ? `<strong>${escapeHtml(h.primary_client_name)}</strong>${h.primary_client_role ? `<br><span class="role-badge">(${escapeHtml(h.primary_client_role)})</span>` : ''}`
           : '-';
 
         const opponentText = h.primary_opponent_name
-          ? `<strong>${h.primary_opponent_name}</strong>${h.primary_opponent_role ? `<br><span class="role-badge">(${h.primary_opponent_role})</span>` : ''}`
+          ? `<strong>${escapeHtml(h.primary_opponent_name)}</strong>${h.primary_opponent_role ? `<br><span class="role-badge">(${escapeHtml(h.primary_opponent_role)})</span>` : ''}`
           : '-';
 
         const prevSessionText = h.previous_hearing_date
-          ? `<strong>${h.previous_hearing_date}</strong>${h.previous_decision ? `<br>${h.previous_decision}` : ''}${h.previous_adjournment_reason ? `<br><span class="reason-tag">${h.previous_adjournment_reason}</span>` : ''}`
+          ? `<strong>${escapeHtml(h.previous_hearing_date)}</strong>${h.previous_decision ? `<br>${escapeHtml(h.previous_decision)}` : ''}${h.previous_adjournment_reason ? `<br><span class="reason-tag">${escapeHtml(h.previous_adjournment_reason)}</span>` : ''}`
           : '<span style="color:#94a3b8;">أول جلسة</span>';
 
-        const requiredAction = h.requests || (h.notes ? h.notes : '-');
+        const requiredAction = h.requests ? escapeHtml(h.requests) : (h.notes ? escapeHtml(h.notes) : '-');
 
         const hallAndRoll = [
-          h.roll_number ? `رول: ${h.roll_number}` : '',
-          h.court_hall ? `قاعة: ${h.court_hall}` : ''
+          h.roll_number ? `رول: ${escapeHtml(h.roll_number)}` : '',
+          h.court_hall ? `قاعة: ${escapeHtml(h.court_hall)}` : ''
         ].filter(Boolean).join(' / ');
 
         return `
           <tr>
             <td class="col-num">${idx + 1}</td>
             <td class="col-court">
-              <strong>${h.court_name}</strong>
-              ${h.court_circuit ? `<br><span class="text-circuit">${h.court_circuit}</span>` : ''}
+              <strong>${escapeHtml(h.court_name)}</strong>
+              ${h.court_circuit ? `<br><span class="text-circuit">${escapeHtml(h.court_circuit)}</span>` : ''}
               ${hallAndRoll ? `<br><span class="text-hall">${hallAndRoll}</span>` : ''}
             </td>
             <td class="col-case">
-              <span class="case-number">${h.case_number}</span> لسنة <span class="case-year">${h.case_year}</span>
-              ${h.case_type ? `<br><span class="case-type">${h.case_type}</span>` : ''}
-              ${h.hearing_date ? `<br><span class="hearing-date">📅 ${h.hearing_date}</span>` : ''}
+              <span class="case-number">${escapeHtml(h.case_number)}</span> لسنة <span class="case-year">${escapeHtml(h.case_year)}</span>
+              ${h.case_type ? `<br><span class="case-type">${escapeHtml(h.case_type)}</span>` : ''}
+              ${h.hearing_date ? `<br><span class="hearing-date">📅 ${escapeHtml(h.hearing_date)}</span>` : ''}
             </td>
             <td class="col-client">${clientText}</td>
             <td class="col-opponent">${opponentText}</td>

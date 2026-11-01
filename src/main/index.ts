@@ -1,4 +1,4 @@
-import { app, BrowserWindow, protocol, net } from 'electron';
+import { app, BrowserWindow, protocol, net, session } from 'electron';
 import path from 'path';
 import { DatabaseService } from './services/DatabaseService';
 import { registerAllIpcHandlers } from './ipc';
@@ -21,7 +21,8 @@ function createWindow(): void {
       preload: path.join(__dirname, '../preload/index.cjs'),
       contextIsolation: true,
       nodeIntegration: false,
-      sandbox: false,
+      sandbox: true,
+      webSecurity: true,
       spellcheck: false,
     },
   });
@@ -45,6 +46,14 @@ function createWindow(): void {
     mainWindow = null;
   });
 
+  // Block in-app navigation outside application
+  mainWindow.webContents.on('will-navigate', (event, url) => {
+    const currentUrl = mainWindow?.webContents.getURL();
+    if (url !== currentUrl && !url.startsWith('file://') && !url.startsWith('http://localhost')) {
+      event.preventDefault();
+    }
+  });
+
   // Block opening unverified external URLs
   mainWindow.webContents.setWindowOpenHandler(() => {
     return { action: 'deny' };
@@ -64,12 +73,16 @@ if (!gotTheLock) {
   });
 
   app.whenReady().then(() => {
-    // Register custom protocol for local attachments if needed
+    // Register custom protocol for local attachments with path traversal protection
     protocol.handle('local-file', (request) => {
       const url = request.url.replace('local-file://', '');
       const decodedPath = decodeURIComponent(url);
       const dataDir = DataDirService.getInstance().getDataDirectory();
-      const safePath = path.join(dataDir, decodedPath);
+      const safePath = path.resolve(dataDir, decodedPath);
+      // Ensure path stays strictly inside data directory
+      if (!safePath.startsWith(path.resolve(dataDir))) {
+        return new Response('Forbidden', { status: 403 });
+      }
       return net.fetch(`file://${safePath}`);
     });
 

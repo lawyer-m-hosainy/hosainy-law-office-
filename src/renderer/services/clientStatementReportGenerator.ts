@@ -1,5 +1,6 @@
 import { CaseFinancialSummary, FinancialTransaction, OfficeSettings } from '../../shared/types';
 import { tafqit } from '../../shared/tafqit';
+import { escapeHtml } from '../../shared/htmlUtils';
 
 export interface ClientStatementOptions {
   clientName: string;
@@ -47,13 +48,13 @@ export function generateClientStatementHtml(
           <tr>
             <td style="text-align: center; font-weight: bold;">${idx + 1}</td>
             <td style="text-align: center; white-space: nowrap;">${tx.transaction_date}</td>
-            <td style="text-align: center; font-family: monospace; font-weight: bold; color: #0369a1;">${tx.receipt_number}</td>
-            <td style="text-align: center;"><span class="cat-pill">${tx.category}</span></td>
+            <td style="text-align: center; font-family: monospace; font-weight: bold; color: #0369a1;">${escapeHtml(tx.receipt_number)}</td>
+            <td style="text-align: center;"><span class="cat-pill">${escapeHtml(tx.category)}</span></td>
             <td>
-              <strong>${tx.description}</strong>
-              ${tx.notes ? `<br><span style="font-size: 8pt; color: #64748b;">${tx.notes}</span>` : ''}
+              <strong>${escapeHtml(tx.description)}</strong>
+              ${tx.notes ? `<br><span style="font-size: 8pt; color: #64748b;">${escapeHtml(tx.notes)}</span>` : ''}
             </td>
-            <td style="text-align: center;">${tx.payment_method}</td>
+            <td style="text-align: center;">${escapeHtml(tx.payment_method)}</td>
             <td style="text-align: left; font-weight: bold; color: #166534; direction: ltr;">
               ${inflow > 0 ? inflow.toLocaleString('ar-EG', { minimumFractionDigits: 2 }) : '-'}
             </td>
@@ -341,28 +342,28 @@ export function generateClientStatementHtml(
   <!-- Summary of Agreed Fees & Actual Inflows/Outflows -->
   <div class="stats-summary-grid">
     <div class="summary-card">
-      <div class="card-val">${summary.total_agreed_fees.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
+      <div class="card-val">${(summary.total_agreed_fees || 0).toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
       <div class="card-lbl">إجمالي الأتعاب المتفق عليها</div>
     </div>
     <div class="summary-card">
-      <div class="card-val" style="color: #166534;">${summary.paid_fees.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
+      <div class="card-val" style="color: #166534;">${(summary.paid_fees ?? summary.total_paid_fees ?? 0).toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
       <div class="card-lbl">المدفوع من الأتعاب</div>
     </div>
     <div class="summary-card">
-      <div class="card-val" style="color: #b45309;">${summary.remaining_fees.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
+      <div class="card-val" style="color: #b45309;">${(summary.remaining_fees || 0).toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
       <div class="card-lbl">متبقي الأتعاب</div>
     </div>
 
     <div class="summary-card">
-      <div class="card-val">${summary.total_inflow.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
+      <div class="card-val">${(summary.total_inflow || 0).toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
       <div class="card-lbl">إجمالي الوارد من الموكل</div>
     </div>
     <div class="summary-card">
-      <div class="card-val">${(summary.total_court_fees_outflow + summary.total_expenses_outflow + summary.total_execution_outflow).toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
+      <div class="card-val">${((summary.total_court_fees_outflow || 0) + (summary.total_expenses_outflow || 0) + (summary.total_execution_outflow || 0) || (summary.total_expenses || 0) || (summary.total_outflow || 0)).toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
       <div class="card-lbl">إجمالي المصروفات والرسوم الفعلية</div>
     </div>
     <div class="summary-card">
-      <div class="card-val">${summary.total_outflow.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
+      <div class="card-val">${(summary.total_outflow || 0).toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
       <div class="card-lbl">إجمالي المنصرف من المكتب</div>
     </div>
   </div>
