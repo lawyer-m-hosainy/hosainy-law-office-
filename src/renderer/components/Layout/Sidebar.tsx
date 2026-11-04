@@ -13,6 +13,7 @@ import {
   Settings as SettingsIcon,
   Scale,
   HardDrive,
+  Send,
 } from 'lucide-react';
 import { NavigationTab, OfficeSettings } from '../../../shared/types';
 
@@ -31,6 +32,7 @@ const navItems: { id: NavigationTab; label: string; icon: React.ComponentType<{ 
   { id: 'calendar', label: 'التقويم', icon: CalendarIcon },
   { id: 'finance', label: 'المالية', icon: Coins },
   { id: 'executions', label: 'التنفيذات', icon: FileCheck2 },
+  { id: 'announcements', label: 'الإعلانات والمحضرين', icon: Send },
   { id: 'tasks', label: 'المهام', icon: CheckSquare },
   { id: 'reports', label: 'التقارير والطباعة', icon: FileText },
   { id: 'trash', label: 'سلة المحذوفات', icon: Trash2 },

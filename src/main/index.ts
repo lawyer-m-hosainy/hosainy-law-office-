@@ -1,8 +1,20 @@
 import { app, BrowserWindow, protocol, net, session } from 'electron';
 import path from 'path';
+import fs from 'fs';
 import { DatabaseService } from './services/DatabaseService';
 import { registerAllIpcHandlers } from './ipc';
 import { DataDirService } from './services/DataDirService';
+
+// Isolated test userData if running under test
+if (process.env.TEST_DATA_DIR) {
+  try {
+    const testUserData = path.join(process.env.TEST_DATA_DIR, 'user-data');
+    if (!fs.existsSync(testUserData)) {
+      fs.mkdirSync(testUserData, { recursive: true });
+    }
+    app.setPath('userData', testUserData);
+  } catch (e) {}
+}
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -49,7 +61,7 @@ function createWindow(): void {
   // Block in-app navigation outside application
   mainWindow.webContents.on('will-navigate', (event, url) => {
     const currentUrl = mainWindow?.webContents.getURL();
-    if (url !== currentUrl && !url.startsWith('file://') && !url.startsWith('http://localhost')) {
+    if (url !== currentUrl && !url.startsWith('file://')) {
       event.preventDefault();
     }
   });

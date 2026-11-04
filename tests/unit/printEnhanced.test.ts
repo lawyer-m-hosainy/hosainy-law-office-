@@ -72,13 +72,19 @@ describe('Comprehensive Print & PDF Generation System (نظام الطباعة �
   }, 35000);
 
   afterAll(async () => {
-    if (app) {
-      await app.close().catch(() => {});
+    try {
+      if (app) {
+        await Promise.race([
+          app.close().catch(() => {}),
+          new Promise(r => setTimeout(r, 8000)),
+        ]);
+      }
+    } finally {
+      if (testEnv) {
+        testEnv.cleanup();
+      }
     }
-    if (testEnv) {
-      testEnv.cleanup();
-    }
-  });
+  }, 30000);
 
   async function generateAndVerifyPdf(html: string, screenshotName?: string): Promise<{ totalPages: number; text: string }> {
     const fullHtml = html.includes('<!DOCTYPE html>')
@@ -90,7 +96,17 @@ describe('Comprehensive Print & PDF Generation System (نظام الطباعة �
 
     if (screenshotName) {
       const shotPath = path.join(screenshotsDir, `${screenshotName}.png`);
-      await page.screenshot({ path: shotPath, fullPage: true });
+      try {
+        await page.screenshot({ path: shotPath, fullPage: true });
+      } catch (shotErr) {
+        // Handle transient Windows file lock by waiting and retrying once
+        await new Promise(res => setTimeout(res, 250));
+        try {
+          await page.screenshot({ path: shotPath, fullPage: true });
+        } catch (retryErr) {
+          console.warn(`[Screenshot Warning] Skipped screenshot for ${screenshotName} due to file lock:`, retryErr);
+        }
+      }
     }
 
     const base64 = await app.evaluate(async ({ BrowserWindow }) => {

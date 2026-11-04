@@ -5,6 +5,7 @@ import {
   DataDirInfo,
   OfficeSettings
 } from '../../shared/types';
+import { entityEventBus } from '../services/eventBus';
 
 export function useSettings() {
   const [settings, setSettings] = useState<OfficeSettings | null>(null);
@@ -49,6 +50,13 @@ export function useSettings() {
     loadData();
   }, [loadData]);
 
+  // Subscribe to central entity invalidation events
+  useEffect(() => {
+    return entityEventBus.subscribe('settings', () => {
+      loadData();
+    });
+  }, [loadData]);
+
   const updateSettings = async (updates: Partial<OfficeSettings>) => {
     try {
       const updated = await window.electronAPI.updateOfficeSettings(updates);
@@ -66,6 +74,7 @@ export function useSettings() {
         ...prev,
         [item.list_type]: [...prev[item.list_type], created],
       }));
+      entityEventBus.emit('settings');
       return { success: true, created };
     } catch (err: any) {
       return { success: false, error: err?.message || 'فشل في إضافة العنصر' };
@@ -79,6 +88,7 @@ export function useSettings() {
         ...prev,
         [listType]: prev[listType].map((item) => (item.id === id ? updated : item)),
       }));
+      entityEventBus.emit('settings');
       return { success: true, updated };
     } catch (err: any) {
       return { success: false, error: err?.message || 'فشل في تعديل العنصر' };
@@ -93,6 +103,7 @@ export function useSettings() {
           ...prev,
           [listType]: prev[listType].filter((item) => item.id !== id),
         }));
+        entityEventBus.emit('settings');
       }
       return res;
     } catch (err: any) {
@@ -107,6 +118,7 @@ export function useSettings() {
         ...prev,
         [listType]: defaultItems,
       }));
+      entityEventBus.emit('settings');
       return { success: true };
     } catch (err: any) {
       return { success: false, error: err?.message || 'فشل في استعادة الافتراضيات' };

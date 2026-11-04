@@ -10,10 +10,14 @@ import {
   ExternalLink,
   Eye,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  Download,
+  Copy
 } from 'lucide-react';
 import { HearingWithCase, OfficeSettings } from '../../../shared/types';
 import { useHearings } from '../../hooks/useHearings';
+import { entityEventBus } from '../../services/eventBus';
+import { CalendarExportModal } from './CalendarExportModal';
 
 interface CalendarPageProps {
   settings: OfficeSettings | null;
@@ -42,6 +46,21 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({
 
   // Selected day for day view
   const [selectedDayDate, setSelectedDayDate] = useState<string>(new Date().toISOString().split('T')[0]);
+
+  // Calendar Export Modal & Today Summary
+  const [isExportModalOpen, setIsExportModalOpen] = useState<boolean>(false);
+  const [todaySummaryCopied, setTodaySummaryCopied] = useState<boolean>(false);
+
+  const handleCopyTodaySummary = async () => {
+    try {
+      const summaryText = await window.electronAPI.getTodaySummary();
+      await navigator.clipboard.writeText(summaryText);
+      setTodaySummaryCopied(true);
+      setTimeout(() => setTodaySummaryCopied(false), 3000);
+    } catch (err: any) {
+      alert(`تعذر نسخ ملخص اليوم: ${err?.message}`);
+    }
+  };
 
   // Compute start and end dates for current calendar month
   const { startPeriodStr, endPeriodStr } = useMemo(() => {
@@ -82,6 +101,13 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({
 
   useEffect(() => {
     loadHearings();
+  }, [loadHearings]);
+
+  // Subscribe to hearings updates from elsewhere
+  useEffect(() => {
+    return entityEventBus.subscribe('hearings', () => {
+      loadHearings();
+    });
   }, [loadHearings]);
 
   // Navigation handlers
@@ -311,6 +337,31 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({
           <span className="text-sm font-extrabold text-slate-800 bg-indigo-50 border border-indigo-200 px-3 py-1.5 rounded-lg">
             {ARABIC_MONTHS[currentDate.getMonth()]} {currentDate.getFullYear()}
           </span>
+
+          {/* Export and Today's Summary Actions */}
+          <div className="flex items-center gap-2 mr-auto sm:mr-0">
+            <button
+              onClick={handleCopyTodaySummary}
+              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg border transition-all ${
+                todaySummaryCopied
+                  ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                  : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-300'
+              }`}
+              title="نسخ نص مختصر بجدول جلسات ومهام اليوم بوضع الخصوصية للحافظة"
+            >
+              {todaySummaryCopied ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-slate-600" />}
+              <span>{todaySummaryCopied ? 'تم نسخ ملخص اليوم!' : 'ملخص اليوم'}</span>
+            </button>
+
+            <button
+              onClick={() => setIsExportModalOpen(true)}
+              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm transition-colors"
+              title="تصدير ملف .ics متوافق مع كافة برامج التقويم أوفلاين"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>تصدير التقويم (.ics)</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -619,6 +670,13 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({
           </div>
         </div>
       )}
+
+      {/* Calendar Export Modal (.ics) */}
+      <CalendarExportModal
+        isOpen={isExportModalOpen}
+        onClose={() => setIsExportModalOpen(false)}
+        settings={settings}
+      />
     </div>
   );
 };

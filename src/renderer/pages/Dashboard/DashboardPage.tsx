@@ -18,7 +18,8 @@ import {
   FileDown,
   Coins,
   CheckSquare,
-  Check
+  Check,
+  Send
 } from 'lucide-react';
 import {
   Client,
@@ -27,10 +28,12 @@ import {
   NavigationTab,
   OfficeSettings,
   AppealDeadline,
-  Task
+  Task,
+  AnnouncementWarning
 } from '../../../shared/types';
 import { useHearings } from '../../hooks/useHearings';
 import { useClients } from '../../hooks/useClients';
+import { entityEventBus } from '../../services/eventBus';
 import { generateHearingRollHtml } from '../../services/hearingRollReportGenerator';
 
 interface DashboardPageProps {
@@ -72,6 +75,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const [upcomingAppeals, setUpcomingAppeals] = useState<AppealDeadline[]>([]);
   const [expiringClients, setExpiringClients] = useState<Client[]>([]);
   const [dashboardTasks, setDashboardTasks] = useState<Task[]>([]);
+  const [announcementWarnings, setAnnouncementWarnings] = useState<AnnouncementWarning[]>([]);
   const [loading, setLoading] = useState(true);
 
   const todayStr = formatLocalDate(new Date());
@@ -89,19 +93,21 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const loadDashboardData = useCallback(async () => {
     setLoading(true);
     try {
-      const [todayRoll, tomorrowRoll, allJudgmentHearings, allAppeals, poaClients, dueTasks, overdueTasks] = await Promise.all([
+      const [todayRoll, tomorrowRoll, allJudgmentHearings, allAppeals, poaClients, dueTasks, overdueTasks, annWarnings] = await Promise.all([
         getHearingRoll({ date: todayStr }),
         getHearingRoll({ date: tomorrowStr }),
         getHearingRoll({ status: 'محجوزة للحكم' }),
         getAppealDeadlines(),
         getExpiringPoaClients(30),
         window.electronAPI.getTasks({ period: 'today' }),
-        window.electronAPI.getTasks({ period: 'overdue' })
+        window.electronAPI.getTasks({ period: 'overdue' }),
+        window.electronAPI.getAnnouncementWarnings(settings?.announcement_warning_days ?? 3)
       ]);
 
       setTodayHearings(Array.isArray(todayRoll) ? todayRoll : []);
       setTomorrowHearings(Array.isArray(tomorrowRoll) ? tomorrowRoll : []);
       setPendingJudgments(Array.isArray(allJudgmentHearings) ? allJudgmentHearings : []);
+      setAnnouncementWarnings(Array.isArray(annWarnings) ? annWarnings : []);
       
       // Filter upcoming appeals: not filed and remaining days <= 20
       const appealsList = Array.isArray(allAppeals) ? allAppeals : [];
@@ -123,6 +129,20 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
   useEffect(() => {
     loadDashboardData();
+  }, [loadDashboardData]);
+
+  // Subscribe to updates that affect dashboard items (hearings, tasks, clients, announcements)
+  useEffect(() => {
+    const unsubHearings = entityEventBus.subscribe('hearings', loadDashboardData);
+    const unsubTasks = entityEventBus.subscribe('tasks', loadDashboardData);
+    const unsubClients = entityEventBus.subscribe('clients', loadDashboardData);
+    const unsubAnnouncements = entityEventBus.subscribe('announcements', loadDashboardData);
+    return () => {
+      unsubHearings();
+      unsubTasks();
+      unsubClients();
+      unsubAnnouncements();
+    };
   }, [loadDashboardData]);
 
   // Direct print today's roll
@@ -266,6 +286,54 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Red Alert Banner: Pending Announcements for Near Hearings */}
+      {announcementWarnings.length > 0 && (
+        <div className="bg-red-50 border-2 border-red-300 rounded-xl p-4 shadow-sm space-y-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="flex h-3 w-3 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span>
+              </span>
+              <h4 className="text-sm font-black text-red-900 flex items-center gap-1.5">
+                <Send className="w-4 h-4 text-red-600" />
+                <span>تنبيه عاجل: إعلانات قضائية معلقة لجلسات قريبة ({announcementWarnings.length})</span>
+              </h4>
+            </div>
+            <button
+              onClick={() => onNavigate('announcements')}
+              className="text-xs font-bold text-red-800 hover:text-red-950 underline"
+            >
+              فتح شاشة متابعة الإعلانات ←
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+            {announcementWarnings.map((w) => (
+              <div
+                key={w.announcement_id}
+                onClick={() => handleOpenCase(w.case_id)}
+                className="bg-white p-3 rounded-lg border border-red-200 hover:border-red-400 cursor-pointer transition-colors shadow-2xs space-y-1.5 text-xs"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-slate-800 line-clamp-1">{w.case_title}</span>
+                  <span className="px-1.5 py-0.5 rounded text-[10px] font-black bg-red-100 text-red-800">
+                    {w.days_until_hearing === 0 ? 'اليوم' : `خلال ${w.days_until_hearing} يوم`}
+                  </span>
+                </div>
+                <div className="text-slate-600">
+                  جلسة: <strong className="text-slate-800 font-mono">{w.hearing_date}</strong> • {w.announcement_type}
+                </div>
+                <div className="text-[11px] text-slate-500 flex items-center justify-between">
+                  <span>المطلوب: {w.recipient_name}</span>
+                  <span className="font-semibold text-red-700">{w.status}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* 3. Main Today's Roll Section */}
       <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">

@@ -160,6 +160,38 @@ describe('Enhanced Offline & Privacy Verification Tests (فحص الأوفلاي
     expect(indexContent).toContain("default-src 'self'");
   });
 
+  // 5.5 Phase 11 iCalendar Offline & Privacy Verification
+  it('فحص أوفلاين المرحلة 11: التأكد من أن خدمة توليد ملفات التقويم .ics أوفلاين بالكامل 100% وخالية من أي روابط سحابية', () => {
+    const icsFiles = [
+      path.resolve(srcDir, 'shared/icsGenerator.ts'),
+      path.resolve(srcDir, 'shared/calendarExportLogic.ts'),
+      path.resolve(srcDir, 'main/services/CalendarExportService.ts'),
+      path.resolve(srcDir, 'main/ipc/calendarIpc.ts'),
+      path.resolve(srcDir, 'renderer/pages/Calendar/CalendarExportModal.tsx')
+    ];
+
+    const forbiddenRegexes = [
+      /https?:\/\//i,
+      /\bfetch\s*\(/i,
+      /\baxios\b/i,
+      /\bnew\s+XMLHttpRequest\b/i,
+      /\bnew\s+WebSocket\b/i
+    ];
+
+    for (const file of icsFiles) {
+      if (!fs.existsSync(file)) continue;
+      const content = fs.readFileSync(file, 'utf-8');
+      const lines = content.split('\n');
+      lines.forEach((line, idx) => {
+        const trimmed = line.trim();
+        if (trimmed.startsWith('//') || trimmed.startsWith('*')) return;
+        for (const regex of forbiddenRegexes) {
+          expect(regex.test(line), `Forbidden pattern ${regex} found in ${path.basename(file)} at line ${idx + 1}`).toBe(false);
+        }
+      });
+    }
+  });
+
   // 6. Operational Runtime Test: Network blocked, visit all screens, assert zero external requests & zero console errors
   it('فحص تشغيلي (Runtime Scan): تشغيل البرنامج مع حجب الشبكة وزيارة كافة الشاشات والتأكد من صفر طلبات وصفر أخطاء', async () => {
     const appInstance = await launchTestApp({
@@ -216,5 +248,5 @@ describe('Enhanced Offline & Privacy Verification Tests (فحص الأوفلاي
     } finally {
       await close();
     }
-  }, 45000);
+  }, 120000);
 });

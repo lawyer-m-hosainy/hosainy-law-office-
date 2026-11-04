@@ -8,6 +8,7 @@ import {
   FinancialTransaction,
   GeneralFinancialStats
 } from '../../shared/types';
+import { entityEventBus } from '../services/eventBus';
 
 export function useFinance() {
   const [loading, setLoading] = useState(false);
@@ -52,7 +53,9 @@ export function useFinance() {
     setLoading(true);
     setError(null);
     try {
-      return await window.electronAPI.createFinancialTransaction(tx, cheque);
+      const result = await window.electronAPI.createFinancialTransaction(tx, cheque);
+      entityEventBus.emit('finance');
+      return result;
     } catch (err: any) {
       setError(err?.message || 'فشل في تسجيل الحركة المالية');
       return null;
@@ -66,6 +69,7 @@ export function useFinance() {
     setError(null);
     try {
       await window.electronAPI.reverseFinancialTransaction(transactionId, reason);
+      entityEventBus.emit('finance');
       return true;
     } catch (err: any) {
       setError(err?.message || 'فشل في إلغاء الحركة بالقيد العكسي');

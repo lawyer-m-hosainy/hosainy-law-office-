@@ -3,7 +3,8 @@ export type ConfigurableListType =
   | 'case_types' 
   | 'adjournment_reasons' 
   | 'task_categories' 
-  | 'transaction_types';
+  | 'transaction_types'
+  | 'announcement_types';
 
 export interface ConfigurableListItem {
   id: number;
@@ -38,6 +39,9 @@ export interface OfficeSettings {
   appeal_deadline_admin: number;
   date_format: string; // 'ar-EG' | 'en-US'
   alert_days_before: number;
+  announcement_warning_days: number;
+  calendar_privacy_mode?: number; // 1 or 0 (default 1 = enabled)
+  calendar_alarm_triggers?: string; // e.g. '1d,1h'
   created_at?: string;
   updated_at?: string;
 }
@@ -78,6 +82,7 @@ export type NavigationTab =
   | 'executions'
   | 'tasks'
   | 'reports'
+  | 'announcements'
   | 'trash'
   | 'settings';
 
@@ -976,8 +981,161 @@ export interface IElectronAPI {
   permanentDeleteTrashItem: (entityType: string, entityId: number) => Promise<{ success: boolean }>;
   emptyTrashBin: () => Promise<{ success: boolean; count: number }>;
 
+  // Announcements (Phase 10)
+  getAnnouncementsByCase: (caseId: number) => Promise<CaseAnnouncement[]>;
+  getAllAnnouncements: (filter?: AnnouncementFilter) => Promise<CaseAnnouncement[]>;
+  getAnnouncementById: (id: number) => Promise<CaseAnnouncement | null>;
+  createAnnouncement: (input: CreateAnnouncementInput) => Promise<CaseAnnouncement>;
+  updateAnnouncement: (id: number, input: UpdateAnnouncementInput) => Promise<CaseAnnouncement>;
+  createReattemptAnnouncement: (parentAnnouncementId: number, input: Partial<CreateAnnouncementInput>) => Promise<CaseAnnouncement>;
+  deleteAnnouncement: (id: number) => Promise<{ success: boolean; message?: string }>;
+  getAnnouncementWarnings: (daysThreshold?: number) => Promise<AnnouncementWarning[]>;
+
+  // Calendar Export (Phase 11)
+  exportCalendarIcs: (options: CalendarExportOptions) => Promise<CalendarExportResult>;
+  getTodaySummary: (options?: { privacyMode?: boolean }) => Promise<string>;
+  getCalendarExportCounts: (options: CalendarExportOptions) => Promise<CalendarExportCounts>;
+
   // System
   getAppVersion: () => Promise<string>;
+}
+
+// ==========================================
+// Phase 11 Entities: iCalendar (.ics) Export
+// ==========================================
+
+export interface CalendarExportOptions {
+  startDate: string; // YYYY-MM-DD
+  endDate: string; // YYYY-MM-DD
+  includeHearings: boolean;
+  includeTasks: boolean;
+  includeAppeals: boolean;
+  includeCheques: boolean;
+  includePoaExpiry: boolean;
+  privacyMode: boolean;
+  alarmTriggerDays?: number;
+  alarmTriggerHours?: number;
+}
+
+export interface CalendarExportResult {
+  success: boolean;
+  filePath?: string;
+  eventsCount?: number;
+  error?: string;
+}
+
+export interface CalendarExportCounts {
+  hearings: number;
+  tasks: number;
+  appeals: number;
+  cheques: number;
+  poa: number;
+  total: number;
+}
+
+// ==========================================
+// Phase 10 Entities: Announcements & Process Serving (الإعلانات والمحضرين)
+// ==========================================
+
+export type AnnouncementStatus =
+  | 'قيد الانتظار'
+  | 'أُعلن'
+  | 'لم يُعلن'
+  | 'جهة إدارة'
+  | 'مخاطبة مع شخص آخر'
+  | 'ورد'
+  | 'ورد بدون نتيجة';
+
+export interface CaseAnnouncement {
+  id: number;
+  case_id: number;
+  hearing_id?: number | null;
+  recipient_name: string;
+  recipient_capacity?: string | null;
+  recipient_address?: string | null;
+  announcement_type: string;
+  bailiff_office?: string | null;
+  request_number?: string | null;
+  bailiff_name?: string | null;
+  delivery_date?: string | null;
+  return_date?: string | null;
+  status: AnnouncementStatus;
+  failure_reason?: string | null;
+  notes?: string | null;
+  fee_amount: number; // in piasters
+  transaction_id?: number | null;
+  parent_id?: number | null;
+  attempt_number: number;
+  created_at?: string;
+  updated_at?: string;
+
+  // Joined fields for display
+  case_title?: string;
+  case_number?: string;
+  court_name?: string;
+  hearing_date?: string;
+  hearing_decision?: string;
+}
+
+export interface CreateAnnouncementInput {
+  case_id: number;
+  hearing_id?: number | null;
+  recipient_name: string;
+  recipient_capacity?: string | null;
+  recipient_address?: string | null;
+  announcement_type: string;
+  bailiff_office?: string | null;
+  request_number?: string | null;
+  bailiff_name?: string | null;
+  delivery_date?: string | null;
+  return_date?: string | null;
+  status?: AnnouncementStatus;
+  failure_reason?: string | null;
+  notes?: string | null;
+  fee_amount?: number; // in piasters
+  parent_id?: number | null;
+}
+
+export interface UpdateAnnouncementInput {
+  hearing_id?: number | null;
+  recipient_name?: string;
+  recipient_capacity?: string | null;
+  recipient_address?: string | null;
+  announcement_type?: string;
+  bailiff_office?: string | null;
+  request_number?: string | null;
+  bailiff_name?: string | null;
+  delivery_date?: string | null;
+  return_date?: string | null;
+  status?: AnnouncementStatus;
+  failure_reason?: string | null;
+  notes?: string | null;
+}
+
+export interface AnnouncementFilter {
+  case_id?: number;
+  hearing_id?: number;
+  status?: AnnouncementStatus | 'pending_only';
+  bailiff_office?: string;
+  announcement_type?: string;
+  startDate?: string;
+  endDate?: string;
+  query?: string;
+}
+
+export interface AnnouncementWarning {
+  announcement_id: number;
+  case_id: number;
+  case_title: string;
+  case_number: string;
+  hearing_id: number;
+  hearing_date: string;
+  recipient_name: string;
+  announcement_type: string;
+  bailiff_office?: string | null;
+  delivery_date?: string | null;
+  status: AnnouncementStatus;
+  days_until_hearing: number;
 }
 
 // ==========================================

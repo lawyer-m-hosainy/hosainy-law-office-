@@ -67,7 +67,8 @@ export function registerSettingsIpc(): void {
       'bar_registration_number', 'tax_number', 'logo_path', 'notes',
       'appeal_deadline_civil', 'appeal_deadline_misdemeanor', 'appeal_deadline_cassation',
       'appeal_deadline_urgent', 'appeal_deadline_family', 'appeal_deadline_admin',
-      'date_format', 'alert_days_before'
+      'date_format', 'alert_days_before', 'announcement_warning_days',
+      'calendar_privacy_mode', 'calendar_alarm_triggers'
     ];
 
     const fieldsToUpdate: string[] = [];

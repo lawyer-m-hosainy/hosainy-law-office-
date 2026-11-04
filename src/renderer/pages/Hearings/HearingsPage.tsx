@@ -13,15 +13,19 @@ import {
   Building,
   Scale,
   AlertCircle,
-  ExternalLink
+  ExternalLink,
+  Send,
+  AlertTriangle
 } from 'lucide-react';
 import {
   ConfigurableListItem,
   HearingStatus,
   HearingWithCase,
-  OfficeSettings
+  OfficeSettings,
+  CaseAnnouncement
 } from '../../../shared/types';
 import { useHearings } from '../../hooks/useHearings';
+import { entityEventBus } from '../../services/eventBus';
 import { generateHearingRollHtml } from '../../services/hearingRollReportGenerator';
 import { ExportButton } from '../../components/Common/ExportButton';
 
@@ -51,6 +55,7 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
 
   // Adjournment reasons for modal
   const [adjournmentReasons, setAdjournmentReasons] = useState<string[]>([]);
+  const [announcements, setAnnouncements] = useState<CaseAnnouncement[]>([]);
 
   // Roll Data & Loading
   const [hearings, setHearings] = useState<HearingWithCase[]>([]);
@@ -117,6 +122,14 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
         status: selectedStatus
       });
       setHearings(roll);
+
+      // Load pending announcements
+      try {
+        const anns = await window.electronAPI.getAllAnnouncements({ status: 'pending_only' });
+        setAnnouncements(anns);
+      } catch (err) {
+        console.error('Error loading announcements for roll:', err);
+      }
     } catch (err) {
       console.error('Error loading roll:', err);
     } finally {
@@ -128,11 +141,29 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
     loadRoll();
   }, [loadRoll]);
 
-  // Load adjournment reasons list for modal
+  // Subscribe to hearings updates from elsewhere
   useEffect(() => {
-    window.electronAPI.getListItems('adjournment_reasons').then(items => {
-      setAdjournmentReasons(items.map(i => i.name));
-    }).catch(console.error);
+    const unsubH = entityEventBus.subscribe('hearings', () => {
+      loadRoll();
+    });
+    const unsubA = entityEventBus.subscribe('announcements', () => {
+      loadRoll();
+    });
+    return () => {
+      unsubH();
+      unsubA();
+    };
+  }, [loadRoll]);
+
+  // Load adjournment reasons list for modal & subscribe to settings updates
+  useEffect(() => {
+    const loadReasons = () => {
+      window.electronAPI.getListItems('adjournment_reasons').then(items => {
+        setAdjournmentReasons(items.map(i => i.name));
+      }).catch(console.error);
+    };
+    loadReasons();
+    return entityEventBus.subscribe('settings', loadReasons);
   }, []);
 
   // Filter summary description text
@@ -472,6 +503,29 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
                       {h.court_hall && (
                         <div className="text-[10px] text-slate-500 mt-0.5">قاعة {h.court_hall}</div>
                       )}
+                      {(() => {
+                        const pendingAnn = announcements.find(
+                          a => a.hearing_id === h.id || (a.case_id === h.case_id && a.hearing_id === null)
+                        );
+                        if (!pendingAnn) return null;
+                        const daysThreshold = settings?.announcement_warning_days ?? 3;
+                        const today = new Date().toISOString().split('T')[0];
+                        const diffDays = Math.ceil((new Date(h.hearing_date).getTime() - new Date(today).getTime()) / (1000 * 60 * 60 * 24));
+                        const isNear = diffDays >= 0 && diffDays <= daysThreshold;
+                        return (
+                          <div
+                            className={`inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded font-bold border mt-1 ${
+                              isNear
+                                ? 'bg-red-100 text-red-800 border-red-300 animate-pulse'
+                                : 'bg-amber-100 text-amber-800 border-amber-300'
+                            }`}
+                            title={`إعلان معلق (${pendingAnn.announcement_type}) للمطلوب إعلانه: ${pendingAnn.recipient_name}`}
+                          >
+                            <Send className="w-2.5 h-2.5" />
+                            <span>إعلان: {pendingAnn.status}</span>
+                          </div>
+                        );
+                      })()}
                     </td>
 
                     {/* Case Number & Court */}
@@ -579,6 +633,42 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
             </div>
 
             <form onSubmit={handleSubmitOutcome} className="space-y-4">
+              {/* Suggestion for pending announcement */}
+              {(() => {
+                const pendingAnn = announcements.find(
+                  a => a.hearing_id === selectedHearing.id || (a.case_id === selectedHearing.case_id && a.hearing_id === null)
+                );
+                if (!pendingAnn) return null;
+                const suggestedReason = pendingAnn.status === 'لم يُعلن' || pendingAnn.status === 'ورد بدون نتيجة'
+                  ? 'لإعادة الإعلان'
+                  : 'للإعلان وورود الإشعار';
+
+                return (
+                  <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-xs space-y-2">
+                    <div className="flex items-center gap-1.5 text-red-800 font-bold">
+                      <AlertTriangle className="w-4 h-4 text-red-600" />
+                      <span>يوجد إعلان معلق مرتبط ({pendingAnn.announcement_type} - {pendingAnn.recipient_name})</span>
+                    </div>
+                    <div className="text-slate-600 flex items-center justify-between">
+                      <span>حالة الإعلان: <strong>{pendingAnn.status}</strong></span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setOutcomeForm(prev => ({
+                            ...prev,
+                            adjournment_reason: suggestedReason,
+                            proceedings: prev.proceedings ? prev.proceedings : `طلب أجل ${suggestedReason} للمطلوب إعلانه ${pendingAnn.recipient_name}`
+                          }));
+                        }}
+                        className="px-2.5 py-1 bg-red-600 hover:bg-red-700 text-white rounded font-bold shadow-xs transition-colors"
+                      >
+                        اقتراح سبب التأجيل "{suggestedReason}"
+                      </button>
+                    </div>
+                  </div>
+                );
+              })()}
+
               {/* Attendance */}
               <div className="grid grid-cols-2 gap-3 bg-slate-50 p-3 rounded-lg border border-slate-200">
                 <div>

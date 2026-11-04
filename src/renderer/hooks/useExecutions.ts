@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import {
   ExecutionFile,
   ExecutionDetails,
@@ -13,6 +13,7 @@ import {
   TransactionDirection,
   PaymentMethod
 } from '../../shared/types';
+import { entityEventBus } from '../services/eventBus';
 
 export function useExecutions() {
   const [files, setFiles] = useState<ExecutionFile[]>([]);
@@ -32,6 +33,13 @@ export function useExecutions() {
     }
   }, []);
 
+  // Subscribe to central entity invalidation events
+  useEffect(() => {
+    return entityEventBus.subscribe('executions', () => {
+      loadFiles();
+    });
+  }, [loadFiles]);
+
   const getFileById = useCallback(async (id: number): Promise<ExecutionDetails | null> => {
     try {
       return await window.electronAPI.getExecutionFileById(id);
@@ -44,12 +52,14 @@ export function useExecutions() {
   const createFile = useCallback(async (input: CreateExecutionFileInput): Promise<ExecutionFile> => {
     const created = await window.electronAPI.createExecutionFile(input);
     setFiles(prev => [created, ...prev]);
+    entityEventBus.emit('executions');
     return created;
   }, []);
 
   const updateFile = useCallback(async (id: number, updates: Partial<CreateExecutionFileInput>): Promise<ExecutionFile> => {
     const updated = await window.electronAPI.updateExecutionFile(id, updates);
     setFiles(prev => prev.map(f => (f.id === id ? updated : f)));
+    entityEventBus.emit('executions');
     return updated;
   }, []);
 
@@ -57,6 +67,8 @@ export function useExecutions() {
     const res = await window.electronAPI.deleteExecutionFile(id);
     if (res.success) {
       setFiles(prev => prev.filter(f => f.id !== id));
+      entityEventBus.emit('executions');
+      entityEventBus.emit('trash');
     }
     return res;
   }, []);

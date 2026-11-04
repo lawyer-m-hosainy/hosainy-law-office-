@@ -387,6 +387,43 @@ const api: IElectronAPI = {
   emptyTrashBin: (): Promise<any> => {
     return ipcRenderer.invoke('trash:empty');
   },
+
+  // Announcements (Phase 10)
+  getAnnouncementsByCase: (caseId: number): Promise<any> => {
+    return ipcRenderer.invoke('announcements:getByCase', caseId);
+  },
+  getAllAnnouncements: (filter?: any): Promise<any> => {
+    return ipcRenderer.invoke('announcements:getAll', filter);
+  },
+  getAnnouncementById: (id: number): Promise<any> => {
+    return ipcRenderer.invoke('announcements:getById', id);
+  },
+  createAnnouncement: (input: any): Promise<any> => {
+    return ipcRenderer.invoke('announcements:create', input);
+  },
+  updateAnnouncement: (id: number, input: any): Promise<any> => {
+    return ipcRenderer.invoke('announcements:update', id, input);
+  },
+  createReattemptAnnouncement: (parentAnnouncementId: number, input: any): Promise<any> => {
+    return ipcRenderer.invoke('announcements:createReattempt', parentAnnouncementId, input);
+  },
+  deleteAnnouncement: (id: number): Promise<any> => {
+    return ipcRenderer.invoke('announcements:delete', id);
+  },
+  getAnnouncementWarnings: (daysThreshold?: number): Promise<any> => {
+    return ipcRenderer.invoke('announcements:getWarnings', daysThreshold);
+  },
+
+  // Calendar Export (Phase 11)
+  exportCalendarIcs: (options: any): Promise<any> => {
+    return ipcRenderer.invoke('calendar:exportIcs', options);
+  },
+  getTodaySummary: (options?: any): Promise<any> => {
+    return ipcRenderer.invoke('calendar:getTodaySummary', options);
+  },
+  getCalendarExportCounts: (options: any): Promise<any> => {
+    return ipcRenderer.invoke('calendar:getExportCounts', options);
+  },
 };
 
 contextBridge.exposeInMainWorld('electronAPI', api);

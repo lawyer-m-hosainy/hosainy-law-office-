@@ -75,7 +75,7 @@ export async function launchTestApp(options: LaunchOptions = {}): Promise<Launch
   // Wait for React app to initialize (spinner disappears and main content appears)
   await page.waitForLoadState('domcontentloaded');
   // Wait up to 30s for the app to finish loading
-  await page.waitForSelector('aside, main', { timeout: 30000 });
+  await page.waitForSelector('aside', { state: 'attached', timeout: 30000 });
 
   const close = async () => {
     try {

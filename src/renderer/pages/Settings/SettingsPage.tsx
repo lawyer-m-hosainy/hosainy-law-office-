@@ -50,6 +50,7 @@ const listTypeLabels: Record<ConfigurableListType, { label: string; desc: string
   adjournment_reasons: { label: 'أسباب التأجيل الجاهزة', desc: 'أسباب التأجيل الشائعة المستخدمة في رول الجلسات' },
   task_categories: { label: 'تصنيفات المهام والمأموريات', desc: 'مأموريات المحاكم والنيابة والشهر العقاري والأعمال الإدارية' },
   transaction_types: { label: 'أنواع الحركات المالية', desc: 'أتعاب، رسوم قضائية، مصاريف، دمغات، وأمانات خبراء' },
+  announcement_types: { label: 'أنواع الإعلانات القضائية', desc: 'صحف الدعاوى، إعلانات بالحضور، إنذارات رسمية، وإعلانات الأحكام والطعون' },
 };
 
 export const SettingsPage: React.FC<SettingsPageProps> = ({
@@ -872,6 +873,64 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold"
                 />
                 <span className="text-[11px] text-slate-500 mt-1 block">تنبيه في لوحة اليوم قبل انتهاء الميعاد</span>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1.5">تنبيه الإعلانات المعلقة قبل الجلسة (أيام)</label>
+                <input
+                  type="number"
+                  min={1}
+                  value={officeForm.announcement_warning_days ?? 3}
+                  onChange={(e) => setOfficeForm({ ...officeForm, announcement_warning_days: parseInt(e.target.value) || 1 })}
+                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold"
+                />
+                <span className="text-[11px] text-slate-500 mt-1 block">تنبيه أحمر للجلسات التي لم ترد إعلاناتها</span>
+              </div>
+            </div>
+
+            {/* iCalendar (.ics) Export & Privacy Settings (Phase 11) */}
+            <div className="mt-8 pt-6 border-t border-slate-200">
+              <h4 className="text-sm font-bold text-slate-800 mb-2 flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <span>إعدادات تصدير التقويم ووضع الخصوصية (iCalendar .ics)</span>
+              </h4>
+              <p className="text-xs text-slate-500 mb-4">
+                تخصيص الخصوصية والتنبيهات المضمنة في ملفات .ics عند تصديرها واستيرادها إلى تقويم Google أو تطبيقات الهواتف الذكية.
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <div>
+                  <label className="flex items-center gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={Boolean(officeForm.calendar_privacy_mode ?? 1)}
+                      onChange={(e) => setOfficeForm({ ...officeForm, calendar_privacy_mode: e.target.checked ? 1 : 0 })}
+                      className="w-5 h-5 text-emerald-600 rounded-sm focus:ring-emerald-500"
+                    />
+                    <div>
+                      <span className="text-xs font-bold text-slate-800 block">تفعيل "وضع الخصوصية" افتراضيًا</span>
+                      <span className="text-[11px] text-slate-500 block mt-0.5">
+                        يحجب أسماء الموكلين والخصوم من ملف التقويم لمنع تسربها عند المزامنة مع خوادم خارجية
+                      </span>
+                    </div>
+                  </label>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                    تنبيهات المواعيد المضمنة في التقويم (VALARM)
+                  </label>
+                  <input
+                    type="text"
+                    value={officeForm.calendar_alarm_triggers || '1d,1h'}
+                    onChange={(e) => setOfficeForm({ ...officeForm, calendar_alarm_triggers: e.target.value })}
+                    placeholder="مثال: 1d,1h (يوم قبل وساعة قبل)"
+                    className="w-full px-3.5 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold"
+                  />
+                  <span className="text-[11px] text-slate-500 mt-1 block">
+                    الصيغة: 1d (يوم قبل)، 1h (ساعة قبل)، أو بالدقائق مفصولة بفواصل
+                  </span>
+                </div>
               </div>
             </div>
 

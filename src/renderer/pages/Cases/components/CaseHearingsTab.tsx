@@ -16,7 +16,8 @@ import {
   Calculator,
   AlertCircle,
   HelpCircle,
-  Clock3
+  Clock3,
+  Send
 } from 'lucide-react';
 import {
   CaseDetails,
@@ -24,7 +25,8 @@ import {
   CaseHearingStats,
   AppealDeadline,
   HearingStatus,
-  OfficeSettings
+  OfficeSettings,
+  CaseAnnouncement
 } from '../../../../shared/types';
 import { useHearings } from '../../../hooks/useHearings';
 import { generateAdjournmentsReportHtml } from '../../../services/adjournmentsReportGenerator';
@@ -63,6 +65,7 @@ export const CaseHearingsTab: React.FC<CaseHearingsTabProps> = ({
 
   // Configurable lists for adjournment reasons
   const [adjournmentReasons, setAdjournmentReasons] = useState<string[]>([]);
+  const [caseAnnouncements, setCaseAnnouncements] = useState<CaseAnnouncement[]>([]);
 
   // Modals state
   const [showAddModal, setShowAddModal] = useState(false);
@@ -118,17 +121,19 @@ export const CaseHearingsTab: React.FC<CaseHearingsTabProps> = ({
     setLoading(true);
     setError(null);
     try {
-      const [hList, hStats, aDeadlines, reasonsList] = await Promise.all([
+      const [hList, hStats, aDeadlines, reasonsList, annList] = await Promise.all([
         getHearingsByCase(caseData.id),
         getHearingStatsByCase(caseData.id),
         getAppealDeadlines(caseData.id),
-        window.electronAPI.getListItems('adjournment_reasons')
+        window.electronAPI.getListItems('adjournment_reasons'),
+        window.electronAPI.getAnnouncementsByCase(caseData.id)
       ]);
 
       setHearings(Array.isArray(hList) ? hList : []);
       if (hStats) setStats(hStats);
       setAppealDeadlines(Array.isArray(aDeadlines) ? aDeadlines : []);
       setAdjournmentReasons(Array.isArray(reasonsList) ? reasonsList.map(item => item.name) : []);
+      setCaseAnnouncements(Array.isArray(annList) ? annList : []);
     } catch (err: any) {
       setError(err?.message || 'حدث خطأ أثناء تحميل بيانات الجلسات');
     } finally {
@@ -522,6 +527,29 @@ export const CaseHearingsTab: React.FC<CaseHearingsTabProps> = ({
                         </span>
                       )}
                       {getStatusBadge(h.status, h.is_judgment_hearing)}
+                      {(() => {
+                        const pendingAnn = caseAnnouncements.find(
+                          a => a.hearing_id === h.id && ['قيد الانتظار', 'لم يُعلن', 'ورد بدون نتيجة'].includes(a.status)
+                        );
+                        if (!pendingAnn) return null;
+                        const daysThreshold = settings.announcement_warning_days ?? 3;
+                        const today = new Date().toISOString().split('T')[0];
+                        const diffDays = Math.ceil((new Date(h.hearing_date).getTime() - new Date(today).getTime()) / (1000 * 60 * 60 * 24));
+                        const isNear = diffDays >= 0 && diffDays <= daysThreshold;
+                        return (
+                          <span
+                            className={`flex items-center gap-1 text-[11px] px-2 py-0.5 rounded font-bold border ${
+                              isNear
+                                ? 'bg-red-100 text-red-800 border-red-300 animate-pulse'
+                                : 'bg-amber-100 text-amber-800 border-amber-300'
+                            }`}
+                            title={`إعلان معلق (${pendingAnn.announcement_type}) - ${pendingAnn.status}`}
+                          >
+                            <Send className="w-3 h-3" />
+                            <span>إعلان معلق: {pendingAnn.status}</span>
+                          </span>
+                        );
+                      })()}
                       {isLatest && (
                         <span className="text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold">
                           الجلسة الأحدث
@@ -995,6 +1023,43 @@ export const CaseHearingsTab: React.FC<CaseHearingsTabProps> = ({
             </div>
 
             <form onSubmit={handleSubmitOutcome} className="space-y-4">
+              {/* Announcement Suggestion Alert if pending announcement exists for selected hearing */}
+              {(() => {
+                const pendingAnn = caseAnnouncements.find(
+                  a => a.hearing_id === selectedHearing.id && ['قيد الانتظار', 'لم يُعلن', 'ورد بدون نتيجة'].includes(a.status)
+                );
+                if (!pendingAnn) return null;
+
+                const suggestedReason = pendingAnn.status === 'لم يُعلن' || pendingAnn.status === 'ورد بدون نتيجة'
+                  ? 'لإعادة الإعلان'
+                  : 'للإعلان وورود الإشعار';
+
+                return (
+                  <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-xs space-y-2">
+                    <div className="flex items-center gap-1.5 text-red-800 font-bold">
+                      <AlertTriangle className="w-4 h-4 text-red-600" />
+                      <span>يوجد إعلان قضائي معلق لهذه الجلسة ({pendingAnn.announcement_type} - {pendingAnn.recipient_name})</span>
+                    </div>
+                    <div className="text-slate-600 flex items-center justify-between">
+                      <span>حالة الإعلان الحالية: <strong>{pendingAnn.status}</strong></span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setOutcomeForm(prev => ({
+                            ...prev,
+                            adjournment_reason: suggestedReason,
+                            proceedings: prev.proceedings ? prev.proceedings : `طلب أجل ${suggestedReason} للمطلوب إعلانه ${pendingAnn.recipient_name}`
+                          }));
+                        }}
+                        className="px-2.5 py-1 bg-red-600 hover:bg-red-700 text-white rounded font-bold shadow-xs transition-colors"
+                      >
+                        اقتراح سبب التأجيل "{suggestedReason}"
+                      </button>
+                    </div>
+                  </div>
+                );
+              })()}
+
               {/* Attendance */}
               <div className="grid grid-cols-2 gap-3 bg-slate-50 p-3 rounded-lg border border-slate-200">
                 <div>

@@ -32,6 +32,7 @@ import {
   CreateCaseInput,
 } from '../../../shared/types';
 import { useCases } from '../../hooks/useCases';
+import { entityEventBus } from '../../services/eventBus';
 import { arabicIncludes } from '../../../shared/arabicUtils';
 import { ExportButton } from '../../components/Common/ExportButton';
 
@@ -60,6 +61,13 @@ export const CasesPage: React.FC<CasesPageProps> = ({
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Quick Add Client State
+  const [isQuickAddClientModalOpen, setIsQuickAddClientModalOpen] = useState(false);
+  const [quickClientName, setQuickClientName] = useState('');
+  const [quickClientPhone, setQuickClientPhone] = useState('');
+  const [quickClientError, setQuickClientError] = useState<string | null>(null);
+  const [isQuickClientSubmitting, setIsQuickClientSubmitting] = useState(false);
 
   // Form State
   const initialFormState: CreateCaseInput = {
@@ -177,6 +185,41 @@ export const CasesPage: React.FC<CasesPageProps> = ({
     if (!confirm) return;
 
     await deleteCase(cs.id);
+  };
+
+  const handleQuickAddClient = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!quickClientName.trim() || !quickClientPhone.trim()) {
+      setQuickClientError('يرجى ملء اسم الموكل ورقم الهاتف.');
+      return;
+    }
+    setIsQuickClientSubmitting(true);
+    setQuickClientError(null);
+    try {
+      const created = await window.electronAPI.createClient({
+        name: quickClientName.trim(),
+        phone: quickClientPhone.trim(),
+        client_type: 'individual',
+        status: 'active',
+      });
+      entityEventBus.emit('clients');
+      setFormData((prev) => {
+        const existing = [...prev.clients];
+        if (existing.length > 0) {
+          existing[0].client_id = created.id;
+          return { ...prev, clients: existing };
+        } else {
+          return { ...prev, clients: [{ client_id: created.id, role_capacity: 'مدعي', is_primary: true }] };
+        }
+      });
+      setIsQuickAddClientModalOpen(false);
+      setQuickClientName('');
+      setQuickClientPhone('');
+    } catch (err: any) {
+      setQuickClientError(err?.message || 'تعذر إضافة الموكل');
+    } finally {
+      setIsQuickClientSubmitting(false);
+    }
   };
 
   // Filter cases locally using normalized Arabic search
@@ -770,14 +813,24 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                   <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider">
                     3. الموكلون في الدعوى
                   </h4>
-                  <button
-                    type="button"
-                    onClick={handleAddClientToCase}
-                    className="flex items-center gap-1 px-2.5 py-1 text-xs font-bold text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-md border border-amber-200 transition-colors"
-                  >
-                    <Plus className="w-3.5 h-3.5" />
-                    <span>إضافة موكل آخر</span>
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsQuickAddClientModalOpen(true)}
+                      className="flex items-center gap-1 px-2.5 py-1 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-md border border-blue-200 transition-colors"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>إضافة موكل جديد</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleAddClientToCase}
+                      className="flex items-center gap-1 px-2.5 py-1 text-xs font-bold text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-md border border-amber-200 transition-colors"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>إضافة موكل آخر</span>
+                    </button>
+                  </div>
                 </div>
 
                 {clients.length === 0 ? (
@@ -1093,6 +1146,76 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                   className="px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors disabled:opacity-50"
                 >
                   {isSubmitting ? 'جاري الحفظ...' : 'حفظ وإنشاء ملف القضية'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Quick Add Client Modal */}
+      {isQuickAddClientModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4">
+          <div className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+            <div className="px-5 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+              <h3 className="font-bold text-slate-800 text-sm">إضافة موكل جديد سريع</h3>
+              <button
+                onClick={() => setIsQuickAddClientModalOpen(false)}
+                className="text-slate-400 hover:text-slate-600 transition-colors p-1 rounded-lg"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleQuickAddClient} className="p-5 space-y-4">
+              {quickClientError && (
+                <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-lg font-bold">
+                  {quickClientError}
+                </div>
+              )}
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  اسم الموكل <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={quickClientName}
+                  onChange={(e) => setQuickClientName(e.target.value)}
+                  placeholder="اسم الموكل بالكامل..."
+                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-semibold"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  رقم الهاتف <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="tel"
+                  required
+                  value={quickClientPhone}
+                  onChange={(e) => setQuickClientPhone(e.target.value)}
+                  placeholder="01xxxxxxxxx"
+                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-200">
+                <button
+                  type="button"
+                  onClick={() => setIsQuickAddClientModalOpen(false)}
+                  className="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition-colors"
+                >
+                  إلغاء
+                </button>
+                <button
+                  type="submit"
+                  disabled={isQuickClientSubmitting}
+                  className="px-5 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors disabled:opacity-50"
+                >
+                  {isQuickClientSubmitting ? 'جاري الحفظ...' : 'إضافة الموكل'}
                 </button>
               </div>
             </form>

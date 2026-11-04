@@ -8,6 +8,7 @@ import {
   CreateTaskTemplateInput,
   TaskStatus
 } from '../../shared/types';
+import { entityEventBus } from '../services/eventBus';
 
 export function useTasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -28,6 +29,13 @@ export function useTasks() {
     }
   }, []);
 
+  // Subscribe to central entity invalidation events
+  useEffect(() => {
+    return entityEventBus.subscribe('tasks', () => {
+      loadTasks();
+    });
+  }, [loadTasks]);
+
   const getTaskById = useCallback(async (id: number): Promise<Task | null> => {
     try {
       return await window.electronAPI.getTaskById(id);
@@ -40,12 +48,14 @@ export function useTasks() {
   const createTask = useCallback(async (input: CreateTaskInput): Promise<Task> => {
     const created = await window.electronAPI.createTask(input);
     setTasks(prev => [created, ...prev]);
+    entityEventBus.emit('tasks');
     return created;
   }, []);
 
   const updateTask = useCallback(async (id: number, updates: Partial<CreateTaskInput> & { status?: TaskStatus; result_notes?: string; completed_at?: string }): Promise<Task> => {
     const updated = await window.electronAPI.updateTask(id, updates);
     setTasks(prev => prev.map(t => (t.id === id ? updated : t)));
+    entityEventBus.emit('tasks');
     return updated;
   }, []);
 
@@ -71,6 +81,8 @@ export function useTasks() {
     const res = await window.electronAPI.deleteTask(id);
     if (res.success) {
       setTasks(prev => prev.filter(t => t.id !== id));
+      entityEventBus.emit('tasks');
+      entityEventBus.emit('trash');
     }
     return res;
   }, []);
@@ -118,6 +130,7 @@ export function useTasks() {
   }): Promise<Task[]> => {
     const createdTasks = await window.electronAPI.applyTaskTemplate(params);
     setTasks(prev => [...createdTasks, ...prev]);
+    entityEventBus.emit('tasks');
     return createdTasks;
   }, []);
 

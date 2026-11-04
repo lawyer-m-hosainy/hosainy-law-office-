@@ -98,6 +98,21 @@ export const DEFAULT_TRANSACTION_TYPES = [
   'تسوية حساب مالي',
 ];
 
+export const DEFAULT_ANNOUNCEMENT_TYPES = [
+  'صحيفة دعوى',
+  'إعلان بالحضور',
+  'إعادة إعلان',
+  'إعلان حكم',
+  'إعلان سند تنفيذي',
+  'إنذار على يد محضر',
+  'إعلان طعن بالاستئناف',
+  'إعلان طعن بالنقض',
+  'إعلان بالدعوى الفرعية أو إدخال خصم',
+  'إعلان شواهد تزوير',
+  'إعلان بفتح باب المرافعة',
+  'أخرى',
+];
+
 export const DEFAULT_OFFICE_SETTINGS = {
   office_name: 'مكتب الأستاذ / محامٍ بالنقض والدستورية العليا',
   lawyer_name: 'اسم المحامي',
@@ -118,4 +133,7 @@ export const DEFAULT_OFFICE_SETTINGS = {
   appeal_deadline_admin: 60,
   date_format: 'ar-EG',
   alert_days_before: 3,
+  announcement_warning_days: 3,
+  calendar_privacy_mode: 1,
+  calendar_alarm_triggers: '1d,1h',
 };

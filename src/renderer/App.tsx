@@ -16,6 +16,7 @@ import { HearingsPage } from './pages/Hearings/HearingsPage';
 import { CalendarPage } from './pages/Calendar/CalendarPage';
 import { FinancePage } from './pages/Finance/FinancePage';
 import { ExecutionsPage } from './pages/Executions/ExecutionsPage';
+import { AnnouncementsPage } from './pages/Announcements/AnnouncementsPage';
 import { TasksPage } from './pages/Tasks/TasksPage';
 import { TrashBinPage } from './pages/Trash/TrashBinPage';
 import { LockScreenModal } from './components/Security/LockScreenModal';
@@ -243,6 +244,13 @@ export const App: React.FC = () => {
                 settings={settings}
                 clients={clients}
                 cases={cases}
+                onNavigateToCase={handleNavigateToCase}
+              />
+            )}
+
+            {activeTab === 'announcements' && (
+              <AnnouncementsPage
+                settings={settings}
                 onNavigateToCase={handleNavigateToCase}
               />
             )}

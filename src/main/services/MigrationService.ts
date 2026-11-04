@@ -4,7 +4,8 @@ import {
   DEFAULT_CASE_TYPES,
   DEFAULT_ADJOURNMENT_REASONS,
   DEFAULT_TASK_CATEGORIES,
-  DEFAULT_TRANSACTION_TYPES
+  DEFAULT_TRANSACTION_TYPES,
+  DEFAULT_ANNOUNCEMENT_TYPES
 } from '../../shared/constants';
 
 interface Migration {
@@ -595,6 +596,50 @@ const MIGRATIONS: Migration[] = [
       CREATE INDEX IF NOT EXISTS idx_fin_tx_case_date ON financial_transactions(case_id, transaction_date);
       CREATE INDEX IF NOT EXISTS idx_tasks_due_status ON tasks(due_date, status);
     `
+  },
+  {
+    version: 10,
+    name: '010_announcements',
+    sql: `
+      CREATE TABLE IF NOT EXISTS case_announcements (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          case_id INTEGER NOT NULL REFERENCES cases(id) ON DELETE CASCADE,
+          hearing_id INTEGER REFERENCES hearings(id) ON DELETE SET NULL,
+          recipient_name TEXT NOT NULL,
+          recipient_capacity TEXT DEFAULT 'المطلوب إعلانه',
+          recipient_address TEXT,
+          announcement_type TEXT NOT NULL,
+          bailiff_office TEXT,
+          request_number TEXT,
+          bailiff_name TEXT,
+          delivery_date TEXT,
+          return_date TEXT,
+          status TEXT NOT NULL DEFAULT 'قيد الانتظار',
+          failure_reason TEXT,
+          notes TEXT,
+          fee_amount INTEGER NOT NULL DEFAULT 0,
+          transaction_id INTEGER REFERENCES financial_transactions(id) ON DELETE SET NULL,
+          parent_id INTEGER REFERENCES case_announcements(id) ON DELETE CASCADE,
+          attempt_number INTEGER NOT NULL DEFAULT 1,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+          updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_announcements_case ON case_announcements(case_id);
+      CREATE INDEX IF NOT EXISTS idx_announcements_hearing ON case_announcements(hearing_id);
+      CREATE INDEX IF NOT EXISTS idx_announcements_status ON case_announcements(status);
+      CREATE INDEX IF NOT EXISTS idx_announcements_parent ON case_announcements(parent_id);
+      CREATE INDEX IF NOT EXISTS idx_announcements_bailiff ON case_announcements(bailiff_office);
+      CREATE INDEX IF NOT EXISTS idx_announcements_return_date ON case_announcements(return_date);
+    `
+  },
+  {
+    version: 11,
+    name: '011_calendar_export_settings',
+    sql: `
+      ALTER TABLE office_settings ADD COLUMN calendar_privacy_mode INTEGER NOT NULL DEFAULT 1;
+      ALTER TABLE office_settings ADD COLUMN calendar_alarm_triggers TEXT NOT NULL DEFAULT '1d,1h';
+    `
   }
 ];
 
@@ -628,6 +673,31 @@ export class MigrationService {
             if (!finCols.some(c => c.name === 'execution_id')) {
               this.db.exec('ALTER TABLE financial_transactions ADD COLUMN execution_id INTEGER REFERENCES execution_files(id) ON DELETE SET NULL;');
               this.db.exec('CREATE INDEX IF NOT EXISTS idx_fin_tx_execution ON financial_transactions(execution_id);');
+            }
+          }
+
+          if (migration.version === 10) {
+            const finCols = this.db.pragma('table_info(financial_transactions)') as { name: string }[];
+            if (!finCols.some(c => c.name === 'announcement_id')) {
+              this.db.exec('ALTER TABLE financial_transactions ADD COLUMN announcement_id INTEGER REFERENCES case_announcements(id) ON DELETE SET NULL;');
+              this.db.exec('CREATE INDEX IF NOT EXISTS idx_fin_tx_announcement ON financial_transactions(announcement_id);');
+            }
+
+            const settingsCols = this.db.pragma('table_info(office_settings)') as { name: string }[];
+            if (!settingsCols.some(c => c.name === 'announcement_warning_days')) {
+              this.db.exec('ALTER TABLE office_settings ADD COLUMN announcement_warning_days INTEGER NOT NULL DEFAULT 3;');
+            }
+
+            // Seed default announcement_types if not already present
+            const existCount = this.db.prepare("SELECT COUNT(*) as count FROM configurable_lists WHERE list_type = 'announcement_types'").get() as { count: number };
+            if (existCount.count === 0) {
+              const insertListStmt = this.db.prepare(`
+                INSERT INTO configurable_lists (list_type, name, sort_order, is_active, is_default)
+                VALUES (?, ?, ?, 1, 1)
+              `);
+              DEFAULT_ANNOUNCEMENT_TYPES.forEach((name, idx) => {
+                insertListStmt.run('announcement_types', name, idx + 1);
+              });
             }
           }
 
@@ -682,6 +752,11 @@ export class MigrationService {
       // Transaction Types
       DEFAULT_TRANSACTION_TYPES.forEach((name, idx) => {
         insertStmt.run('transaction_types', name, idx + 1);
+      });
+
+      // Announcement Types
+      DEFAULT_ANNOUNCEMENT_TYPES.forEach((name, idx) => {
+        insertStmt.run('announcement_types', name, idx + 1);
       });
     });
 

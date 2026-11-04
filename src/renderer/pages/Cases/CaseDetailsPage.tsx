@@ -26,6 +26,7 @@ import {
   X,
   Plus,
   Trash2,
+  Send,
 } from 'lucide-react';
 import {
   CaseDetails,
@@ -42,6 +43,7 @@ import { CaseExecutionsTab } from './components/CaseExecutionsTab';
 import { CaseTasksTab } from './components/CaseTasksTab';
 import { CaseDocumentsTab } from './components/CaseDocumentsTab';
 import { CaseTimelineTab } from './components/CaseTimelineTab';
+import { CaseAnnouncementsTab } from './components/CaseAnnouncementsTab';
 
 interface CaseDetailsPageProps {
   caseId: number;
@@ -53,7 +55,7 @@ interface CaseDetailsPageProps {
   onBack: () => void;
 }
 
-type CaseTab = 'basic' | 'hearings' | 'finance' | 'executions' | 'documents' | 'tasks' | 'timeline';
+type CaseTab = 'basic' | 'hearings' | 'finance' | 'executions' | 'documents' | 'tasks' | 'timeline' | 'announcements';
 
 export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
   caseId,
@@ -217,6 +219,7 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
     { id: 'documents', label: '5. المستندات والمرفقات', icon: FileText },
     { id: 'tasks', label: '6. المهام المرتبطة', icon: CheckSquare },
     { id: 'timeline', label: '7. السجل الزمني والملاحظات', icon: History },
+    { id: 'announcements', label: '8. الإعلانات والمحضرين', icon: Send },
   ];
 
   return (
@@ -623,6 +626,19 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
             lawyer_name: '',
             title: 'المحامي بالنقض'
           } as any}
+        />
+      )}
+
+      {/* TAB 8: Announcements & Process Serving */}
+      {activeTab === 'announcements' && (
+        <CaseAnnouncementsTab
+          caseData={caseData}
+          settings={settings || {
+            office_name: 'مكتب المحاماة',
+            lawyer_name: '',
+            title: 'المحامي بالنقض'
+          } as any}
+          onCaseUpdated={loadCase}
         />
       )}
 

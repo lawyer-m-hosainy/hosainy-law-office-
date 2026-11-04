@@ -17,6 +17,8 @@ import { registerSecurityIpc } from './securityIpc';
 import { registerBackupIpc } from './backupIpc';
 import { registerAuditLogsIpc } from './auditLogsIpc';
 import { registerTrashBinIpc } from './trashBinIpc';
+import { registerAnnouncementsIpc } from './announcementsIpc';
+import { registerCalendarIpc } from './calendarIpc';
 
 export function registerAllIpcHandlers(): void {
   registerSettingsIpc();
@@ -37,6 +39,8 @@ export function registerAllIpcHandlers(): void {
   registerBackupIpc();
   registerAuditLogsIpc();
   registerTrashBinIpc();
+  registerAnnouncementsIpc();
+  registerCalendarIpc();
 
   ipcMain.handle('system:getAppVersion', async (): Promise<string> => {
     return app.getVersion();
