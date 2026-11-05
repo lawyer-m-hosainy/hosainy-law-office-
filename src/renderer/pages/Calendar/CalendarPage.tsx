@@ -283,7 +283,7 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({
               onClick={() => setViewMode('month')}
               className={`px-3 py-1.5 text-xs font-bold rounded-md transition-all ${
                 viewMode === 'month' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'
-              }`}
+              }`} data-testid="calendar.main.set-view-mode"
             >
               عرض شهري
             </button>
@@ -291,7 +291,7 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({
               onClick={() => setViewMode('week')}
               className={`px-3 py-1.5 text-xs font-bold rounded-md transition-all ${
                 viewMode === 'week' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'
-              }`}
+              }`} data-testid="calendar.main.set-view-mode-2"
             >
               عرض أسبوعي
             </button>
@@ -302,7 +302,7 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({
               }}
               className={`px-3 py-1.5 text-xs font-bold rounded-md transition-all ${
                 viewMode === 'day' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'
-              }`}
+              }`} data-testid="calendar.main.set-view-mode-3"
             >
               عرض يومي
             </button>
@@ -313,14 +313,14 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({
             <button
               onClick={handlePrev}
               className="p-1.5 text-slate-600 hover:bg-slate-200 rounded-md transition-colors"
-              title="السابق"
+              title="السابق" data-testid="calendar.main.handle-prev"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
 
             <button
               onClick={handleToday}
-              className="px-2.5 py-1 text-xs font-bold text-slate-700 hover:bg-slate-200 rounded-md transition-colors"
+              className="px-2.5 py-1 text-xs font-bold text-slate-700 hover:bg-slate-200 rounded-md transition-colors" data-testid="calendar.main.handle-today"
             >
               اليوم
             </button>
@@ -328,7 +328,7 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({
             <button
               onClick={handleNext}
               className="p-1.5 text-slate-600 hover:bg-slate-200 rounded-md transition-colors"
-              title="التالي"
+              title="التالي" data-testid="calendar.main.handle-next"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -347,7 +347,7 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({
                   ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
                   : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-300'
               }`}
-              title="نسخ نص مختصر بجدول جلسات ومهام اليوم بوضع الخصوصية للحافظة"
+              title="نسخ نص مختصر بجدول جلسات ومهام اليوم بوضع الخصوصية للحافظة" data-testid="calendar.main.handle-copy-today-summary"
             >
               {todaySummaryCopied ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-slate-600" />}
               <span>{todaySummaryCopied ? 'تم نسخ ملخص اليوم!' : 'ملخص اليوم'}</span>
@@ -356,7 +356,7 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({
             <button
               onClick={() => setIsExportModalOpen(true)}
               className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm transition-colors"
-              title="تصدير ملف .ics متوافق مع كافة برامج التقويم أوفلاين"
+              title="تصدير ملف .ics متوافق مع كافة برامج التقويم أوفلاين" data-testid="calendar.main.set-is-export-modal-open"
             >
               <Download className="w-3.5 h-3.5" />
               <span>تصدير التقويم (.ics)</span>
@@ -400,7 +400,7 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({
                       : isToday
                         ? 'bg-amber-50/50'
                         : 'bg-white hover:bg-slate-50/50'
-                  } cursor-pointer`}
+                  } cursor-pointer`} data-testid="calendar.main.set-selected-day-date"
                 >
                   {/* Date number */}
                   <div className="flex items-center justify-between mb-1">
@@ -441,7 +441,7 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({
                                 ? 'bg-amber-100 text-amber-900 border-amber-200'
                                 : 'bg-blue-100 text-blue-900 border-blue-200'
                           }`}
-                          title={`${h.case_number}/${h.case_year} - ${h.court_name}`}
+                          title={`${h.case_number}/${h.case_year} - ${h.court_name}`} data-testid="calendar.main.set-selected-hearing"
                         >
                           <span className="font-bold">{h.case_number}</span> ({h.court_name})
                         </div>
@@ -491,7 +491,7 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({
                             isJudgment
                               ? 'bg-purple-50 border-purple-200 text-purple-950'
                               : 'bg-white border-slate-200 text-slate-800'
-                          }`}
+                          }`} data-testid="calendar.main.set-selected-hearing-2"
                         >
                           <div className="font-extrabold flex items-center justify-between text-indigo-900">
                             <span>{h.case_number}/{h.case_year}</span>
@@ -530,7 +530,7 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({
               type="date"
               value={selectedDayDate}
               onChange={(e) => setSelectedDayDate(e.target.value)}
-              className="text-xs p-2 rounded-lg border border-slate-300 bg-white"
+              className="text-xs p-2 rounded-lg border border-slate-300 bg-white" data-testid="calendar.main.set-selected-day-date-2"
             />
           </div>
 
@@ -579,13 +579,13 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => setSelectedHearing(h)}
-                      className="px-3 py-1.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
+                      className="px-3 py-1.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors" data-testid="calendar.main.set-selected-hearing-3"
                     >
                       عرض التفاصيل
                     </button>
                     <button
                       onClick={() => onNavigateToCase(h.case_id)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-white bg-amber-600 hover:bg-amber-700 rounded-lg transition-colors shadow-sm"
+                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-white bg-amber-600 hover:bg-amber-700 rounded-lg transition-colors shadow-sm" data-testid="calendar.main.on-navigate-to-case"
                     >
                       فتح ملف القضية
                       <ExternalLink className="w-3.5 h-3.5" />
@@ -611,7 +611,7 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({
               </div>
               <button
                 onClick={() => setSelectedHearing(null)}
-                className="text-slate-400 hover:text-slate-600 font-bold text-lg"
+                className="text-slate-400 hover:text-slate-600 font-bold text-lg" data-testid="calendar.main.set-selected-hearing-4"
               >
                 ×
               </button>
@@ -650,7 +650,7 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({
             <div className="flex items-center justify-between pt-3 border-t border-slate-100">
               <button
                 onClick={() => setSelectedHearing(null)}
-                className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg"
+                className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg" data-testid="calendar.main.set-selected-hearing-5"
               >
                 إغلاق
               </button>
@@ -661,7 +661,7 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({
                   setSelectedHearing(null);
                   onNavigateToCase(cid);
                 }}
-                className="flex items-center gap-1.5 px-5 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm"
+                className="flex items-center gap-1.5 px-5 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm" data-testid="calendar.main.set-selected-hearing-6"
               >
                 انتقال إلى صفحة القضية
                 <ExternalLink className="w-4 h-4" />

@@ -421,7 +421,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
         </div>
         <button
           onClick={() => setIsNewFileModalOpen(true)}
-          className="flex items-center gap-2 px-3.5 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-bold transition-all shadow-xs"
+          className="flex items-center gap-2 px-3.5 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-bold transition-all shadow-xs" data-testid="case.executions.tab.set-is-new-file-modal-open"
         >
           <Plus className="w-4 h-4" />
           <span>فتح ملف تنفيذ جديد</span>
@@ -440,7 +440,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
           </p>
           <button
             onClick={() => setIsNewFileModalOpen(true)}
-            className="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-lg transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-lg transition-colors" data-testid="case.executions.tab.set-is-new-file-modal-open-2"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>فتح ملف تنفيذ الآن</span>
@@ -465,7 +465,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     isSelected
                       ? 'bg-amber-50/50 border-amber-300 ring-2 ring-amber-500/20 shadow-xs'
                       : 'bg-white border-slate-200 hover:border-slate-300'
-                  }`}
+                  }`} data-testid="case.executions.tab.set-selected-file-id"
                 >
                   <div className="flex items-start justify-between mb-2">
                     <div>
@@ -545,7 +545,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     <button
                       onClick={() => handlePrintFile(selectedFileDetails)}
                       className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition-colors"
-                      title="طباعة ملف التنفيذ بإجراءاته"
+                      title="طباعة ملف التنفيذ بإجراءاته" data-testid="case.executions.tab.handle-print-file"
                     >
                       <Printer className="w-3.5 h-3.5 text-slate-600" />
                       <span>طباعة الملف</span>
@@ -553,7 +553,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
 
                     <button
                       onClick={() => setIsPaymentModalOpen(true)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg transition-colors"
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg transition-colors" data-testid="case.executions.tab.set-is-payment-modal-open"
                     >
                       <Coins className="w-3.5 h-3.5" />
                       <span>تسجيل تحصيل / صرف</span>
@@ -561,7 +561,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
 
                     <button
                       onClick={() => setIsActionModalOpen(true)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition-colors"
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition-colors" data-testid="case.executions.tab.set-is-action-modal-open"
                     >
                       <Plus className="w-3.5 h-3.5" />
                       <span>إضافة إجراء</span>
@@ -569,7 +569,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
 
                     <button
                       onClick={() => setIsHearingModalOpen(true)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-lg transition-colors"
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-lg transition-colors" data-testid="case.executions.tab.set-is-hearing-modal-open"
                     >
                       <Gavel className="w-3.5 h-3.5" />
                       <span>إضافة جلسة / إشكال</span>
@@ -577,7 +577,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
 
                     <button
                       onClick={() => setIsSettlementModalOpen(true)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg transition-colors"
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg transition-colors" data-testid="case.executions.tab.set-is-settlement-modal-open"
                     >
                       <Handshake className="w-3.5 h-3.5" />
                       <span>محضر تسوية</span>
@@ -660,7 +660,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     </h5>
                     <button
                       onClick={() => setIsActionModalOpen(true)}
-                      className="text-xs text-blue-600 hover:text-blue-700 font-bold"
+                      className="text-xs text-blue-600 hover:text-blue-700 font-bold" data-testid="case.executions.tab.set-is-action-modal-open-2"
                     >
                       + إضافة إجراء
                     </button>
@@ -710,7 +710,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                                       refreshSelected();
                                     }
                                   }}
-                                  className="text-red-500 hover:text-red-700"
+                                  className="text-red-500 hover:text-red-700" data-testid="case.executions.tab.onfirm"
                                 >
                                   <Trash2 className="w-3.5 h-3.5" />
                                 </button>
@@ -732,7 +732,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     </h5>
                     <button
                       onClick={() => setIsHearingModalOpen(true)}
-                      className="text-xs text-purple-600 hover:text-purple-700 font-bold"
+                      className="text-xs text-purple-600 hover:text-purple-700 font-bold" data-testid="case.executions.tab.set-is-hearing-modal-open-2"
                     >
                       + إضافة جلسة
                     </button>
@@ -766,7 +766,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                                 });
                                 setIsHearingOutcomeModalOpen(true);
                               }}
-                              className="text-xs text-purple-700 hover:text-purple-900 font-bold underline"
+                              className="text-xs text-purple-700 hover:text-purple-900 font-bold underline" data-testid="case.executions.tab.set-selected-hearing-to-outcome"
                             >
                               تسجيل القرار والنتيجة
                             </button>
@@ -797,7 +797,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     </h5>
                     <button
                       onClick={() => setIsPaymentModalOpen(true)}
-                      className="text-xs text-emerald-600 hover:text-emerald-700 font-bold"
+                      className="text-xs text-emerald-600 hover:text-emerald-700 font-bold" data-testid="case.executions.tab.set-is-payment-modal-open-2"
                     >
                       + تسجيل تحصيل أو مصروف
                     </button>
@@ -869,7 +869,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     value={fileForm.file_number}
                     onChange={e => setFileForm({ ...fileForm, file_number: e.target.value })}
                     placeholder="مثال: 145"
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-file-form-2"
                   />
                 </div>
                 <div>
@@ -878,7 +878,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     type="number"
                     value={fileForm.year}
                     onChange={e => setFileForm({ ...fileForm, year: Number(e.target.value) })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-file-form-3"
                   />
                 </div>
               </div>
@@ -889,7 +889,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                   <select
                     value={fileForm.deed_type}
                     onChange={e => setFileForm({ ...fileForm, deed_type: e.target.value as any })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-file-form"
                   >
                     <option value="حكم">حكم قضائي</option>
                     <option value="أمر أداء">أمر أداء</option>
@@ -907,7 +907,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     value={fileForm.deed_number}
                     onChange={e => setFileForm({ ...fileForm, deed_number: e.target.value })}
                     placeholder="مثال: حكم مدني كلي رقم ..."
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-file-form-4"
                   />
                 </div>
               </div>
@@ -920,7 +920,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     required
                     value={fileForm.court}
                     onChange={e => setFileForm({ ...fileForm, court: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-file-form-5"
                   />
                 </div>
                 <div>
@@ -930,7 +930,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     value={fileForm.execution_judge}
                     onChange={e => setFileForm({ ...fileForm, execution_judge: e.target.value })}
                     placeholder="اسم قاضي التنفيذ أو الدائرة"
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-file-form-6"
                   />
                 </div>
               </div>
@@ -943,7 +943,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     required
                     value={fileForm.applicant_name}
                     onChange={e => setFileForm({ ...fileForm, applicant_name: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-file-form-7"
                   />
                 </div>
                 <div>
@@ -953,7 +953,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     required
                     value={fileForm.enforced_against}
                     onChange={e => setFileForm({ ...fileForm, enforced_against: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-file-form-8"
                   />
                 </div>
               </div>
@@ -968,7 +968,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     required
                     value={fileForm.total_claimed_amount}
                     onChange={e => setFileForm({ ...fileForm, total_claimed_amount: Number(e.target.value) })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold text-blue-700"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold text-blue-700" data-testid="case.executions.tab.set-file-form-9"
                   />
                 </div>
                 <div>
@@ -977,7 +977,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     type="date"
                     value={fileForm.announcement_date}
                     onChange={e => setFileForm({ ...fileForm, announcement_date: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-file-form-10"
                   />
                 </div>
               </div>
@@ -989,7 +989,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                   value={fileForm.notes}
                   onChange={e => setFileForm({ ...fileForm, notes: e.target.value })}
                   placeholder="أي تفاصيل خاصة بتنفيذ الحكم..."
-                  className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                  className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-file-form-11"
                 />
               </div>
 
@@ -997,13 +997,13 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsNewFileModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs"
+                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs" data-testid="case.executions.tab.set-is-new-file-modal-open-3"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg text-xs shadow-xs"
+                  className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg text-xs shadow-xs" data-testid="case.executions.tab.open"
                 >
                   فتح الملف
                 </button>
@@ -1031,7 +1031,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                   <select
                     value={actionForm.action_type}
                     onChange={e => setActionForm({ ...actionForm, action_type: e.target.value as any })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-action-form"
                   >
                     <option value="إعلان السند التنفيذي">إعلان السند التنفيذي</option>
                     <option value="تكليف بالوفاء">تكليف بالوفاء</option>
@@ -1058,7 +1058,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     required
                     value={actionForm.action_date}
                     onChange={e => setActionForm({ ...actionForm, action_date: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-action-form-3"
                   />
                 </div>
               </div>
@@ -1071,7 +1071,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     value={actionForm.police_report_or_bailiff_number}
                     onChange={e => setActionForm({ ...actionForm, police_report_or_bailiff_number: e.target.value })}
                     placeholder="رقم المحضر أو الإعلان"
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-action-form-4"
                   />
                 </div>
                 <div>
@@ -1079,7 +1079,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                   <select
                     value={actionForm.status}
                     onChange={e => setActionForm({ ...actionForm, status: e.target.value as any })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-action-form-2"
                   >
                     <option value="تم">تم بنجاح</option>
                     <option value="جاري">جاري التنفيذ</option>
@@ -1097,7 +1097,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     type="text"
                     value={actionForm.dept_or_bailiff_office}
                     onChange={e => setActionForm({ ...actionForm, dept_or_bailiff_office: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-action-form-5"
                   />
                 </div>
                 <div>
@@ -1106,7 +1106,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     type="text"
                     value={actionForm.bailiff_name}
                     onChange={e => setActionForm({ ...actionForm, bailiff_name: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-action-form-6"
                   />
                 </div>
               </div>
@@ -1119,7 +1119,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                   step="any"
                   value={actionForm.amount_collected}
                   onChange={e => setActionForm({ ...actionForm, amount_collected: Number(e.target.value) })}
-                  className="w-full p-2 border border-slate-300 rounded-lg text-xs text-emerald-700 font-bold"
+                  className="w-full p-2 border border-slate-300 rounded-lg text-xs text-emerald-700 font-bold" data-testid="case.executions.tab.set-action-form-7"
                 />
               </div>
 
@@ -1130,7 +1130,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                   value={actionForm.details}
                   onChange={e => setActionForm({ ...actionForm, details: e.target.value })}
                   placeholder="ما تم أثناء تنفيذ الإجراء، العقبات، أو المضبوطات..."
-                  className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                  className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-action-form-8"
                 />
               </div>
 
@@ -1138,13 +1138,13 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsActionModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs"
+                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs" data-testid="case.executions.tab.set-is-action-modal-open-3"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-xs shadow-xs"
+                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-xs shadow-xs" data-testid="case.executions.tab.save"
                 >
                   حفظ الإجراء
                 </button>
@@ -1174,7 +1174,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     required
                     value={hearingForm.hearing_date}
                     onChange={e => setHearingForm({ ...hearingForm, hearing_date: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-hearing-form"
                   />
                 </div>
                 <div>
@@ -1183,7 +1183,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     type="time"
                     value={hearingForm.hearing_time}
                     onChange={e => setHearingForm({ ...hearingForm, hearing_time: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-hearing-form-2"
                   />
                 </div>
               </div>
@@ -1195,7 +1195,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     type="text"
                     value={hearingForm.court_name}
                     onChange={e => setHearingForm({ ...hearingForm, court_name: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-hearing-form-3"
                   />
                 </div>
                 <div>
@@ -1204,7 +1204,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     type="text"
                     value={hearingForm.court_circuit}
                     onChange={e => setHearingForm({ ...hearingForm, court_circuit: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-hearing-form-4"
                   />
                 </div>
               </div>
@@ -1216,7 +1216,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                   value={hearingForm.roll_number}
                   onChange={e => setHearingForm({ ...hearingForm, roll_number: e.target.value })}
                   placeholder="مثال: 12"
-                  className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                  className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-hearing-form-5"
                 />
               </div>
 
@@ -1227,7 +1227,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                   value={hearingForm.proceedings}
                   onChange={e => setHearingForm({ ...hearingForm, proceedings: e.target.value })}
                   placeholder="نظر إشكال في التنفيذ، استمرار التنفيذ، مرافعة..."
-                  className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                  className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-hearing-form-6"
                 />
               </div>
 
@@ -1235,13 +1235,13 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsHearingModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs"
+                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs" data-testid="case.executions.tab.set-is-hearing-modal-open-3"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg text-xs shadow-xs"
+                  className="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg text-xs shadow-xs" data-testid="case.executions.tab.add"
                 >
                   إضافة الجلسة
                 </button>
@@ -1269,7 +1269,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                   <select
                     value={hearingOutcomeForm.attended}
                     onChange={e => setHearingOutcomeForm({ ...hearingOutcomeForm, attended: Number(e.target.value) })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-hearing-outcome-form"
                   >
                     <option value={1}>تم الحضور</option>
                     <option value={0}>لم يحضر أحد</option>
@@ -1281,7 +1281,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     type="text"
                     value={hearingOutcomeForm.attended_by}
                     onChange={e => setHearingOutcomeForm({ ...hearingOutcomeForm, attended_by: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-hearing-outcome-form-2"
                   />
                 </div>
               </div>
@@ -1294,7 +1294,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                   value={hearingOutcomeForm.court_decision}
                   onChange={e => setHearingOutcomeForm({ ...hearingOutcomeForm, court_decision: e.target.value })}
                   placeholder="مثال: رفض الإشكال والاستمرار في التنفيذ، أو تأجيل لجلسة..."
-                  className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold text-slate-900"
+                  className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold text-slate-900" data-testid="case.executions.tab.set-hearing-outcome-form-3"
                 />
               </div>
 
@@ -1306,7 +1306,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     value={hearingOutcomeForm.adjournment_reason}
                     onChange={e => setHearingOutcomeForm({ ...hearingOutcomeForm, adjournment_reason: e.target.value })}
                     placeholder="لتقديم مستندات، للمذكرات..."
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-hearing-outcome-form-4"
                   />
                 </div>
                 <div>
@@ -1315,7 +1315,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     type="date"
                     value={hearingOutcomeForm.next_hearing_date}
                     onChange={e => setHearingOutcomeForm({ ...hearingOutcomeForm, next_hearing_date: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-hearing-outcome-form-5"
                   />
                 </div>
               </div>
@@ -1324,13 +1324,13 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsHearingOutcomeModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs"
+                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs" data-testid="case.executions.tab.set-is-hearing-outcome-modal-open"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg text-xs shadow-xs"
+                  className="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg text-xs shadow-xs" data-testid="case.executions.tab.save-2"
                 >
                   حفظ القرار
                 </button>
@@ -1365,7 +1365,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                         transactionType: dir === 'وارد' ? 'تحصيل تنفيذ جبري / ودي' : 'مصاريف تنفيذ ورسوم محضرين'
                       });
                     }}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold" data-testid="case.executions.tab.set-payment-form"
                   >
                     <option value="وارد">وارد (تحصيل مبالغ دين من المدين)</option>
                     <option value="صادر">صادر (مصروفات ورسوم تنفيذ من المكتب)</option>
@@ -1380,7 +1380,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     required
                     value={paymentForm.amount || ''}
                     onChange={e => setPaymentForm({ ...paymentForm, amount: Number(e.target.value) })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold text-emerald-700"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold text-emerald-700" data-testid="case.executions.tab.set-payment-form-3"
                   />
                 </div>
               </div>
@@ -1391,7 +1391,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                   <select
                     value={paymentForm.paymentMethod}
                     onChange={e => setPaymentForm({ ...paymentForm, paymentMethod: e.target.value as any })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-payment-form-2"
                   >
                     <option value="نقدي">نقدي</option>
                     <option value="تحويل بنكي">تحويل بنكي</option>
@@ -1406,7 +1406,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                     type="text"
                     value={paymentForm.transactionType}
                     onChange={e => setPaymentForm({ ...paymentForm, transactionType: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-payment-form-4"
                   />
                 </div>
               </div>
@@ -1419,7 +1419,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                   value={paymentForm.description}
                   onChange={e => setPaymentForm({ ...paymentForm, description: e.target.value })}
                   placeholder="تحصيل دفعة تنفيذ، رسوم محضرين، قوة أمنية..."
-                  className="w-full p-2 border border-slate-300 rounded-lg text-xs font-medium"
+                  className="w-full p-2 border border-slate-300 rounded-lg text-xs font-medium" data-testid="case.executions.tab.set-payment-form-5"
                 />
               </div>
 
@@ -1430,7 +1430,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                   value={paymentForm.notes}
                   onChange={e => setPaymentForm({ ...paymentForm, notes: e.target.value })}
                   placeholder="ملاحظات..."
-                  className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                  className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-payment-form-6"
                 />
               </div>
 
@@ -1438,13 +1438,13 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsPaymentModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs"
+                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs" data-testid="case.executions.tab.set-is-payment-modal-open-3"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs shadow-xs"
+                  className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs shadow-xs" data-testid="case.executions.tab.save-3"
                 >
                   حفظ وإصدار إيصال
                 </button>
@@ -1473,7 +1473,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                   required
                   value={settlementForm.settlement_date}
                   onChange={e => setSettlementForm({ ...settlementForm, settlement_date: e.target.value })}
-                  className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                  className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.executions.tab.set-settlement-form"
                 />
               </div>
 
@@ -1485,7 +1485,7 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                   value={settlementForm.settlement_minutes}
                   onChange={e => setSettlementForm({ ...settlementForm, settlement_minutes: e.target.value })}
                   placeholder="تم الاتفاق والصلح بين الطرفين على سداد مبلغ ... والتنازل عن الحجوزات..."
-                  className="w-full p-2.5 border border-slate-300 rounded-lg text-xs leading-relaxed"
+                  className="w-full p-2.5 border border-slate-300 rounded-lg text-xs leading-relaxed" data-testid="case.executions.tab.set-settlement-form-2"
                 />
               </div>
 
@@ -1497,13 +1497,13 @@ export const CaseExecutionsTab: React.FC<CaseExecutionsTabProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsSettlementModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs"
+                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs" data-testid="case.executions.tab.set-is-settlement-modal-open-2"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg text-xs shadow-xs"
+                  className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg text-xs shadow-xs" data-testid="case.executions.tab.button-31"
                 >
                   تثبيت الصلح والتسوية
                 </button>

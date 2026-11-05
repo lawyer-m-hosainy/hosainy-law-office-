@@ -112,7 +112,7 @@ export const AuditLogsTab: React.FC = () => {
             <button
               onClick={() => handleApplyFilter()}
               className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors border border-slate-200"
-              title="تحديث"
+              title="تحديث" data-testid="settings.audit.tab.handle-apply-filter"
             >
               <RefreshCw className="w-4 h-4" />
             </button>
@@ -126,7 +126,7 @@ export const AuditLogsTab: React.FC = () => {
             <select
               value={actionType}
               onChange={(e) => setActionType(e.target.value)}
-              className="w-full p-2 border border-slate-300 rounded-lg bg-slate-50 font-semibold focus:outline-none focus:border-amber-500"
+              className="w-full p-2 border border-slate-300 rounded-lg bg-slate-50 font-semibold focus:outline-none focus:border-amber-500" data-testid="settings.audit.tab.set-action-type"
             >
               <option value="all">كافة العمليات</option>
               <option value="create">إضافة جديدة</option>
@@ -144,7 +144,7 @@ export const AuditLogsTab: React.FC = () => {
             <select
               value={entityType}
               onChange={(e) => setEntityType(e.target.value)}
-              className="w-full p-2 border border-slate-300 rounded-lg bg-slate-50 font-semibold focus:outline-none focus:border-amber-500"
+              className="w-full p-2 border border-slate-300 rounded-lg bg-slate-50 font-semibold focus:outline-none focus:border-amber-500" data-testid="settings.audit.tab.set-entity-type"
             >
               <option value="all">كافة الكيانات</option>
               <option value="case">القضايا</option>
@@ -164,7 +164,7 @@ export const AuditLogsTab: React.FC = () => {
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="w-full p-2 border border-slate-300 rounded-lg bg-slate-50 font-semibold"
+              className="w-full p-2 border border-slate-300 rounded-lg bg-slate-50 font-semibold" data-testid="settings.audit.tab.set-start-date"
             />
           </div>
 
@@ -174,14 +174,14 @@ export const AuditLogsTab: React.FC = () => {
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="w-full p-2 border border-slate-300 rounded-lg bg-slate-50 font-semibold"
+              className="w-full p-2 border border-slate-300 rounded-lg bg-slate-50 font-semibold" data-testid="settings.audit.tab.set-end-date"
             />
           </div>
 
           <div className="flex items-end">
             <button
               onClick={handleApplyFilter}
-              className="w-full py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-lg font-bold shadow-xs transition-colors"
+              className="w-full py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-lg font-bold shadow-xs transition-colors" data-testid="settings.audit.tab.handle-apply-filter-2"
             >
               تطبيق التصفية
             </button>

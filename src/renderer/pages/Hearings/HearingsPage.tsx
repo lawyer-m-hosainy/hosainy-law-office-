@@ -306,7 +306,7 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
           <button
             onClick={() => handlePrintRoll('preview')}
             disabled={hearings.length === 0}
-            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 disabled:opacity-50 rounded-lg transition-colors"
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 disabled:opacity-50 rounded-lg transition-colors" data-testid="hearings.main.handle-print-roll"
           >
             <Eye className="w-4 h-4 text-slate-600" />
             معاينة الرول
@@ -315,7 +315,7 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
           <button
             onClick={() => handlePrintRoll('print')}
             disabled={hearings.length === 0}
-            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-white bg-slate-800 hover:bg-slate-900 disabled:opacity-50 rounded-lg transition-colors shadow-sm"
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-white bg-slate-800 hover:bg-slate-900 disabled:opacity-50 rounded-lg transition-colors shadow-sm" data-testid="hearings.main.handle-print-roll-2"
           >
             <Printer className="w-4 h-4" />
             طباعة الرول
@@ -324,7 +324,7 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
           <button
             onClick={() => handlePrintRoll('pdf')}
             disabled={hearings.length === 0}
-            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-amber-800 bg-amber-100 hover:bg-amber-200 disabled:opacity-50 rounded-lg transition-colors border border-amber-300"
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-amber-800 bg-amber-100 hover:bg-amber-200 disabled:opacity-50 rounded-lg transition-colors border border-amber-300" data-testid="hearings.main.handle-print-roll-3"
           >
             <FileDown className="w-4 h-4 text-amber-700" />
             حفظ PDF
@@ -333,7 +333,7 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
           <button
             onClick={loadRoll}
             className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
-            title="تحديث البيانات"
+            title="تحديث البيانات" data-testid="hearings.main.load-roll"
           >
             <RefreshCw className="w-4 h-4" />
           </button>
@@ -360,7 +360,7 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
                 dateFilterType === btn.id
                   ? 'bg-amber-600 text-white shadow-sm'
                   : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-              }`}
+              }`} data-testid="hearings.main.set-date-filter-type"
             >
               {btn.label}
             </button>
@@ -373,7 +373,7 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
                 type="date"
                 value={specificDate}
                 onChange={(e) => setSpecificDate(e.target.value)}
-                className="text-xs p-1.5 rounded border border-slate-300 bg-white"
+                className="text-xs p-1.5 rounded border border-slate-300 bg-white" data-testid="hearings.main.set-specific-date"
               />
             </div>
           )}
@@ -385,14 +385,14 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="text-xs p-1.5 rounded border border-slate-300 bg-white"
+                className="text-xs p-1.5 rounded border border-slate-300 bg-white" data-testid="hearings.main.set-start-date"
               />
               <span className="text-xs text-slate-500">إلى:</span>
               <input
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="text-xs p-1.5 rounded border border-slate-300 bg-white"
+                className="text-xs p-1.5 rounded border border-slate-300 bg-white" data-testid="hearings.main.set-end-date"
               />
             </div>
           )}
@@ -405,7 +405,7 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
             <select
               value={selectedCourt}
               onChange={(e) => setSelectedCourt(e.target.value)}
-              className="w-full text-xs p-2 rounded-lg border border-slate-300 bg-white"
+              className="w-full text-xs p-2 rounded-lg border border-slate-300 bg-white" data-testid="hearings.main.set-selected-court"
             >
               <option value="الكل">كافة المحاكم</option>
               {courts.map((c) => (
@@ -421,7 +421,7 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
               value={courtCircuitQuery}
               onChange={(e) => setCourtCircuitQuery(e.target.value)}
               placeholder="بحث بالدائرة..."
-              className="w-full text-xs p-2 rounded-lg border border-slate-300 bg-white"
+              className="w-full text-xs p-2 rounded-lg border border-slate-300 bg-white" data-testid="hearings.main.set-court-circuit-query"
             />
           </div>
 
@@ -430,7 +430,7 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
             <select
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
-              className="w-full text-xs p-2 rounded-lg border border-slate-300 bg-white"
+              className="w-full text-xs p-2 rounded-lg border border-slate-300 bg-white" data-testid="hearings.main.set-selected-status"
             >
               <option value="الكل">كافة الحالات</option>
               <option value="محددة">محددة</option>
@@ -533,7 +533,7 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
                       <button
                         onClick={() => onNavigateToCase(h.case_id)}
                         className="text-amber-700 hover:text-amber-800 font-extrabold text-sm flex items-center gap-1 group"
-                        title="انتقل إلى ملف القضية"
+                        title="انتقل إلى ملف القضية" data-testid="hearings.main.on-navigate-to-case"
                       >
                         {h.case_number} لسنة {h.case_year}
                         <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -597,7 +597,7 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
                     <td className="p-3 text-center">
                       <button
                         onClick={() => handleOpenOutcome(h)}
-                        className="px-2.5 py-1 text-[11px] font-bold text-white bg-slate-800 hover:bg-slate-900 rounded-lg transition-colors shadow-sm"
+                        className="px-2.5 py-1 text-[11px] font-bold text-white bg-slate-800 hover:bg-slate-900 rounded-lg transition-colors shadow-sm" data-testid="hearings.main.handle-open-outcome"
                       >
                         {h.court_decision ? 'تعديل' : 'تسجيل'}
                       </button>
@@ -626,7 +626,7 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
               </div>
               <button
                 onClick={() => setShowOutcomeModal(false)}
-                className="text-slate-400 hover:text-slate-600 font-bold text-lg"
+                className="text-slate-400 hover:text-slate-600 font-bold text-lg" data-testid="hearings.main.set-show-outcome-modal"
               >
                 ×
               </button>
@@ -660,7 +660,7 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
                             proceedings: prev.proceedings ? prev.proceedings : `طلب أجل ${suggestedReason} للمطلوب إعلانه ${pendingAnn.recipient_name}`
                           }));
                         }}
-                        className="px-2.5 py-1 bg-red-600 hover:bg-red-700 text-white rounded font-bold shadow-xs transition-colors"
+                        className="px-2.5 py-1 bg-red-600 hover:bg-red-700 text-white rounded font-bold shadow-xs transition-colors" data-testid="hearings.main.set-outcome-form"
                       >
                         اقتراح سبب التأجيل "{suggestedReason}"
                       </button>
@@ -676,7 +676,7 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
                   <select
                     value={outcomeForm.attended}
                     onChange={(e) => setOutcomeForm({ ...outcomeForm, attended: parseInt(e.target.value) || 0 })}
-                    className="w-full text-xs p-2 rounded border border-slate-300 bg-white font-bold"
+                    className="w-full text-xs p-2 rounded border border-slate-300 bg-white font-bold" data-testid="hearings.main.set-outcome-form-2"
                   >
                     <option value={1}>✅ حضرت الجلسة</option>
                     <option value={0}>❌ لم أحضر</option>
@@ -690,7 +690,7 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
                     value={outcomeForm.attended_by}
                     onChange={(e) => setOutcomeForm({ ...outcomeForm, attended_by: e.target.value })}
                     placeholder="اسم المحامي أو المندوب"
-                    className="w-full text-xs p-2 rounded border border-slate-300 bg-white"
+                    className="w-full text-xs p-2 rounded border border-slate-300 bg-white" data-testid="hearings.main.set-outcome-form-4"
                   />
                 </div>
               </div>
@@ -703,7 +703,7 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
                   onChange={(e) => setOutcomeForm({ ...outcomeForm, proceedings: e.target.value })}
                   placeholder="مثلاً: حضرنا عن المدعي وقدمنا أصل الصحيفة معلنة..."
                   rows={2}
-                  className="w-full text-xs p-2 rounded border border-slate-300 bg-white"
+                  className="w-full text-xs p-2 rounded border border-slate-300 bg-white" data-testid="hearings.main.set-outcome-form-5"
                 />
               </div>
 
@@ -718,7 +718,7 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
                   onChange={(e) => setOutcomeForm({ ...outcomeForm, court_decision: e.target.value })}
                   placeholder="مثلاً: التأجيل لجلسة 2026/11/24 لتقديم المذكرات والمستندات"
                   className="w-full text-xs p-2 rounded border border-amber-300 bg-amber-50/50 font-bold text-slate-900"
-                  required
+                  required data-testid="hearings.main.set-outcome-form-6"
                 />
               </div>
 
@@ -732,7 +732,7 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
                     value={outcomeForm.adjournment_reason}
                     onChange={(e) => setOutcomeForm({ ...outcomeForm, adjournment_reason: e.target.value })}
                     placeholder="اختر سبب التأجيل..."
-                    className="w-full text-xs p-2 rounded border border-slate-300 bg-white"
+                    className="w-full text-xs p-2 rounded border border-slate-300 bg-white" data-testid="hearings.main.set-outcome-form-7"
                   />
                   <datalist id="roll-adjournment-reasons">
                     {adjournmentReasons.map((r, i) => (
@@ -746,7 +746,7 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
                   <select
                     value={outcomeForm.status}
                     onChange={(e) => setOutcomeForm({ ...outcomeForm, status: e.target.value as HearingStatus })}
-                    className="w-full text-xs p-2 rounded border border-slate-300 bg-white font-bold"
+                    className="w-full text-xs p-2 rounded border border-slate-300 bg-white font-bold" data-testid="hearings.main.set-outcome-form-3"
                   >
                     <option value="مؤجلة">مؤجلة</option>
                     <option value="محجوزة للحكم">محجوزة للحكم</option>
@@ -771,7 +771,7 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
                         status: checked ? 'محجوزة للحكم' : outcomeForm.status
                       });
                     }}
-                    className="rounded text-purple-600 focus:ring-purple-500 w-4 h-4"
+                    className="rounded text-purple-600 focus:ring-purple-500 w-4 h-4" data-testid="hearings.main.set-outcome-form-8"
                   />
                   <span className="text-xs font-bold text-purple-900">
                     ⚖️ حجز القضية للحكم (تفعيل تنبيه الحكم المعلق)
@@ -788,7 +788,7 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
                         type="date"
                         value={outcomeForm.judgment_date}
                         onChange={(e) => setOutcomeForm({ ...outcomeForm, judgment_date: e.target.value })}
-                        className="w-full text-xs p-2 rounded border border-purple-300 bg-white"
+                        className="w-full text-xs p-2 rounded border border-purple-300 bg-white" data-testid="hearings.main.set-outcome-form-9"
                       />
                     </div>
                     <div>
@@ -800,7 +800,7 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
                         value={outcomeForm.judgment_text}
                         onChange={(e) => setOutcomeForm({ ...outcomeForm, judgment_text: e.target.value })}
                         placeholder="منطوق الحكم الصادر..."
-                        className="w-full text-xs p-2 rounded border border-purple-300 bg-white"
+                        className="w-full text-xs p-2 rounded border border-purple-300 bg-white" data-testid="hearings.main.set-outcome-form-10"
                       />
                     </div>
                   </div>
@@ -817,7 +817,7 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
                   type="date"
                   value={outcomeForm.next_hearing_date}
                   onChange={(e) => setOutcomeForm({ ...outcomeForm, next_hearing_date: e.target.value })}
-                  className="w-full text-xs p-2 rounded border border-indigo-300 bg-white font-bold text-indigo-900"
+                  className="w-full text-xs p-2 rounded border border-indigo-300 bg-white font-bold text-indigo-900" data-testid="hearings.main.set-outcome-form-11"
                 />
                 <p className="text-[11px] text-indigo-700 leading-relaxed">
                   💡 سيقوم النظام تلقائيًا بإنشاء الجلسة القادمة في رول القضية ورول المحكمة بمجرد الحفظ.
@@ -829,13 +829,13 @@ export const HearingsPage: React.FC<HearingsPageProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowOutcomeModal(false)}
-                  className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg"
+                  className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg" data-testid="hearings.main.set-show-outcome-modal-2"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2 text-xs font-bold text-white bg-slate-900 hover:bg-black rounded-lg shadow-sm"
+                  className="px-6 py-2 text-xs font-bold text-white bg-slate-900 hover:bg-black rounded-lg shadow-sm" data-testid="hearings.main.save"
                 >
                   حفظ نتيجة الجلسة وتحديث الرول
                 </button>

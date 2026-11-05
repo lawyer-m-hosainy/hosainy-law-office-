@@ -136,7 +136,7 @@ export const BackupSettingsTab: React.FC = () => {
           <button
             onClick={() => setIsCreateModalOpen(true)}
             disabled={loading}
-            className="flex items-center gap-2 px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold shadow-xs transition-colors cursor-pointer disabled:opacity-50"
+            className="flex items-center gap-2 px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold shadow-xs transition-colors cursor-pointer disabled:opacity-50" data-testid="settings.backup.tab.set-is-create-modal-open"
           >
             <Save className="w-4 h-4" />
             <span>إنشاء نسخة احتياطية فورية</span>
@@ -144,7 +144,7 @@ export const BackupSettingsTab: React.FC = () => {
 
           <button
             onClick={handleSelectExternalFile}
-            className="flex items-center gap-1.5 px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold border border-slate-300 transition-colors"
+            className="flex items-center gap-1.5 px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold border border-slate-300 transition-colors" data-testid="settings.backup.tab.handle-select-external-file"
           >
             <Upload className="w-4 h-4" />
             <span>استعادة من ملف خارجي...</span>
@@ -182,7 +182,7 @@ export const BackupSettingsTab: React.FC = () => {
               type="checkbox"
               checked={securitySettings?.auto_backup_enabled === 1}
               onChange={(e) => updateSettings({ auto_backup_enabled: e.target.checked ? 1 : 0 })}
-              className="w-4 h-4 rounded text-amber-600 focus:ring-amber-500 border-slate-300"
+              className="w-4 h-4 rounded text-amber-600 focus:ring-amber-500 border-slate-300" data-testid="settings.backup.tab.settings-2"
             />
             <span className="text-xs font-bold text-slate-700">تفعيل النسخ الدوري التلقائي</span>
           </label>
@@ -195,7 +195,7 @@ export const BackupSettingsTab: React.FC = () => {
               value={securitySettings?.auto_backup_frequency || 'daily'}
               onChange={(e) => updateSettings({ auto_backup_frequency: e.target.value as any })}
               disabled={securitySettings?.auto_backup_enabled !== 1}
-              className="w-full p-2 border border-slate-300 rounded-lg bg-slate-50 font-bold focus:outline-none focus:border-amber-500 disabled:opacity-50"
+              className="w-full p-2 border border-slate-300 rounded-lg bg-slate-50 font-bold focus:outline-none focus:border-amber-500 disabled:opacity-50" data-testid="settings.backup.tab.settings"
             >
               <option value="daily">يومياً عند بدء العمل (الموصى به)</option>
               <option value="weekly">أسبوعياً</option>
@@ -210,13 +210,13 @@ export const BackupSettingsTab: React.FC = () => {
                 type="text"
                 readOnly
                 value={securitySettings?.backup_custom_path || 'المجلد الافتراضي (LawOfficeData/backups)'}
-                className="flex-1 p-2 bg-slate-100 border border-slate-300 rounded-lg font-mono text-[11px] text-slate-600 truncate dir-ltr text-right"
+                className="flex-1 p-2 bg-slate-100 border border-slate-300 rounded-lg font-mono text-[11px] text-slate-600 truncate dir-ltr text-right" data-testid="settings.backup.tab.input-text"
               />
               <button
                 type="button"
                 onClick={handleChooseCustomFolder}
                 className="px-3 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-lg font-bold flex items-center gap-1 flex-shrink-0"
-                title="اختيار فلاشة أو قرص صلب خارجي"
+                title="اختيار فلاشة أو قرص صلب خارجي" data-testid="settings.backup.tab.handle-choose-custom-folder"
               >
                 <FolderOpen className="w-3.5 h-3.5" />
                 <span>تغيير</span>
@@ -288,7 +288,7 @@ export const BackupSettingsTab: React.FC = () => {
                     <td className="p-3 text-center">
                       <button
                         onClick={() => setRestoreTargetFile(bk)}
-                        className="flex items-center gap-1 px-3 py-1 bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold rounded-lg border border-amber-200 transition-colors mx-auto"
+                        className="flex items-center gap-1 px-3 py-1 bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold rounded-lg border border-amber-200 transition-colors mx-auto" data-testid="settings.backup.tab.set-restore-target-file"
                       >
                         <RotateCcw className="w-3.5 h-3.5" />
                         <span>استعادة</span>
@@ -311,7 +311,7 @@ export const BackupSettingsTab: React.FC = () => {
                 <Archive className="w-4 h-4 text-amber-600" />
                 <h3 className="font-bold text-sm text-slate-800">إنشاء نسخة احتياطية كاملة</h3>
               </div>
-              <button onClick={() => setIsCreateModalOpen(false)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setIsCreateModalOpen(false)} className="text-slate-400 hover:text-slate-600" data-testid="settings.backup.tab.set-is-create-modal-open-2">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -326,7 +326,7 @@ export const BackupSettingsTab: React.FC = () => {
                   type="checkbox"
                   checked={encryptNewBackup}
                   onChange={(e) => setEncryptNewBackup(e.target.checked)}
-                  className="w-4 h-4 rounded text-purple-600 focus:ring-purple-500 border-purple-300"
+                  className="w-4 h-4 rounded text-purple-600 focus:ring-purple-500 border-purple-300" data-testid="settings.backup.tab.set-encrypt-new-backup"
                 />
                 <div>
                   <span className="font-bold text-purple-900 block">
@@ -348,7 +348,7 @@ export const BackupSettingsTab: React.FC = () => {
                     value={backupPassword}
                     onChange={(e) => setBackupPassword(e.target.value)}
                     placeholder="اكتب كلمة مرور النسخة..."
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 font-bold"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 font-bold" data-testid="settings.backup.tab.set-backup-password"
                   />
                 </div>
               )}
@@ -358,14 +358,14 @@ export const BackupSettingsTab: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsCreateModalOpen(false)}
-                className="px-3 py-1.5 text-xs text-slate-600 font-bold"
+                className="px-3 py-1.5 text-xs text-slate-600 font-bold" data-testid="settings.backup.tab.set-is-create-modal-open-3"
               >
                 إلغاء
               </button>
               <button
                 type="button"
                 onClick={handleStartBackup}
-                className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-bold shadow-xs transition-colors"
+                className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-bold shadow-xs transition-colors" data-testid="settings.backup.tab.handle-start-backup"
               >
                 بدء النسخ الاحتياطي الآن
               </button>
@@ -405,7 +405,7 @@ export const BackupSettingsTab: React.FC = () => {
                     value={restorePassword}
                     onChange={(e) => setRestorePassword(e.target.value)}
                     placeholder="كلمة مرور النسخة المشفرة..."
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 font-bold"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 font-bold" data-testid="settings.backup.tab.set-restore-password"
                   />
                 </div>
               )}
@@ -419,7 +419,7 @@ export const BackupSettingsTab: React.FC = () => {
                   setRestoreTargetFile(null);
                   setRestorePassword('');
                 }}
-                className="px-3 py-1.5 text-xs text-slate-600 font-bold"
+                className="px-3 py-1.5 text-xs text-slate-600 font-bold" data-testid="settings.backup.tab.set-restore-target-file-2"
               >
                 إلغاء
               </button>
@@ -427,7 +427,7 @@ export const BackupSettingsTab: React.FC = () => {
                 type="button"
                 disabled={isRestoring}
                 onClick={handleConfirmRestore}
-                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold shadow-xs transition-colors flex items-center gap-1.5"
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold shadow-xs transition-colors flex items-center gap-1.5" data-testid="settings.backup.tab.handle-confirm-restore"
               >
                 {isRestoring ? (
                   <>

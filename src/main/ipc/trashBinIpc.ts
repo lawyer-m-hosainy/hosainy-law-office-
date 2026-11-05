@@ -196,7 +196,9 @@ export function registerTrashBinIpc(): void {
           if (fs.existsSync(fullPath)) {
             fs.unlinkSync(fullPath);
           }
-        } catch (e) {}
+        } catch (e) {
+          console.error('Failed to unlink deleted document file:', fullPath, e);
+        }
       }
     }
 

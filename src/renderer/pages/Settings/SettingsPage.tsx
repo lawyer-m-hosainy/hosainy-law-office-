@@ -232,7 +232,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
             activeTab === 'office'
               ? 'bg-amber-600 text-white shadow-sm'
               : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-          }`}
+          }`} data-testid="settings.main.set-active-tab"
         >
           <Building2 className="w-4 h-4" />
           <span>بيانات المكتب والترويسة</span>
@@ -244,7 +244,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
             activeTab === 'security'
               ? 'bg-amber-600 text-white shadow-sm'
               : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-          }`}
+          }`} data-testid="settings.main.set-active-tab-2"
         >
           <Lock className="w-4 h-4" />
           <span>الأمان وقفل البرنامج</span>
@@ -256,7 +256,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
             activeTab === 'backups'
               ? 'bg-amber-600 text-white shadow-sm'
               : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-          }`}
+          }`} data-testid="settings.main.set-active-tab-3"
         >
           <Archive className="w-4 h-4" />
           <span>النسخ الاحتياطي والاستعادة</span>
@@ -268,7 +268,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
             activeTab === 'audit'
               ? 'bg-amber-600 text-white shadow-sm'
               : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-          }`}
+          }`} data-testid="settings.main.set-active-tab-4"
         >
           <History className="w-4 h-4" />
           <span>سجل التدقيق والتغييرات</span>
@@ -280,7 +280,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
             activeTab === 'storage'
               ? 'bg-amber-600 text-white shadow-sm'
               : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-          }`}
+          }`} data-testid="settings.main.set-active-tab-5"
         >
           <FolderTree className="w-4 h-4" />
           <span>مجلد البيانات والتخزين المحلي</span>
@@ -292,7 +292,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
             activeTab === 'lists'
               ? 'bg-amber-600 text-white shadow-sm'
               : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-          }`}
+          }`} data-testid="settings.main.set-active-tab-6"
         >
           <ListFilter className="w-4 h-4" />
           <span>إدارة القوائم القابلة للتعديل</span>
@@ -304,7 +304,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
             activeTab === 'deadlines'
               ? 'bg-amber-600 text-white shadow-sm'
               : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-          }`}
+          }`} data-testid="settings.main.set-active-tab-7"
         >
           <Clock className="w-4 h-4" />
           <span>المواعيد القانونية والتنبيهات</span>
@@ -322,7 +322,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
               </div>
               <button
                 type="submit"
-                className="flex items-center gap-2 px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white text-sm font-bold rounded-lg shadow-xs transition-colors"
+                className="flex items-center gap-2 px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white text-sm font-bold rounded-lg shadow-xs transition-colors" data-testid="settings.main.save"
               >
                 <Save className="w-4 h-4" />
                 <span>حفظ التعديلات</span>
@@ -348,7 +348,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   value={officeForm.office_name || ''}
                   onChange={(e) => setOfficeForm({ ...officeForm, office_name: e.target.value })}
                   placeholder="مثال: مكتب الأستاذ فلان المحامي بالنقض"
-                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-semibold"
+                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-semibold" data-testid="settings.main.set-office-form"
                 />
               </div>
 
@@ -373,7 +373,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                 <button
                   type="button"
                   onClick={handlePickLogo}
-                  className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold rounded-lg transition-colors"
+                  className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold rounded-lg transition-colors" data-testid="settings.main.handle-pick-logo"
                 >
                   <Upload className="w-3.5 h-3.5" />
                   <span>{officeForm.logo_path ? 'تغيير الشعار' : 'رفع صورة الشعار'}</span>
@@ -388,7 +388,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   required
                   value={officeForm.lawyer_name || ''}
                   onChange={(e) => setOfficeForm({ ...officeForm, lawyer_name: e.target.value })}
-                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-semibold"
+                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-semibold" data-testid="settings.main.set-office-form-2"
                 />
               </div>
 
@@ -400,7 +400,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   value={officeForm.title || ''}
                   onChange={(e) => setOfficeForm({ ...officeForm, title: e.target.value })}
                   placeholder="مثال: محامٍ بالنقض والدستورية العليا"
-                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="settings.main.set-office-form-3"
                 />
               </div>
 
@@ -413,7 +413,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   value={officeForm.phone || ''}
                   onChange={(e) => setOfficeForm({ ...officeForm, phone: e.target.value })}
                   placeholder="010..."
-                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="settings.main.set-office-form-4"
                 />
               </div>
 
@@ -424,7 +424,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   type="text"
                   value={officeForm.phone2 || ''}
                   onChange={(e) => setOfficeForm({ ...officeForm, phone2: e.target.value })}
-                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="settings.main.set-office-form-5"
                 />
               </div>
 
@@ -435,7 +435,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   type="email"
                   value={officeForm.email || ''}
                   onChange={(e) => setOfficeForm({ ...officeForm, email: e.target.value })}
-                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="settings.main.set-office-form-6"
                 />
               </div>
 
@@ -446,7 +446,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   type="text"
                   value={officeForm.bar_registration_number || ''}
                   onChange={(e) => setOfficeForm({ ...officeForm, bar_registration_number: e.target.value })}
-                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="settings.main.set-office-form-7"
                 />
               </div>
 
@@ -457,7 +457,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   type="text"
                   value={officeForm.tax_number || ''}
                   onChange={(e) => setOfficeForm({ ...officeForm, tax_number: e.target.value })}
-                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="settings.main.set-office-form-8"
                 />
               </div>
 
@@ -469,7 +469,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   value={officeForm.address || ''}
                   onChange={(e) => setOfficeForm({ ...officeForm, address: e.target.value })}
                   placeholder="الشارع، العمارة، الدور، المدينة، المحافظة"
-                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="settings.main.set-office-form-9"
                 />
               </div>
 
@@ -481,7 +481,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   value={officeForm.notes || ''}
                   onChange={(e) => setOfficeForm({ ...officeForm, notes: e.target.value })}
                   placeholder="مثال: المحاماة رسالة الدفاع عن الحق والعدل وسيادة القانون"
-                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="settings.main.set-office-form-10"
                 />
               </div>
             </div>
@@ -513,7 +513,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                 <button
                   type="button"
                   onClick={handleOpenFolder}
-                  className="flex items-center gap-1.5 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg border border-slate-300 transition-colors"
+                  className="flex items-center gap-1.5 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg border border-slate-300 transition-colors" data-testid="settings.main.handle-open-folder"
                 >
                   <FolderOpen className="w-4 h-4 text-slate-600" />
                   <span>فتح المجلد</span>
@@ -523,7 +523,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   type="button"
                   disabled={relocating}
                   onClick={handleRelocateFolder}
-                  className="flex items-center gap-1.5 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors disabled:opacity-50"
+                  className="flex items-center gap-1.5 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors disabled:opacity-50" data-testid="settings.main.handle-relocate-folder"
                 >
                   <ArrowRightLeft className="w-4 h-4" />
                   <span>{relocating ? 'جاري النقل...' : 'نقل مجلد البيانات'}</span>
@@ -604,7 +604,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   selectedListType === type
                     ? 'bg-slate-900 text-white shadow-sm'
                     : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-                }`}
+                }`} data-testid="settings.main.set-selected-list-type"
               >
                 {listTypeLabels[type].label} ({lists[type]?.length || 0})
               </button>
@@ -624,7 +624,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                 type="button"
                 onClick={handleResetList}
                 className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg border border-slate-300 transition-colors self-start sm:self-auto"
-                title="إعادة ضبط القائمة إلى القيم الافتراضية المحددة في SPEC.md"
+                title="إعادة ضبط القائمة إلى القيم الافتراضية المحددة في SPEC.md" data-testid="settings.main.handle-reset-list"
               >
                 <RotateCcw className="w-3.5 h-3.5 text-slate-600" />
                 <span>استعادة الافتراضيات</span>
@@ -639,12 +639,12 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   value={newItemName}
                   onChange={(e) => setNewItemName(e.target.value)}
                   placeholder={`إضافة اسم جديد إلى ${listTypeLabels[selectedListType].label}...`}
-                  className="flex-1 px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="flex-1 px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="settings.main.set-new-item-name"
                 />
                 <button
                   type="submit"
                   disabled={!newItemName.trim()}
-                  className="flex items-center gap-1.5 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors disabled:opacity-50 flex-shrink-0"
+                  className="flex items-center gap-1.5 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors disabled:opacity-50 flex-shrink-0" data-testid="settings.main.add"
                 >
                   <Plus className="w-4 h-4" />
                   <span>إضافة</span>
@@ -657,7 +657,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   value={listSearch}
                   onChange={(e) => setListSearch(e.target.value)}
                   placeholder="بحث في القائمة..."
-                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="settings.main.set-list-search"
                 />
               </div>
             </div>
@@ -702,19 +702,19 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                                   autoFocus
                                   value={editingItemName}
                                   onChange={(e) => setEditingItemName(e.target.value)}
-                                  className="px-2.5 py-1 text-sm bg-white border border-amber-500 rounded focus:outline-none"
+                                  className="px-2.5 py-1 text-sm bg-white border border-amber-500 rounded focus:outline-none" data-testid="settings.main.set-editing-item-name"
                                 />
                                 <button
                                   type="button"
                                   onClick={() => handleSaveEditItem(item)}
-                                  className="p-1 text-emerald-600 hover:text-emerald-800"
+                                  className="p-1 text-emerald-600 hover:text-emerald-800" data-testid="settings.main.handle-save-edit-item"
                                 >
                                   <Check className="w-4 h-4" />
                                 </button>
                                 <button
                                   type="button"
                                   onClick={() => setEditingItemId(null)}
-                                  className="text-xs text-slate-500 hover:text-slate-700"
+                                  className="text-xs text-slate-500 hover:text-slate-700" data-testid="settings.main.set-editing-item-id"
                                 >
                                   إلغاء
                                 </button>
@@ -731,7 +731,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                                 item.is_active === 1
                                   ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
                                   : 'bg-slate-200 text-slate-600 hover:bg-slate-300'
-                              }`}
+                              }`} data-testid="settings.main.handle-toggle-active"
                             >
                               {item.is_active === 1 ? 'مفعل' : 'معطّل'}
                             </button>
@@ -745,7 +745,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                                   setEditingItemName(item.name);
                                 }}
                                 title="تعديل الاسم"
-                                className="p-1 text-slate-500 hover:text-amber-600 transition-colors"
+                                className="p-1 text-slate-500 hover:text-amber-600 transition-colors" data-testid="settings.main.set-editing-item-id-2"
                               >
                                 <Edit2 className="w-4 h-4" />
                               </button>
@@ -753,7 +753,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                                 type="button"
                                 onClick={() => handleDeleteItem(item)}
                                 title="حذف نهائي"
-                                className="p-1 text-slate-500 hover:text-red-600 transition-colors"
+                                className="p-1 text-slate-500 hover:text-red-600 transition-colors" data-testid="settings.main.handle-delete-item"
                               >
                                 <Trash2 className="w-4 h-4" />
                               </button>
@@ -783,7 +783,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
               </div>
               <button
                 type="submit"
-                className="flex items-center gap-2 px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white text-sm font-bold rounded-lg shadow-xs transition-colors"
+                className="flex items-center gap-2 px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white text-sm font-bold rounded-lg shadow-xs transition-colors" data-testid="settings.main.save-2"
               >
                 <Save className="w-4 h-4" />
                 <span>حفظ التعديلات</span>
@@ -798,7 +798,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   min={1}
                   value={officeForm.appeal_deadline_civil ?? 40}
                   onChange={(e) => setOfficeForm({ ...officeForm, appeal_deadline_civil: parseInt(e.target.value) || 0 })}
-                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold"
+                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold" data-testid="settings.main.set-office-form-11"
                 />
                 <span className="text-[11px] text-slate-500 mt-1 block">افتراضي: 40 يومًا من تاريخ صدور الحكم</span>
               </div>
@@ -810,7 +810,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   min={1}
                   value={officeForm.appeal_deadline_misdemeanor ?? 10}
                   onChange={(e) => setOfficeForm({ ...officeForm, appeal_deadline_misdemeanor: parseInt(e.target.value) || 0 })}
-                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold"
+                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold" data-testid="settings.main.set-office-form-12"
                 />
                 <span className="text-[11px] text-slate-500 mt-1 block">افتراضي: 10 أيام من تاريخ النطق أو الإعلان</span>
               </div>
@@ -822,7 +822,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   min={1}
                   value={officeForm.appeal_deadline_cassation ?? 60}
                   onChange={(e) => setOfficeForm({ ...officeForm, appeal_deadline_cassation: parseInt(e.target.value) || 0 })}
-                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold"
+                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold" data-testid="settings.main.set-office-form-13"
                 />
                 <span className="text-[11px] text-slate-500 mt-1 block">افتراضي: 60 يومًا</span>
               </div>
@@ -834,7 +834,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   min={1}
                   value={officeForm.appeal_deadline_urgent ?? 15}
                   onChange={(e) => setOfficeForm({ ...officeForm, appeal_deadline_urgent: parseInt(e.target.value) || 0 })}
-                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold"
+                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold" data-testid="settings.main.set-office-form-14"
                 />
                 <span className="text-[11px] text-slate-500 mt-1 block">افتراضي: 15 يومًا للأحكام المستعجلة</span>
               </div>
@@ -846,7 +846,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   min={1}
                   value={officeForm.appeal_deadline_family ?? 40}
                   onChange={(e) => setOfficeForm({ ...officeForm, appeal_deadline_family: parseInt(e.target.value) || 0 })}
-                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold"
+                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold" data-testid="settings.main.set-office-form-15"
                 />
                 <span className="text-[11px] text-slate-500 mt-1 block">افتراضي: 40 يومًا</span>
               </div>
@@ -858,7 +858,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   min={1}
                   value={officeForm.appeal_deadline_admin ?? 60}
                   onChange={(e) => setOfficeForm({ ...officeForm, appeal_deadline_admin: parseInt(e.target.value) || 0 })}
-                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold"
+                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold" data-testid="settings.main.set-office-form-16"
                 />
                 <span className="text-[11px] text-slate-500 mt-1 block">افتراضي: 60 يومًا</span>
               </div>
@@ -870,7 +870,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   min={1}
                   value={officeForm.alert_days_before ?? 3}
                   onChange={(e) => setOfficeForm({ ...officeForm, alert_days_before: parseInt(e.target.value) || 1 })}
-                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold"
+                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold" data-testid="settings.main.set-office-form-17"
                 />
                 <span className="text-[11px] text-slate-500 mt-1 block">تنبيه في لوحة اليوم قبل انتهاء الميعاد</span>
               </div>
@@ -882,7 +882,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                   min={1}
                   value={officeForm.announcement_warning_days ?? 3}
                   onChange={(e) => setOfficeForm({ ...officeForm, announcement_warning_days: parseInt(e.target.value) || 1 })}
-                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold"
+                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold" data-testid="settings.main.set-office-form-18"
                 />
                 <span className="text-[11px] text-slate-500 mt-1 block">تنبيه أحمر للجلسات التي لم ترد إعلاناتها</span>
               </div>
@@ -905,7 +905,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                       type="checkbox"
                       checked={Boolean(officeForm.calendar_privacy_mode ?? 1)}
                       onChange={(e) => setOfficeForm({ ...officeForm, calendar_privacy_mode: e.target.checked ? 1 : 0 })}
-                      className="w-5 h-5 text-emerald-600 rounded-sm focus:ring-emerald-500"
+                      className="w-5 h-5 text-emerald-600 rounded-sm focus:ring-emerald-500" data-testid="settings.main.set-office-form-19"
                     />
                     <div>
                       <span className="text-xs font-bold text-slate-800 block">تفعيل "وضع الخصوصية" افتراضيًا</span>
@@ -925,7 +925,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                     value={officeForm.calendar_alarm_triggers || '1d,1h'}
                     onChange={(e) => setOfficeForm({ ...officeForm, calendar_alarm_triggers: e.target.value })}
                     placeholder="مثال: 1d,1h (يوم قبل وساعة قبل)"
-                    className="w-full px-3.5 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold"
+                    className="w-full px-3.5 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold" data-testid="settings.main.set-office-form-20"
                   />
                   <span className="text-[11px] text-slate-500 mt-1 block">
                     الصيغة: 1d (يوم قبل)، 1h (ساعة قبل)، أو بالدقائق مفصولة بفواصل

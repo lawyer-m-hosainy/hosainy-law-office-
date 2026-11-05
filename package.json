@@ -32,7 +32,11 @@
     "test:install": "cross-env ELECTRON_RUN_AS_NODE=1 electron ./node_modules/vitest/vitest.mjs run tests/install",
     "test:c": "cross-env ELECTRON_RUN_AS_NODE=1 electron ./node_modules/vitest/vitest.mjs run tests/unit/testC_security.test.ts tests/unit/testC_backup_recovery.test.ts tests/perf/testC_performance.test.ts tests/unit/testC_fuzz_stress.test.ts",
     "test:e2e": "echo \"Playwright E2E suite prepared for Phase 9 packaging verification\"",
-    "test:all": "npm run test:unit && npm run test:db && npm run test:integration && npm run test:offline && npm run test:security && npm run test:print && npm run test:perf && npm run test:install"
+    "test:all": "npm run test:unit && npm run test:db && npm run test:integration && npm run test:offline && npm run test:security && npm run test:print && npm run test:perf && npm run test:install",
+    "lint": "eslint src/renderer/",
+    "lint:testid": "eslint src/renderer/ --rule '{\"custom-rules/require-data-testid\": \"error\"}'",
+    "inventory": "node scripts/generate_inventory.mjs",
+    "static-audit": "node scripts/generate_static_findings.mjs"
   },
   "dependencies": {
     "@fontsource/cairo": "^5.3.0",

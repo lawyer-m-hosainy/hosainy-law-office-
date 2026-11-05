@@ -108,7 +108,7 @@ export const SecuritySettingsTab: React.FC = () => {
           <button
             onClick={lockApp}
             className="flex items-center gap-1.5 px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-bold shadow-xs transition-colors cursor-pointer"
-            title="قفل الشاشة فوراً لحين العودة"
+            title="قفل الشاشة فوراً لحين العودة" data-testid="settings.security.tab.lock"
           >
             <Lock className="w-3.5 h-3.5" />
             <span>قفل الشاشة الآن</span>
@@ -137,7 +137,7 @@ export const SecuritySettingsTab: React.FC = () => {
           <button
             type="button"
             onClick={() => setShowPasswords(!showPasswords)}
-            className="text-xs text-slate-500 hover:text-slate-700 flex items-center gap-1"
+            className="text-xs text-slate-500 hover:text-slate-700 flex items-center gap-1" data-testid="settings.security.tab.set-show-passwords"
           >
             {showPasswords ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
             <span>{showPasswords ? 'إخفاء الحروف' : 'إظهار الحروف'}</span>
@@ -155,7 +155,7 @@ export const SecuritySettingsTab: React.FC = () => {
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
                 placeholder="أدخل كلمة المرور الحالية..."
-                className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 font-bold"
+                className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 font-bold" data-testid="settings.security.tab.set-current-password"
               />
             </div>
           )}
@@ -169,7 +169,7 @@ export const SecuritySettingsTab: React.FC = () => {
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               placeholder="اكتب كلمة مرور قوية (4 أحرف أو أرقام كحد أدنى)..."
-              className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 font-bold"
+              className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 font-bold" data-testid="settings.security.tab.set-new-password"
             />
           </div>
 
@@ -182,7 +182,7 @@ export const SecuritySettingsTab: React.FC = () => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="أعد إدخال كلمة المرور للتأكيد..."
-              className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 font-bold"
+              className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 font-bold" data-testid="settings.security.tab.set-confirm-password"
             />
           </div>
 
@@ -190,7 +190,7 @@ export const SecuritySettingsTab: React.FC = () => {
             <button
               type="submit"
               disabled={loading || !newPassword}
-              className="flex items-center gap-1.5 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-bold shadow-xs transition-colors disabled:opacity-50"
+              className="flex items-center gap-1.5 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-bold shadow-xs transition-colors disabled:opacity-50" data-testid="settings.security.tab.button-3"
             >
               <Save className="w-3.5 h-3.5" />
               <span>{hasPassword ? 'حفظ كلمة المرور الجديدة' : 'تفعيل قفل البرنامج'}</span>
@@ -201,7 +201,7 @@ export const SecuritySettingsTab: React.FC = () => {
                 type="button"
                 onClick={handleRemovePassword}
                 disabled={loading || !currentPassword}
-                className="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg text-xs font-bold border border-rose-200 transition-colors disabled:opacity-50"
+                className="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg text-xs font-bold border border-rose-200 transition-colors disabled:opacity-50" data-testid="settings.security.tab.handle-remove-password"
               >
                 إلغاء قفل البرنامج
               </button>
@@ -228,7 +228,7 @@ export const SecuritySettingsTab: React.FC = () => {
               value={securitySettings?.auto_lock_minutes || 15}
               onChange={(e) => handleAutoLockChange(Number(e.target.value))}
               disabled={!hasPassword}
-              className="px-3 py-1.5 text-xs border border-slate-300 rounded-lg bg-slate-50 font-bold focus:outline-none focus:border-amber-500 disabled:opacity-50"
+              className="px-3 py-1.5 text-xs border border-slate-300 rounded-lg bg-slate-50 font-bold focus:outline-none focus:border-amber-500 disabled:opacity-50" data-testid="settings.security.tab.handle-auto-lock-change"
             >
               <option value={5}>5 دقائق</option>
               <option value={10}>10 دقائق</option>

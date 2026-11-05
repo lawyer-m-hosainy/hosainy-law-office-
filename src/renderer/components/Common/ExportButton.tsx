@@ -64,7 +64,7 @@ export const ExportButton: React.FC<ExportButtonProps> = ({
           className ||
           'bg-emerald-50 text-emerald-800 border-emerald-300 hover:bg-emerald-100 disabled:opacity-50'
         }`}
-        title="تصدير بيانات الجدول إلى ملف Excel أو CSV"
+        title="تصدير بيانات الجدول إلى ملف Excel أو CSV" data-testid="export.main.set-is-open"
       >
         <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-700" />
         <span>{isExporting ? 'جاري التصدير...' : buttonLabel}</span>
@@ -75,12 +75,12 @@ export const ExportButton: React.FC<ExportButtonProps> = ({
         <>
           <div
             className="fixed inset-0 z-40"
-            onClick={() => setIsOpen(false)}
+            onClick={() => setIsOpen(false)} data-testid="export.main.set-is-open-2"
           />
           <div className="absolute left-0 mt-1 w-48 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 text-xs">
             <button
               onClick={() => handleExport('excel')}
-              className="w-full text-right px-4 py-2 hover:bg-emerald-50 text-slate-700 hover:text-emerald-900 font-semibold flex items-center justify-between"
+              className="w-full text-right px-4 py-2 hover:bg-emerald-50 text-slate-700 hover:text-emerald-900 font-semibold flex items-center justify-between" data-testid="export.main.handle-export"
             >
               <div className="flex items-center gap-2">
                 <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
@@ -93,7 +93,7 @@ export const ExportButton: React.FC<ExportButtonProps> = ({
 
             <button
               onClick={() => handleExport('csv')}
-              className="w-full text-right px-4 py-2 hover:bg-blue-50 text-slate-700 hover:text-blue-900 font-semibold flex items-center justify-between"
+              className="w-full text-right px-4 py-2 hover:bg-blue-50 text-slate-700 hover:text-blue-900 font-semibold flex items-center justify-between" data-testid="export.main.handle-export-2"
             >
               <div className="flex items-center gap-2">
                 <Download className="w-4 h-4 text-blue-600" />
@@ -121,7 +121,7 @@ export const ExportButton: React.FC<ExportButtonProps> = ({
             <div className="flex items-center gap-2 mt-2">
               <button
                 onClick={handleOpenFile}
-                className="flex items-center gap-1 px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-[11px] font-bold shadow-xs transition-colors"
+                className="flex items-center gap-1 px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-[11px] font-bold shadow-xs transition-colors" data-testid="export.main.handle-open-file"
               >
                 <ExternalLink className="w-3 h-3" />
                 <span>فتح الملف الآن</span>
@@ -130,9 +130,12 @@ export const ExportButton: React.FC<ExportButtonProps> = ({
                 onClick={async () => {
                   try {
                     await window.electronAPI.openDataDir();
-                  } catch (e) {}
+                  } catch (e: any) {
+                    console.error('Failed to open data directory:', e);
+                    alert(`تعذر فتح مجلد البيانات: ${e?.message || 'خطأ غير معروف'}`);
+                  }
                 }}
-                className="flex items-center gap-1 px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded text-[11px] font-bold border border-slate-300 transition-colors"
+                className="flex items-center gap-1 px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded text-[11px] font-bold border border-slate-300 transition-colors" data-testid="export.main.on-api"
               >
                 <FolderOpen className="w-3 h-3 text-slate-600" />
                 <span>مجلد التصدير</span>
@@ -141,7 +144,7 @@ export const ExportButton: React.FC<ExportButtonProps> = ({
           </div>
           <button
             onClick={() => setExportResult(null)}
-            className="text-slate-400 hover:text-slate-600 transition-colors p-1"
+            className="text-slate-400 hover:text-slate-600 transition-colors p-1" data-testid="export.main.set-export-result"
           >
             <X className="w-4 h-4" />
           </button>

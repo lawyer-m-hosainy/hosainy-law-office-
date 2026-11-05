@@ -193,7 +193,7 @@ export const CalendarExportModal: React.FC<CalendarExportModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/10"
+            className="text-slate-400 hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/10" data-testid="calendar-export.main.on-close"
           >
             <X className="w-5 h-5" />
           </button>
@@ -225,7 +225,7 @@ export const CalendarExportModal: React.FC<CalendarExportModalProps> = ({
                       type="checkbox"
                       checked={privacyMode}
                       onChange={e => setPrivacyMode(e.target.checked)}
-                      className="w-4 h-4 text-emerald-600 rounded-sm focus:ring-emerald-500"
+                      className="w-4 h-4 text-emerald-600 rounded-sm focus:ring-emerald-500" data-testid="calendar-export.main.set-privacy-mode"
                     />
                   </label>
                 </div>
@@ -254,7 +254,7 @@ export const CalendarExportModal: React.FC<CalendarExportModalProps> = ({
                   type="date"
                   value={startDate}
                   onChange={e => setStartDate(e.target.value)}
-                  className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-colors"
+                  className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-colors" data-testid="calendar-export.main.set-start-date"
                 />
               </div>
               <div>
@@ -263,7 +263,7 @@ export const CalendarExportModal: React.FC<CalendarExportModalProps> = ({
                   type="date"
                   value={endDate}
                   onChange={e => setEndDate(e.target.value)}
-                  className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-colors"
+                  className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-colors" data-testid="calendar-export.main.set-end-date"
                 />
               </div>
             </div>
@@ -274,35 +274,35 @@ export const CalendarExportModal: React.FC<CalendarExportModalProps> = ({
               <button
                 type="button"
                 onClick={() => applyPreset('currentWeek')}
-                className="px-2.5 py-1 text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md font-medium transition-colors"
+                className="px-2.5 py-1 text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md font-medium transition-colors" data-testid="calendar-export.main.button-2"
               >
                 الأسبوع الحالي
               </button>
               <button
                 type="button"
                 onClick={() => applyPreset('thisMonth')}
-                className="px-2.5 py-1 text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md font-medium transition-colors"
+                className="px-2.5 py-1 text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md font-medium transition-colors" data-testid="calendar-export.main.onth"
               >
                 هذا الشهر
               </button>
               <button
                 type="button"
                 onClick={() => applyPreset('nextMonth')}
-                className="px-2.5 py-1 text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md font-medium transition-colors"
+                className="px-2.5 py-1 text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md font-medium transition-colors" data-testid="calendar-export.main.onth-2"
               >
                 الشهر القادم
               </button>
               <button
                 type="button"
                 onClick={() => applyPreset('threeMonths')}
-                className="px-2.5 py-1 text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md font-medium transition-colors"
+                className="px-2.5 py-1 text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md font-medium transition-colors" data-testid="calendar-export.main.onths"
               >
                 3 أشهر قادمة
               </button>
               <button
                 type="button"
                 onClick={() => applyPreset('year')}
-                className="px-2.5 py-1 text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md font-medium transition-colors"
+                className="px-2.5 py-1 text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-md font-medium transition-colors" data-testid="calendar-export.main.button-6"
               >
                 كامل السنة
               </button>
@@ -327,7 +327,7 @@ export const CalendarExportModal: React.FC<CalendarExportModalProps> = ({
                   type="checkbox"
                   checked={includeHearings}
                   onChange={e => setIncludeHearings(e.target.checked)}
-                  className="w-4 h-4 text-indigo-600 rounded-sm focus:ring-indigo-500"
+                  className="w-4 h-4 text-indigo-600 rounded-sm focus:ring-indigo-500" data-testid="calendar-export.main.set-include-hearings"
                 />
                 <div className="flex items-center justify-between flex-1">
                   <div className="flex items-center gap-2 text-xs font-semibold text-slate-800">
@@ -348,7 +348,7 @@ export const CalendarExportModal: React.FC<CalendarExportModalProps> = ({
                   type="checkbox"
                   checked={includeTasks}
                   onChange={e => setIncludeTasks(e.target.checked)}
-                  className="w-4 h-4 text-indigo-600 rounded-sm focus:ring-indigo-500"
+                  className="w-4 h-4 text-indigo-600 rounded-sm focus:ring-indigo-500" data-testid="calendar-export.main.set-include-tasks"
                 />
                 <div className="flex items-center justify-between flex-1">
                   <div className="flex items-center gap-2 text-xs font-semibold text-slate-800">
@@ -369,7 +369,7 @@ export const CalendarExportModal: React.FC<CalendarExportModalProps> = ({
                   type="checkbox"
                   checked={includeAppeals}
                   onChange={e => setIncludeAppeals(e.target.checked)}
-                  className="w-4 h-4 text-indigo-600 rounded-sm focus:ring-indigo-500"
+                  className="w-4 h-4 text-indigo-600 rounded-sm focus:ring-indigo-500" data-testid="calendar-export.main.set-include-appeals"
                 />
                 <div className="flex items-center justify-between flex-1">
                   <div className="flex items-center gap-2 text-xs font-semibold text-slate-800">
@@ -390,7 +390,7 @@ export const CalendarExportModal: React.FC<CalendarExportModalProps> = ({
                   type="checkbox"
                   checked={includeCheques}
                   onChange={e => setIncludeCheques(e.target.checked)}
-                  className="w-4 h-4 text-indigo-600 rounded-sm focus:ring-indigo-500"
+                  className="w-4 h-4 text-indigo-600 rounded-sm focus:ring-indigo-500" data-testid="calendar-export.main.set-include-cheques"
                 />
                 <div className="flex items-center justify-between flex-1">
                   <div className="flex items-center gap-2 text-xs font-semibold text-slate-800">
@@ -411,7 +411,7 @@ export const CalendarExportModal: React.FC<CalendarExportModalProps> = ({
                   type="checkbox"
                   checked={includePoaExpiry}
                   onChange={e => setIncludePoaExpiry(e.target.checked)}
-                  className="w-4 h-4 text-indigo-600 rounded-sm focus:ring-indigo-500"
+                  className="w-4 h-4 text-indigo-600 rounded-sm focus:ring-indigo-500" data-testid="calendar-export.main.set-include-poa-expiry"
                 />
                 <div className="flex items-center justify-between flex-1">
                   <div className="flex items-center gap-2 text-xs font-semibold text-slate-800">
@@ -457,7 +457,7 @@ export const CalendarExportModal: React.FC<CalendarExportModalProps> = ({
                       await window.electronAPI.openExportedFile(exportResult.filePath);
                     }
                   }}
-                  className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-colors" data-testid="calendar-export.main.on-api"
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
                   <span>فتح الملف الآن في التقويم</span>
@@ -467,7 +467,7 @@ export const CalendarExportModal: React.FC<CalendarExportModalProps> = ({
                   onClick={async () => {
                     await window.electronAPI.openDataDir();
                   }}
-                  className="flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 rounded-lg text-xs font-bold border border-slate-300 transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 rounded-lg text-xs font-bold border border-slate-300 transition-colors" data-testid="calendar-export.main.on-api-2"
                 >
                   <FolderOpen className="w-3.5 h-3.5 text-slate-600" />
                   <span>مجلد exports/</span>
@@ -490,7 +490,7 @@ export const CalendarExportModal: React.FC<CalendarExportModalProps> = ({
                   ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
                   : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-300 shadow-xs'
               }`}
-              title="ينسخ نصاً مرتباً وسريعاً بجلسات ومهام اليوم بوضع الخصوصية الحالي"
+              title="ينسخ نصاً مرتباً وسريعاً بجلسات ومهام اليوم بوضع الخصوصية الحالي" data-testid="calendar-export.main.handle-copy-today-summary"
             >
               {copySuccess ? <CheckCircle2 className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-slate-600" />}
               <span>{copySuccess ? 'تم نسخ ملخص اليوم للحافظة!' : 'نسخ ملخص اليوم'}</span>
@@ -501,7 +501,7 @@ export const CalendarExportModal: React.FC<CalendarExportModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-200 rounded-xl transition-colors"
+              className="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-200 rounded-xl transition-colors" data-testid="calendar-export.main.on-close-2"
             >
               إلغاء
             </button>
@@ -509,7 +509,7 @@ export const CalendarExportModal: React.FC<CalendarExportModalProps> = ({
               type="button"
               onClick={handleExport}
               disabled={isExporting || (counts?.total === 0)}
-              className="flex items-center gap-2 px-5 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-xl text-xs font-bold shadow-md shadow-indigo-600/20 transition-all"
+              className="flex items-center gap-2 px-5 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-xl text-xs font-bold shadow-md shadow-indigo-600/20 transition-all" data-testid="calendar-export.main.handle-export"
             >
               {isExporting ? (
                 <>

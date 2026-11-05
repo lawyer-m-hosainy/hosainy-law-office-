@@ -319,7 +319,9 @@ export function registerBackupIpc(): void {
         const emergencyBak = `${currentDbPath}.pre_restore_${Date.now()}`;
         try {
           fs.copyFileSync(currentDbPath, emergencyBak);
-        } catch (e) {}
+        } catch (e) {
+          console.error('Failed to create emergency pre-restore copy:', e);
+        }
       }
 
       // 3. Write restored database file
@@ -363,7 +365,9 @@ export function registerBackupIpc(): void {
       // Attempt to reopen database if closed
       try {
         DatabaseService.getInstance().init();
-      } catch (e) {}
+      } catch (e) {
+        console.error('Failed to reinitialize database following restore error:', e);
+      }
       return {
         success: false,
         error: `فشلت عملية الاستعادة: ${err?.message}`,

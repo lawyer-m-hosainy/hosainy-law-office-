@@ -245,7 +245,7 @@ export const CaseDocumentsTab: React.FC<CaseDocumentsTabProps> = ({
                 activeView === 'active'
                   ? 'bg-amber-600 text-white shadow-xs'
                   : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-              }`}
+              }`} data-testid="case.documents.tab.set-active-view"
             >
               المستندات الحالية ({documents.length})
             </button>
@@ -255,7 +255,7 @@ export const CaseDocumentsTab: React.FC<CaseDocumentsTabProps> = ({
                 activeView === 'trash'
                   ? 'bg-rose-600 text-white shadow-xs'
                   : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-              }`}
+              }`} data-testid="case.documents.tab.set-active-view-2"
             >
               <Trash2 className="w-3.5 h-3.5" />
               <span>سلة المحذوفات ({trashDocuments.length})</span>
@@ -268,7 +268,7 @@ export const CaseDocumentsTab: React.FC<CaseDocumentsTabProps> = ({
               <>
                 <button
                   onClick={() => setIsAttachModalOpen(true)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors" data-testid="case.documents.tab.set-is-attach-modal-open"
                 >
                   <Upload className="w-3.5 h-3.5" />
                   <span>إرفاق مستندات</span>
@@ -285,7 +285,7 @@ export const CaseDocumentsTab: React.FC<CaseDocumentsTabProps> = ({
                 <button
                   onClick={handlePrintInventory}
                   className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg border border-slate-300 transition-colors"
-                  title="طباعة حصر المستندات"
+                  title="طباعة حصر المستندات" data-testid="case.documents.tab.handle-print-inventory"
                 >
                   <Printer className="w-3.5 h-3.5" />
                   <span>طباعة الحصر</span>
@@ -304,14 +304,14 @@ export const CaseDocumentsTab: React.FC<CaseDocumentsTabProps> = ({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="البحث في المستندات بالاسم أو التصنيف أو الملاحظات..."
-              className="w-full pl-3 pr-9 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:border-amber-500"
+              className="w-full pl-3 pr-9 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:border-amber-500" data-testid="case.documents.tab.set-search-query"
             />
           </div>
 
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="w-full sm:w-56 px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-700 focus:outline-none focus:border-amber-500 font-semibold"
+            className="w-full sm:w-56 px-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg text-slate-700 focus:outline-none focus:border-amber-500 font-semibold" data-testid="case.documents.tab.set-selected-category"
           >
             <option value="all">كافة التصنيفات ({currentList.length})</option>
             {CATEGORIES.map((cat) => (
@@ -344,7 +344,7 @@ export const CaseDocumentsTab: React.FC<CaseDocumentsTabProps> = ({
           {activeView === 'active' && (
             <button
               onClick={() => setIsAttachModalOpen(true)}
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors mt-2"
+              className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors mt-2" data-testid="case.documents.tab.set-is-attach-modal-open-2"
             >
               <Plus className="w-4 h-4" />
               <span>إرفاق أول مستند</span>
@@ -400,7 +400,7 @@ export const CaseDocumentsTab: React.FC<CaseDocumentsTabProps> = ({
                       <button
                         onClick={() => openDocument(doc.id)}
                         className="flex items-center gap-1 px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-800 rounded font-bold transition-colors"
-                        title="فتح الملف بالبرنامج الافتراضي على Windows"
+                        title="فتح الملف بالبرنامج الافتراضي على Windows" data-testid="case.documents.tab.open-document"
                       >
                         <ExternalLink className="w-3.5 h-3.5" />
                         <span>فتح</span>
@@ -409,7 +409,7 @@ export const CaseDocumentsTab: React.FC<CaseDocumentsTabProps> = ({
                       <button
                         onClick={() => showInFolder(doc.id)}
                         className="p-1 hover:bg-slate-100 text-slate-600 rounded transition-colors"
-                        title="عرض الملف في مجلد المستندات"
+                        title="عرض الملف في مجلد المستندات" data-testid="case.documents.tab.view"
                       >
                         <FolderOpen className="w-4 h-4" />
                       </button>
@@ -417,7 +417,7 @@ export const CaseDocumentsTab: React.FC<CaseDocumentsTabProps> = ({
                       <button
                         onClick={() => handleOpenEdit(doc)}
                         className="p-1 hover:bg-slate-100 text-slate-600 rounded transition-colors"
-                        title="تعديل بيانات المستند"
+                        title="تعديل بيانات المستند" data-testid="case.documents.tab.handle-open-edit"
                       >
                         <Edit2 className="w-4 h-4" />
                       </button>
@@ -425,7 +425,7 @@ export const CaseDocumentsTab: React.FC<CaseDocumentsTabProps> = ({
                       <button
                         onClick={() => moveToTrash(doc.id)}
                         className="p-1 hover:bg-rose-50 text-rose-600 rounded transition-colors"
-                        title="نقل إلى سلة المحذوفات"
+                        title="نقل إلى سلة المحذوفات" data-testid="case.documents.tab.nav-trash"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -435,7 +435,7 @@ export const CaseDocumentsTab: React.FC<CaseDocumentsTabProps> = ({
                       <button
                         onClick={() => restoreDocument(doc.id)}
                         className="flex items-center gap-1 px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded font-bold transition-colors"
-                        title="استرجاع الملف من سلة المحذوفات"
+                        title="استرجاع الملف من سلة المحذوفات" data-testid="case.documents.tab.recover"
                       >
                         <RotateCcw className="w-3.5 h-3.5" />
                         <span>استرجاع</span>
@@ -448,7 +448,7 @@ export const CaseDocumentsTab: React.FC<CaseDocumentsTabProps> = ({
                           }
                         }}
                         className="flex items-center gap-1 px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded font-bold transition-colors"
-                        title="حذف نهائي لا يمكن الرجوع عنه"
+                        title="حذف نهائي لا يمكن الرجوع عنه" data-testid="case.documents.tab.onfirm"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                         <span>حذف نهائي</span>
@@ -471,7 +471,7 @@ export const CaseDocumentsTab: React.FC<CaseDocumentsTabProps> = ({
                 <Upload className="w-4 h-4 text-amber-600" />
                 <h3 className="font-bold text-sm text-slate-800">إرفاق مستندات بالقضية</h3>
               </div>
-              <button onClick={() => setIsAttachModalOpen(false)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setIsAttachModalOpen(false)} className="text-slate-400 hover:text-slate-600" data-testid="case.documents.tab.set-is-attach-modal-open-3">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -482,7 +482,7 @@ export const CaseDocumentsTab: React.FC<CaseDocumentsTabProps> = ({
                 <select
                   value={attachCategory}
                   onChange={(e) => setAttachCategory(e.target.value as CaseDocumentCategory)}
-                  className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 font-semibold"
+                  className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 font-semibold" data-testid="case.documents.tab.set-attach-category"
                 >
                   {CATEGORIES.map((cat) => (
                     <option key={cat} value={cat}>
@@ -499,7 +499,7 @@ export const CaseDocumentsTab: React.FC<CaseDocumentsTabProps> = ({
                   onChange={(e) => setAttachDescription(e.target.value)}
                   placeholder="مثال: مذكرة دفاع الجلسة الأولى، توكيل رقم 123 لسنة 2026..."
                   rows={3}
-                  className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 resize-none"
+                  className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 resize-none" data-testid="case.documents.tab.set-attach-description"
                 />
               </div>
 
@@ -515,14 +515,14 @@ export const CaseDocumentsTab: React.FC<CaseDocumentsTabProps> = ({
               <button
                 type="button"
                 onClick={() => setIsAttachModalOpen(false)}
-                className="px-3 py-1.5 text-xs text-slate-600 hover:text-slate-800 font-bold"
+                className="px-3 py-1.5 text-xs text-slate-600 hover:text-slate-800 font-bold" data-testid="case.documents.tab.set-is-attach-modal-open-4"
               >
                 إلغاء
               </button>
               <button
                 type="button"
                 onClick={handleAttachSubmit}
-                className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors flex items-center gap-1.5"
+                className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors flex items-center gap-1.5" data-testid="case.documents.tab.handle-attach-submit"
               >
                 <FolderOpen className="w-4 h-4" />
                 <span>اختيار الملفات ورفعها</span>
@@ -541,7 +541,7 @@ export const CaseDocumentsTab: React.FC<CaseDocumentsTabProps> = ({
                 <Edit2 className="w-4 h-4 text-amber-600" />
                 <h3 className="font-bold text-sm text-slate-800">تعديل بيانات المستند</h3>
               </div>
-              <button onClick={() => setEditingDoc(null)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setEditingDoc(null)} className="text-slate-400 hover:text-slate-600" data-testid="case.documents.tab.set-editing-doc">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -553,7 +553,7 @@ export const CaseDocumentsTab: React.FC<CaseDocumentsTabProps> = ({
                   type="text"
                   value={editTitle}
                   onChange={(e) => setEditTitle(e.target.value)}
-                  className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 font-bold text-slate-900"
+                  className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 font-bold text-slate-900" data-testid="case.documents.tab.set-edit-title"
                 />
               </div>
 
@@ -562,7 +562,7 @@ export const CaseDocumentsTab: React.FC<CaseDocumentsTabProps> = ({
                 <select
                   value={editCategory}
                   onChange={(e) => setEditCategory(e.target.value)}
-                  className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 font-semibold"
+                  className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 font-semibold" data-testid="case.documents.tab.set-edit-category"
                 >
                   {CATEGORIES.map((cat) => (
                     <option key={cat} value={cat}>
@@ -578,7 +578,7 @@ export const CaseDocumentsTab: React.FC<CaseDocumentsTabProps> = ({
                   value={editDescription}
                   onChange={(e) => setEditDescription(e.target.value)}
                   rows={3}
-                  className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 resize-none"
+                  className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 resize-none" data-testid="case.documents.tab.set-edit-description"
                 />
               </div>
             </div>
@@ -587,14 +587,14 @@ export const CaseDocumentsTab: React.FC<CaseDocumentsTabProps> = ({
               <button
                 type="button"
                 onClick={() => setEditingDoc(null)}
-                className="px-3 py-1.5 text-xs text-slate-600 hover:text-slate-800 font-bold"
+                className="px-3 py-1.5 text-xs text-slate-600 hover:text-slate-800 font-bold" data-testid="case.documents.tab.set-editing-doc-2"
               >
                 إلغاء
               </button>
               <button
                 type="button"
                 onClick={handleSaveEdit}
-                className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors"
+                className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors" data-testid="case.documents.tab.handle-save-edit"
               >
                 حفظ التعديلات
               </button>

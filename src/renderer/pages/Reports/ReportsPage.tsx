@@ -395,7 +395,7 @@ export const ReportsPage: React.FC<ReportsPageProps> = ({
                   isSelected
                     ? 'bg-amber-50/70 border-amber-500 ring-2 ring-amber-500/20 shadow-xs'
                     : 'bg-slate-50/60 border-slate-200 hover:bg-slate-50 hover:border-slate-300'
-                }`}
+                }`} data-testid="reports.main.set-selected-report"
               >
                 <div
                   className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 ${
@@ -439,7 +439,7 @@ export const ReportsPage: React.FC<ReportsPageProps> = ({
                 landscape
                   ? 'bg-amber-100 text-amber-900 border-amber-300'
                   : 'bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200'
-              }`}
+              }`} data-testid="reports.main.set-landscape"
             >
               <RotateCw className="w-3.5 h-3.5" />
               <span>{landscape ? 'أفقي (عريض)' : 'رأسي (طولي)'}</span>
@@ -448,7 +448,7 @@ export const ReportsPage: React.FC<ReportsPageProps> = ({
             <button
               disabled={isProcessing}
               onClick={() => handleAction('preview')}
-              className="flex items-center gap-1.5 px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-lg shadow-xs transition-colors disabled:opacity-50"
+              className="flex items-center gap-1.5 px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-lg shadow-xs transition-colors disabled:opacity-50" data-testid="reports.main.handle-action"
             >
               <Eye className="w-4 h-4" />
               <span>معاينة قبل الطباعة</span>
@@ -457,7 +457,7 @@ export const ReportsPage: React.FC<ReportsPageProps> = ({
             <button
               disabled={isProcessing}
               onClick={() => handleAction('print')}
-              className="flex items-center gap-1.5 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors disabled:opacity-50"
+              className="flex items-center gap-1.5 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors disabled:opacity-50" data-testid="reports.main.handle-action-2"
             >
               <Printer className="w-4 h-4" />
               <span>طباعة مباشرة</span>
@@ -466,7 +466,7 @@ export const ReportsPage: React.FC<ReportsPageProps> = ({
             <button
               disabled={isProcessing}
               onClick={() => handleAction('pdf')}
-              className="flex items-center gap-1.5 px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded-lg shadow-xs transition-colors disabled:opacity-50"
+              className="flex items-center gap-1.5 px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded-lg shadow-xs transition-colors disabled:opacity-50" data-testid="reports.main.handle-action-3"
             >
               <FileDown className="w-4 h-4" />
               <span>حفظ PDF</span>
@@ -483,7 +483,7 @@ export const ReportsPage: React.FC<ReportsPageProps> = ({
                 <select
                   value={dateRangeType}
                   onChange={(e) => setDateRangeType(e.target.value as any)}
-                  className="p-1.5 border border-slate-300 rounded-lg bg-slate-50 font-semibold"
+                  className="p-1.5 border border-slate-300 rounded-lg bg-slate-50 font-semibold" data-testid="reports.main.set-date-range-type"
                 >
                   <option value="today">جلسات اليوم</option>
                   <option value="tomorrow">جلسات الغد</option>
@@ -496,7 +496,7 @@ export const ReportsPage: React.FC<ReportsPageProps> = ({
                 <select
                   value={selectedCourt}
                   onChange={(e) => setSelectedCourt(e.target.value)}
-                  className="p-1.5 border border-slate-300 rounded-lg bg-slate-50 font-semibold"
+                  className="p-1.5 border border-slate-300 rounded-lg bg-slate-50 font-semibold" data-testid="reports.main.set-selected-court"
                 >
                   <option value="الكل">كل المحاكم</option>
                   {courtsList.map((c) => (
@@ -515,7 +515,7 @@ export const ReportsPage: React.FC<ReportsPageProps> = ({
               <select
                 value={selectedCaseId}
                 onChange={(e) => setSelectedCaseId(e.target.value ? Number(e.target.value) : '')}
-                className="p-1.5 border border-slate-300 rounded-lg bg-slate-50 font-semibold max-w-xs"
+                className="p-1.5 border border-slate-300 rounded-lg bg-slate-50 font-semibold max-w-xs" data-testid="reports.main.set-selected-case-id"
               >
                 {cases.map((c) => (
                   <option key={c.id} value={c.id}>
@@ -532,7 +532,7 @@ export const ReportsPage: React.FC<ReportsPageProps> = ({
               <select
                 value={selectedClientId}
                 onChange={(e) => setSelectedClientId(e.target.value ? Number(e.target.value) : '')}
-                className="p-1.5 border border-slate-300 rounded-lg bg-slate-50 font-semibold max-w-xs"
+                className="p-1.5 border border-slate-300 rounded-lg bg-slate-50 font-semibold max-w-xs" data-testid="reports.main.set-selected-client-id"
               >
                 {clients.map((cl) => (
                   <option key={cl.id} value={cl.id}>
@@ -549,7 +549,7 @@ export const ReportsPage: React.FC<ReportsPageProps> = ({
               <select
                 value={genericTableType}
                 onChange={(e) => setGenericTableType(e.target.value as any)}
-                className="p-1.5 border border-slate-300 rounded-lg bg-slate-50 font-semibold"
+                className="p-1.5 border border-slate-300 rounded-lg bg-slate-50 font-semibold" data-testid="reports.main.set-generic-table-type"
               >
                 <option value="cases">جدول القضايا ({cases.length})</option>
                 <option value="clients">جدول الموكلين ({clients.length})</option>

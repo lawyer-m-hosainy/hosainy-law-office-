@@ -21,7 +21,6 @@ import { TasksPage } from './pages/Tasks/TasksPage';
 import { TrashBinPage } from './pages/Trash/TrashBinPage';
 import { LockScreenModal } from './components/Security/LockScreenModal';
 import { useSecurityAndBackup } from './hooks/useSecurityAndBackup';
-import { GenericPlaceholder } from './pages/GenericPlaceholder';
 import { ErrorBoundary } from './components/Common/ErrorBoundary';
 import { Scale, Loader2, AlertCircle } from 'lucide-react';
 
@@ -112,7 +111,7 @@ export const App: React.FC = () => {
           </p>
           <button
             onClick={() => reload()}
-            className="w-full py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-lg transition-colors"
+            className="w-full py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-lg transition-colors" data-testid="app.main.retry"
           >
             إعادة المحاولة
           </button>

@@ -13,7 +13,9 @@ if (process.env.TEST_DATA_DIR) {
       fs.mkdirSync(testUserData, { recursive: true });
     }
     app.setPath('userData', testUserData);
-  } catch (e) {}
+  } catch (e) {
+    console.error('Failed to set test userData path:', e);
+  }
 }
 
 let mainWindow: BrowserWindow | null = null;

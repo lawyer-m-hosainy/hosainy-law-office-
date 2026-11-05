@@ -227,7 +227,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="بحث سريع (الاسم، الهاتف، الرقم القومي، رقم التوكيل)..."
-            className="w-full pr-10 pl-4 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium"
+            className="w-full pr-10 pl-4 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium" data-testid="clients.main.set-search-query"
           />
         </div>
 
@@ -239,7 +239,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
               onClick={() => setStatusFilter('active')}
               className={`px-3 py-1 rounded-md transition-colors ${
                 statusFilter === 'active' ? 'bg-white text-slate-800 shadow-xs' : 'text-slate-600 hover:text-slate-900'
-              }`}
+              }`} data-testid="clients.main.set-status-filter"
             >
               النشطون ({clients.filter((c) => c.status === 'active').length})
             </button>
@@ -247,7 +247,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
               onClick={() => setStatusFilter('archived')}
               className={`px-3 py-1 rounded-md transition-colors ${
                 statusFilter === 'archived' ? 'bg-white text-slate-800 shadow-xs' : 'text-slate-600 hover:text-slate-900'
-              }`}
+              }`} data-testid="clients.main.set-status-filter-2"
             >
               الأرشيف ({clients.filter((c) => c.status === 'archived').length})
             </button>
@@ -255,7 +255,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
               onClick={() => setStatusFilter('all')}
               className={`px-3 py-1 rounded-md transition-colors ${
                 statusFilter === 'all' ? 'bg-white text-slate-800 shadow-xs' : 'text-slate-600 hover:text-slate-900'
-              }`}
+              }`} data-testid="clients.main.set-status-filter-3"
             >
               الكل ({clients.length})
             </button>
@@ -283,7 +283,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
 
           <button
             onClick={handleOpenAddModal}
-            className="flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors flex-shrink-0"
+            className="flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors flex-shrink-0" data-testid="clients.main.handle-open-add-modal"
           >
             <UserPlus className="w-4 h-4" />
             <span>إضافة موكل جديد</span>
@@ -439,7 +439,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
                           <button
                             onClick={() => handleViewClientDetails(client)}
                             title="عرض تفاصيل الموكل وقضاياه"
-                            className="p-1 text-slate-500 hover:text-amber-600 transition-colors"
+                            className="p-1 text-slate-500 hover:text-amber-600 transition-colors" data-testid="clients.main.handle-view-client-details"
                           >
                             <Eye className="w-4 h-4" />
                           </button>
@@ -447,7 +447,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
                           <button
                             onClick={() => handleOpenEditModal(client)}
                             title="تعديل البيانات"
-                            className="p-1 text-slate-500 hover:text-blue-600 transition-colors"
+                            className="p-1 text-slate-500 hover:text-blue-600 transition-colors" data-testid="clients.main.handle-open-edit-modal"
                           >
                             <Edit2 className="w-4 h-4" />
                           </button>
@@ -455,7 +455,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
                           <button
                             onClick={() => handleArchiveToggle(client)}
                             title={client.status === 'active' ? 'أرشفة الموكل' : 'استعادة من الأرشيف'}
-                            className="p-1 text-slate-500 hover:text-purple-600 transition-colors"
+                            className="p-1 text-slate-500 hover:text-purple-600 transition-colors" data-testid="clients.main.handle-archive-toggle"
                           >
                             {client.status === 'active' ? (
                               <Archive className="w-4 h-4" />
@@ -467,7 +467,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
                           <button
                             onClick={() => handleDelete(client)}
                             title="حذف نهائي"
-                            className="p-1 text-slate-500 hover:text-red-600 transition-colors"
+                            className="p-1 text-slate-500 hover:text-red-600 transition-colors" data-testid="clients.main.handle-delete"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -495,7 +495,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
               </div>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600 transition-colors"
+                className="text-slate-400 hover:text-slate-600 transition-colors" data-testid="clients.main.set-is-modal-open"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -523,7 +523,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="اسم الموكل أو اسم الشركة..."
-                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-semibold"
+                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-semibold" data-testid="clients.main.set-form-data-4"
                     />
                   </div>
 
@@ -532,7 +532,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
                     <select
                       value={formData.client_type}
                       onChange={(e) => setFormData({ ...formData, client_type: e.target.value as ClientType })}
-                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="clients.main.set-form-data"
                     >
                       <option value="individual">فرد</option>
                       <option value="company">شركة</option>
@@ -549,7 +549,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
                       value={formData.national_id_or_cr || ''}
                       onChange={(e) => setFormData({ ...formData, national_id_or_cr: e.target.value })}
                       placeholder="رقم إثبات الشخصية..."
-                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono"
+                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono" data-testid="clients.main.set-form-data-5"
                     />
                   </div>
 
@@ -561,7 +561,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       placeholder="010..."
-                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono font-semibold"
+                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono font-semibold" data-testid="clients.main.set-form-data-6"
                     />
                   </div>
 
@@ -571,7 +571,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
                       type="text"
                       value={formData.phone2 || ''}
                       onChange={(e) => setFormData({ ...formData, phone2: e.target.value })}
-                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono"
+                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono" data-testid="clients.main.set-form-data-7"
                     />
                   </div>
 
@@ -581,7 +581,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
                       type="text"
                       value={formData.whatsapp || ''}
                       onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
-                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono"
+                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono" data-testid="clients.main.set-form-data-8"
                     />
                   </div>
 
@@ -591,7 +591,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
                       type="email"
                       value={formData.email || ''}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="clients.main.set-form-data-9"
                     />
                   </div>
 
@@ -601,7 +601,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
                       type="text"
                       value={formData.address || ''}
                       onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="clients.main.set-form-data-10"
                     />
                   </div>
                 </div>
@@ -620,7 +620,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
                       value={formData.poa_number || ''}
                       onChange={(e) => setFormData({ ...formData, poa_number: e.target.value })}
                       placeholder="مثال: 1234 لسنة 2026 ب"
-                      className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold"
+                      className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold" data-testid="clients.main.set-form-data-11"
                     />
                   </div>
 
@@ -629,7 +629,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
                     <select
                       value={formData.poa_type || 'عام قضايا'}
                       onChange={(e) => setFormData({ ...formData, poa_type: e.target.value })}
-                      className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="clients.main.set-form-data-2"
                     >
                       <option value="عام قضايا">عام قضايا</option>
                       <option value="خاص">توكيل خاص</option>
@@ -645,7 +645,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
                       value={formData.poa_issuing_office || ''}
                       onChange={(e) => setFormData({ ...formData, poa_issuing_office: e.target.value })}
                       placeholder="مثال: توثيق الأهرام النموذجي"
-                      className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="clients.main.set-form-data-12"
                     />
                   </div>
 
@@ -655,7 +655,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
                       type="date"
                       value={formData.poa_date || ''}
                       onChange={(e) => setFormData({ ...formData, poa_date: e.target.value })}
-                      className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="clients.main.set-form-data-13"
                     />
                   </div>
 
@@ -665,7 +665,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
                       type="date"
                       value={formData.poa_expiry_date || ''}
                       onChange={(e) => setFormData({ ...formData, poa_expiry_date: e.target.value })}
-                      className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="clients.main.set-form-data-14"
                     />
                   </div>
                 </div>
@@ -682,7 +682,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
                     <select
                       value={formData.representation_type || 'أصيل'}
                       onChange={(e) => setFormData({ ...formData, representation_type: e.target.value })}
-                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium"
+                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium" data-testid="clients.main.set-form-data-3"
                     >
                       <option value="أصيل">أصيل عن نفسه</option>
                       <option value="ولي طبيعي">ولي طبيعي (أب عن قاصر)</option>
@@ -700,7 +700,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
                       value={formData.represented_name || ''}
                       onChange={(e) => setFormData({ ...formData, represented_name: e.target.value })}
                       placeholder="اسم القاصر أو المحجور عليه أو اسم الشركة..."
-                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="clients.main.set-form-data-15"
                     />
                   </div>
 
@@ -711,7 +711,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
                       value={formData.notes || ''}
                       onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                       placeholder="أي ملاحظات أو تعليمات خاصة بالموكل..."
-                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="clients.main.set-form-data-16"
                     />
                   </div>
                 </div>
@@ -722,14 +722,14 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition-colors"
+                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition-colors" data-testid="clients.main.set-is-modal-open-2"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors disabled:opacity-50"
+                  className="px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors disabled:opacity-50" data-testid="clients.main.button-14"
                 >
                   {isSubmitting ? 'جاري الحفظ...' : editingClient ? 'حفظ التعديلات' : 'إضافة الموكل'}
                 </button>
@@ -752,7 +752,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
               </div>
               <button
                 onClick={() => setSelectedClientForView(null)}
-                className="text-slate-400 hover:text-slate-600 transition-colors"
+                className="text-slate-400 hover:text-slate-600 transition-colors" data-testid="clients.main.set-selected-client-for-view"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -831,7 +831,7 @@ export const ClientsPage: React.FC<ClientsPageProps> = ({ onNavigateToCase }) =>
                               setSelectedClientForView(null);
                               onNavigateToCase(cs.id);
                             }}
-                            className="px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded text-xs transition-colors"
+                            className="px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded text-xs transition-colors" data-testid="clients.main.set-selected-client-for-view-2"
                           >
                             فتح القضية ←
                           </button>

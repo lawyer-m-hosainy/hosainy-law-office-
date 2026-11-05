@@ -85,6 +85,7 @@ export function useClients() {
       }
       return res;
     } catch (err: any) {
+      console.error('Error deleting client:', err);
       return { success: false, message: err?.message || 'تعذر حذف الموكل' };
     }
   }, []);

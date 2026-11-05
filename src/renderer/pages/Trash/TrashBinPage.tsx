@@ -134,7 +134,7 @@ export const TrashBinPage: React.FC = () => {
               onClick={handleEmptyAll}
               disabled={items.length === 0}
               className="flex items-center gap-1.5 px-3.5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-bold shadow-xs transition-colors disabled:opacity-50"
-              title="تفريغ كافة العناصر نهائياً من القرص"
+              title="تفريغ كافة العناصر نهائياً من القرص" data-testid="trash.main.handle-empty-all"
             >
               <Trash2 className="w-4 h-4" />
               <span>تفريغ السلة بالكامل</span>
@@ -143,7 +143,7 @@ export const TrashBinPage: React.FC = () => {
             <button
               onClick={loadTrash}
               className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors border border-slate-200"
-              title="تحديث"
+              title="تحديث" data-testid="trash.main.load-trash"
             >
               <RefreshCw className="w-4 h-4" />
             </button>
@@ -167,7 +167,7 @@ export const TrashBinPage: React.FC = () => {
                   selectedType === tab.id
                     ? 'bg-rose-600 text-white shadow-xs'
                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                }`}
+                }`} data-testid="trash.main.set-selected-type"
               >
                 <span>{tab.label}</span>
                 <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-white/20">
@@ -184,7 +184,7 @@ export const TrashBinPage: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="البحث في سلة المحذوفات بالعنوان أو التفاصيل..."
-              className="w-full pr-9 pl-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:border-rose-500 font-semibold"
+              className="w-full pr-9 pl-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:border-rose-500 font-semibold" data-testid="trash.main.set-search-query"
             />
           </div>
         </div>
@@ -196,7 +196,7 @@ export const TrashBinPage: React.FC = () => {
             <CheckCircle className="w-4 h-4 text-emerald-600" />
             <span>{statusMessage}</span>
           </div>
-          <button onClick={() => setStatusMessage(null)} className="text-emerald-700 hover:text-emerald-900">
+          <button onClick={() => setStatusMessage(null)} className="text-emerald-700 hover:text-emerald-900" data-testid="trash.main.set-status-message">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -244,7 +244,7 @@ export const TrashBinPage: React.FC = () => {
                   <button
                     onClick={() => handleRestore(item.entityType, item.entityId, item.title)}
                     className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-lg font-bold border border-emerald-200 transition-colors"
-                    title="استرجاع العنصر إلى مكانه الأصلي"
+                    title="استرجاع العنصر إلى مكانه الأصلي" data-testid="trash.main.handle-restore"
                   >
                     <RotateCcw className="w-3.5 h-3.5" />
                     <span>استرجاع</span>
@@ -253,7 +253,7 @@ export const TrashBinPage: React.FC = () => {
                   <button
                     onClick={() => handleDeletePermanent(item.entityType, item.entityId, item.title)}
                     className="flex items-center gap-1.5 px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg font-bold border border-rose-200 transition-colors"
-                    title="حذف نهائي لا رجعة فيه"
+                    title="حذف نهائي لا رجعة فيه" data-testid="trash.main.handle-delete-permanent"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                     <span>حذف نهائي</span>

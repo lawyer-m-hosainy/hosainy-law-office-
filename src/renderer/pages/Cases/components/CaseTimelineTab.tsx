@@ -212,7 +212,7 @@ export const CaseTimelineTab: React.FC<CaseTimelineTabProps> = ({
               setNoteIsPinned(false);
               setIsAddNoteModalOpen(true);
             }}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors" data-testid="case.timeline.tab.set-editing-note"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>إضافة ملاحظة</span>
@@ -258,7 +258,7 @@ export const CaseTimelineTab: React.FC<CaseTimelineTabProps> = ({
                     <button
                       onClick={() => handleOpenEdit(note)}
                       className="p-1 hover:text-slate-700"
-                      title="تعديل الملاحظة"
+                      title="تعديل الملاحظة" data-testid="case.timeline.tab.handle-open-edit"
                     >
                       <Edit2 className="w-3.5 h-3.5" />
                     </button>
@@ -269,7 +269,7 @@ export const CaseTimelineTab: React.FC<CaseTimelineTabProps> = ({
                         }
                       }}
                       className="p-1 hover:text-rose-600"
-                      title="حذف الملاحظة"
+                      title="حذف الملاحظة" data-testid="case.timeline.tab.onfirm"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -302,7 +302,7 @@ export const CaseTimelineTab: React.FC<CaseTimelineTabProps> = ({
             />
             <button
               onClick={handlePrintTimeline}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg border border-slate-300 transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg border border-slate-300 transition-colors" data-testid="case.timeline.tab.handle-print-timeline"
             >
               <Printer className="w-3.5 h-3.5" />
               <span>طباعة السجل</span>
@@ -328,7 +328,7 @@ export const CaseTimelineTab: React.FC<CaseTimelineTabProps> = ({
                 activeFilter === pill.id
                   ? 'bg-indigo-600 text-white shadow-xs'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-              }`}
+              }`} data-testid="case.timeline.tab.set-active-filter"
             >
               {pill.label}
             </button>
@@ -408,7 +408,7 @@ export const CaseTimelineTab: React.FC<CaseTimelineTabProps> = ({
               </div>
               <button
                 onClick={() => setIsAddNoteModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600"
+                className="text-slate-400 hover:text-slate-600" data-testid="case.timeline.tab.set-is-add-note-modal-open"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -424,7 +424,7 @@ export const CaseTimelineTab: React.FC<CaseTimelineTabProps> = ({
                   value={noteTitle}
                   onChange={(e) => setNoteTitle(e.target.value)}
                   placeholder="مثال: خطة المرافعة، تنبيه بشأن الشاهد، اتفاق مع الموكل..."
-                  className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 font-bold"
+                  className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 font-bold" data-testid="case.timeline.tab.set-note-title"
                 />
               </div>
 
@@ -435,7 +435,7 @@ export const CaseTimelineTab: React.FC<CaseTimelineTabProps> = ({
                 <select
                   value={noteCategory}
                   onChange={(e) => setNoteCategory(e.target.value as CaseNoteCategory)}
-                  className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 font-semibold"
+                  className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 font-semibold" data-testid="case.timeline.tab.set-note-category"
                 >
                   {NOTE_CATEGORIES.map((cat) => (
                     <option key={cat} value={cat}>
@@ -454,7 +454,7 @@ export const CaseTimelineTab: React.FC<CaseTimelineTabProps> = ({
                   onChange={(e) => setNoteContent(e.target.value)}
                   placeholder="اكتب تفاصيل الملاحظة هنا..."
                   rows={4}
-                  className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 resize-none leading-relaxed"
+                  className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 resize-none leading-relaxed" data-testid="case.timeline.tab.set-note-content"
                 />
               </div>
 
@@ -463,7 +463,7 @@ export const CaseTimelineTab: React.FC<CaseTimelineTabProps> = ({
                   type="checkbox"
                   checked={noteIsPinned}
                   onChange={(e) => setNoteIsPinned(e.target.checked)}
-                  className="w-4 h-4 rounded text-amber-600 focus:ring-amber-500 border-slate-300"
+                  className="w-4 h-4 rounded text-amber-600 focus:ring-amber-500 border-slate-300" data-testid="case.timeline.tab.set-note-is-pinned"
                 />
                 <span className="text-xs font-bold text-slate-700">
                   تثبيت الملاحظة في أعلى القائمة (ملاحظة هامة)
@@ -475,14 +475,14 @@ export const CaseTimelineTab: React.FC<CaseTimelineTabProps> = ({
               <button
                 type="button"
                 onClick={() => setIsAddNoteModalOpen(false)}
-                className="px-3 py-1.5 text-xs text-slate-600 hover:text-slate-800 font-bold"
+                className="px-3 py-1.5 text-xs text-slate-600 hover:text-slate-800 font-bold" data-testid="case.timeline.tab.set-is-add-note-modal-open-2"
               >
                 إلغاء
               </button>
               <button
                 type="button"
                 onClick={handleSaveNote}
-                className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors"
+                className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors" data-testid="case.timeline.tab.handle-save-note"
               >
                 {editingNote ? 'حفظ التعديلات' : 'إضافة الملاحظة'}
               </button>

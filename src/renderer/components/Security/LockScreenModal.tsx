@@ -80,12 +80,12 @@ export const LockScreenModal: React.FC<LockScreenModalProps> = ({
               }}
               placeholder="أدخل كلمة المرور لفك القفل..."
               autoFocus
-              className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-center font-bold tracking-wider"
+              className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white text-sm placeholder:text-slate-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-center font-bold tracking-wider" data-testid="lock.main.set-password"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 p-1"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 p-1" data-testid="lock.main.set-show-password"
             >
               {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
@@ -101,7 +101,7 @@ export const LockScreenModal: React.FC<LockScreenModalProps> = ({
           <button
             type="submit"
             disabled={isVerifying || !password}
-            className="w-full py-3 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white rounded-xl text-sm font-bold shadow-lg shadow-amber-900/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+            className="w-full py-3 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-500 hover:to-amber-600 text-white rounded-xl text-sm font-bold shadow-lg shadow-amber-900/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer" data-testid="lock.main.button-2"
           >
             {isVerifying ? (
               <>

@@ -235,7 +235,7 @@ export const CaseTasksTab: React.FC<CaseTasksTabProps> = ({
             <button
               onClick={handlePrintTasks}
               className="flex items-center gap-1.5 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition-colors"
-              title="طباعة قائمة المهام بخانات التأشير بالقلم"
+              title="طباعة قائمة المهام بخانات التأشير بالقلم" data-testid="case.tasks.tab.handle-print-tasks"
             >
               <Printer className="w-4 h-4 text-slate-600" />
               <span>طباعة المهام</span>
@@ -244,7 +244,7 @@ export const CaseTasksTab: React.FC<CaseTasksTabProps> = ({
 
           <button
             onClick={() => setIsApplyTemplateModalOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-2 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 rounded-lg text-xs font-bold transition-colors"
+            className="flex items-center gap-1.5 px-3 py-2 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 rounded-lg text-xs font-bold transition-colors" data-testid="case.tasks.tab.set-is-apply-template-modal-open"
           >
             <LayoutTemplate className="w-4 h-4" />
             <span>تطبيق قالب مهام</span>
@@ -252,7 +252,7 @@ export const CaseTasksTab: React.FC<CaseTasksTabProps> = ({
 
           <button
             onClick={() => setIsNewTaskModalOpen(true)}
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-bold transition-colors shadow-xs"
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-bold transition-colors shadow-xs" data-testid="case.tasks.tab.set-is-new-task-modal-open"
           >
             <Plus className="w-4 h-4" />
             <span>إضافة مهمة جديدة</span>
@@ -273,13 +273,13 @@ export const CaseTasksTab: React.FC<CaseTasksTabProps> = ({
           <div className="flex justify-center gap-2 pt-2">
             <button
               onClick={() => setIsApplyTemplateModalOpen(true)}
-              className="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg transition-colors"
+              className="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg transition-colors" data-testid="case.tasks.tab.set-is-apply-template-modal-open-2"
             >
               تطبيق قالب مهام تلقائي
             </button>
             <button
               onClick={() => setIsNewTaskModalOpen(true)}
-              className="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-lg transition-colors"
+              className="px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-lg transition-colors" data-testid="case.tasks.tab.set-is-new-task-modal-open-2"
             >
               إضافة مهمة فردية
             </button>
@@ -312,7 +312,7 @@ export const CaseTasksTab: React.FC<CaseTasksTabProps> = ({
                         isCompleted
                           ? 'bg-emerald-600 border-emerald-600 text-white'
                           : 'border-slate-300 hover:border-amber-500 bg-white'
-                      }`}
+                      }`} data-testid="case.tasks.tab.handle-toggle-task-status"
                     >
                       {isCompleted && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                     </button>
@@ -381,7 +381,7 @@ export const CaseTasksTab: React.FC<CaseTasksTabProps> = ({
                         }
                       }}
                       className="p-1.5 text-slate-400 hover:text-red-600 transition-colors"
-                      title="حذف المهمة"
+                      title="حذف المهمة" data-testid="case.tasks.tab.onfirm"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -403,7 +403,7 @@ export const CaseTasksTab: React.FC<CaseTasksTabProps> = ({
                           type="checkbox"
                           checked={cl.is_completed === 1}
                           onChange={e => toggleChecklistItem(cl.id, e.target.checked)}
-                          className="rounded border-slate-300 text-amber-600 focus:ring-amber-500 w-3.5 h-3.5"
+                          className="rounded border-slate-300 text-amber-600 focus:ring-amber-500 w-3.5 h-3.5" data-testid="case.tasks.tab.toggle-checklist-item"
                         />
                         <span className={cl.is_completed === 1 ? 'line-through text-slate-400' : ''}>
                           {cl.title}
@@ -438,7 +438,7 @@ export const CaseTasksTab: React.FC<CaseTasksTabProps> = ({
                   value={taskForm.title}
                   onChange={e => setTaskForm({ ...taskForm, title: e.target.value })}
                   placeholder="مثال: تقديم مذكرة دفاع ختامية، سداد أمانة خبير..."
-                  className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold"
+                  className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold" data-testid="case.tasks.tab.set-task-form-3"
                 />
               </div>
 
@@ -449,7 +449,7 @@ export const CaseTasksTab: React.FC<CaseTasksTabProps> = ({
                   value={taskForm.description}
                   onChange={e => setTaskForm({ ...taskForm, description: e.target.value })}
                   placeholder="تفاصيل إضافية عن المطلوب..."
-                  className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                  className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.tasks.tab.set-task-form-4"
                 />
               </div>
 
@@ -459,7 +459,7 @@ export const CaseTasksTab: React.FC<CaseTasksTabProps> = ({
                   <select
                     value={taskForm.category}
                     onChange={e => setTaskForm({ ...taskForm, category: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white" data-testid="case.tasks.tab.set-task-form"
                   >
                     {taskCategories.map(cat => (
                       <option key={cat.id} value={cat.name}>{cat.name}</option>
@@ -472,7 +472,7 @@ export const CaseTasksTab: React.FC<CaseTasksTabProps> = ({
                   <select
                     value={taskForm.priority}
                     onChange={e => setTaskForm({ ...taskForm, priority: e.target.value as any })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold bg-white"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold bg-white" data-testid="case.tasks.tab.set-task-form-2"
                   >
                     <option value="عادية">عادية</option>
                     <option value="مهمة">مهمة</option>
@@ -489,7 +489,7 @@ export const CaseTasksTab: React.FC<CaseTasksTabProps> = ({
                     required
                     value={taskForm.due_date}
                     onChange={e => setTaskForm({ ...taskForm, due_date: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.tasks.tab.set-task-form-5"
                   />
                 </div>
 
@@ -499,7 +499,7 @@ export const CaseTasksTab: React.FC<CaseTasksTabProps> = ({
                     type="time"
                     value={taskForm.due_time}
                     onChange={e => setTaskForm({ ...taskForm, due_time: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.tasks.tab.set-task-form-6"
                   />
                 </div>
               </div>
@@ -512,7 +512,7 @@ export const CaseTasksTab: React.FC<CaseTasksTabProps> = ({
                     value={taskForm.assigned_to}
                     onChange={e => setTaskForm({ ...taskForm, assigned_to: e.target.value })}
                     placeholder="أنا، سكرتير، محامي زميل..."
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.tasks.tab.set-task-form-7"
                   />
                 </div>
 
@@ -523,7 +523,7 @@ export const CaseTasksTab: React.FC<CaseTasksTabProps> = ({
                     value={taskForm.estimated_duration}
                     onChange={e => setTaskForm({ ...taskForm, estimated_duration: e.target.value })}
                     placeholder="مثال: ساعتين، يوم عمل..."
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.tasks.tab.set-task-form-8"
                   />
                 </div>
               </div>
@@ -537,7 +537,7 @@ export const CaseTasksTab: React.FC<CaseTasksTabProps> = ({
                   value={taskForm.checklist_input}
                   onChange={e => setTaskForm({ ...taskForm, checklist_input: e.target.value })}
                   placeholder="تصوير حافظة المستندات&#10;إرفاق التوكيل وسند الوكالة&#10;توقيع المذكرة من المحامي"
-                  className="w-full p-2 border border-slate-300 rounded-lg text-xs font-mono"
+                  className="w-full p-2 border border-slate-300 rounded-lg text-xs font-mono" data-testid="case.tasks.tab.set-task-form-9"
                 />
               </div>
 
@@ -545,13 +545,13 @@ export const CaseTasksTab: React.FC<CaseTasksTabProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsNewTaskModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs"
+                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs" data-testid="case.tasks.tab.set-is-new-task-modal-open-3"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg text-xs shadow-xs"
+                  className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg text-xs shadow-xs" data-testid="case.tasks.tab.add"
                 >
                   إضافة المهمة
                 </button>
@@ -579,7 +579,7 @@ export const CaseTasksTab: React.FC<CaseTasksTabProps> = ({
                   required
                   value={selectedTemplateId}
                   onChange={e => setSelectedTemplateId(e.target.value ? Number(e.target.value) : '')}
-                  className="w-full p-2.5 border border-slate-300 rounded-lg text-xs font-bold bg-white"
+                  className="w-full p-2.5 border border-slate-300 rounded-lg text-xs font-bold bg-white" data-testid="case.tasks.tab.set-selected-template-id"
                 >
                   <option value="">-- اختر القالب المناسب --</option>
                   {templates.map(tmpl => (
@@ -598,7 +598,7 @@ export const CaseTasksTab: React.FC<CaseTasksTabProps> = ({
                     required
                     value={templateBaseDate}
                     onChange={e => setTemplateBaseDate(e.target.value)}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.tasks.tab.set-template-base-date"
                   />
                 </div>
 
@@ -608,7 +608,7 @@ export const CaseTasksTab: React.FC<CaseTasksTabProps> = ({
                     type="text"
                     value={templateAssignedTo}
                     onChange={e => setTemplateAssignedTo(e.target.value)}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="case.tasks.tab.set-template-assigned-to"
                   />
                 </div>
               </div>
@@ -621,13 +621,13 @@ export const CaseTasksTab: React.FC<CaseTasksTabProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsApplyTemplateModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs"
+                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs" data-testid="case.tasks.tab.set-is-apply-template-modal-open-3"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg text-xs shadow-xs"
+                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg text-xs shadow-xs" data-testid="case.tasks.tab.apply"
                 >
                   تطبيق وتوليد المهام
                 </button>

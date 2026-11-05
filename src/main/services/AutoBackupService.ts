@@ -56,7 +56,9 @@ export class AutoBackupService {
           try {
             const stat = fs.statSync(fullPath);
             backupFiles.push({ name: file, fullPath, mtime: stat.mtimeMs });
-          } catch (e) {}
+          } catch (e) {
+            console.error('Failed to stat backup file during retention cleanup:', fullPath, e);
+          }
         }
       }
 
@@ -73,7 +75,9 @@ export class AutoBackupService {
         try {
           fs.unlinkSync(f.fullPath);
           deletedCount++;
-        } catch (e) {}
+        } catch (e) {
+          console.error('Failed to unlink expired backup file:', f.fullPath, e);
+        }
       }
 
       return deletedCount;

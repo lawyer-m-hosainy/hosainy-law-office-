@@ -405,7 +405,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
 
           <button
             onClick={handlePrintGeneralReport}
-            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors" data-testid="finance.main.handle-print-general-report"
           >
             <Printer className="w-4 h-4 text-slate-600" />
             طباعة التقرير المالي
@@ -413,7 +413,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
 
           <button
             onClick={() => setShowAddTxModal(true)}
-            className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-amber-600 hover:bg-amber-700 rounded-lg transition-colors shadow-sm"
+            className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-amber-600 hover:bg-amber-700 rounded-lg transition-colors shadow-sm" data-testid="finance.main.set-show-add-tx-modal"
           >
             <Plus className="w-4 h-4" />
             تسجيل حركة مالية جديدة
@@ -422,7 +422,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
           <button
             onClick={loadFinanceData}
             className="p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
-            title="تحديث البيانات"
+            title="تحديث البيانات" data-testid="finance.main.load-finance-data"
           >
             <RefreshCw className="w-4 h-4" />
           </button>
@@ -503,7 +503,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
               activeSubTab === 'journal'
                 ? 'bg-slate-900 text-white shadow-sm'
                 : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
-            }`}
+            }`} data-testid="finance.main.set-active-sub-tab"
           >
             سجل الحركات المالية ({transactions.length})
           </button>
@@ -514,7 +514,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
               activeSubTab === 'cheques'
                 ? 'bg-slate-900 text-white shadow-sm'
                 : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
-            }`}
+            }`} data-testid="finance.main.set-active-sub-tab-2"
           >
             <CreditCard className="w-3.5 h-3.5" />
             تتبع الشيكات المؤجلة ({cheques.length})
@@ -526,7 +526,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
               activeSubTab === 'clients'
                 ? 'bg-slate-900 text-white shadow-sm'
                 : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
-            }`}
+            }`} data-testid="finance.main.set-active-sub-tab-3"
           >
             <User className="w-3.5 h-3.5" />
             كشوف حسابات الموكلين
@@ -549,7 +549,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                   periodFilter === btn.id
                     ? 'bg-amber-600 text-white'
                     : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                }`}
+                }`} data-testid="finance.main.set-period-filter"
               >
                 {btn.label}
               </button>
@@ -572,7 +572,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="بحث بالإيصال أو البيان أو الموكل..."
-                  className="w-full text-xs pr-8 pl-2 py-1.5 rounded-lg border border-slate-300 bg-white"
+                  className="w-full text-xs pr-8 pl-2 py-1.5 rounded-lg border border-slate-300 bg-white" data-testid="finance.main.set-search-query"
                 />
               </div>
             </div>
@@ -582,7 +582,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full text-xs p-1.5 rounded-lg border border-slate-300 bg-white"
+                className="w-full text-xs p-1.5 rounded-lg border border-slate-300 bg-white" data-testid="finance.main.set-selected-category"
               >
                 <option value="الكل">كافة الفئات</option>
                 <option value="أتعاب">أتعاب المحاماة</option>
@@ -597,7 +597,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
               <select
                 value={selectedDirection}
                 onChange={(e) => setSelectedDirection(e.target.value)}
-                className="w-full text-xs p-1.5 rounded-lg border border-slate-300 bg-white"
+                className="w-full text-xs p-1.5 rounded-lg border border-slate-300 bg-white" data-testid="finance.main.set-selected-direction"
               >
                 <option value="الكل">الكل (وارد وصادر)</option>
                 <option value="وارد">وارد فقط (إيراد من موكل)</option>
@@ -610,7 +610,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
               <select
                 value={selectedMethod}
                 onChange={(e) => setSelectedMethod(e.target.value)}
-                className="w-full text-xs p-1.5 rounded-lg border border-slate-300 bg-white"
+                className="w-full text-xs p-1.5 rounded-lg border border-slate-300 bg-white" data-testid="finance.main.set-selected-method"
               >
                 <option value="الكل">كافة الطرق</option>
                 <option value="نقدي">نقدي</option>
@@ -698,7 +698,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                                 {onNavigateToCase ? (
                                   <button
                                     onClick={() => tx.case_id && onNavigateToCase(tx.case_id)}
-                                    className="hover:underline font-bold"
+                                    className="hover:underline font-bold" data-testid="finance.main.on-navigate-to-case"
                                   >
                                     قضية {tx.case_number}/{tx.case_year || ''}
                                   </button>
@@ -721,7 +721,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                               <button
                                 onClick={() => handlePrintReceipt(tx)}
                                 className="p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded"
-                                title="طباعة إيصال السداد"
+                                title="طباعة إيصال السداد" data-testid="finance.main.handle-print-receipt"
                               >
                                 <Receipt className="w-4 h-4" />
                               </button>
@@ -734,7 +734,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                                     setShowReverseModal(true);
                                   }}
                                   className="p-1.5 text-rose-600 hover:text-rose-800 hover:bg-rose-50 rounded"
-                                  title="إلغاء الحركة بقيد عكسي"
+                                  title="إلغاء الحركة بقيد عكسي" data-testid="finance.main.set-selected-tx-to-reverse"
                                 >
                                   <RotateCcw className="w-4 h-4" />
                                 </button>
@@ -771,7 +771,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                   chequeStatusFilter === btn.id
                     ? 'bg-indigo-600 text-white shadow-sm'
                     : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                }`}
+                }`} data-testid="finance.main.set-cheque-status-filter"
               >
                 {btn.label}
               </button>
@@ -848,13 +848,13 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                             <div className="flex items-center justify-center gap-1.5">
                               <button
                                 onClick={() => handleCollectCheque(c)}
-                                className="px-2.5 py-1 text-[11px] font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded shadow-sm"
+                                className="px-2.5 py-1 text-[11px] font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded shadow-sm" data-testid="finance.main.handle-collect-cheque"
                               >
                                 تحصيل
                               </button>
                               <button
                                 onClick={() => handleBounceCheque(c)}
-                                className="px-2 py-1 text-[11px] font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 rounded border border-rose-200"
+                                className="px-2 py-1 text-[11px] font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 rounded border border-rose-200" data-testid="finance.main.handle-bounce-cheque"
                               >
                                 ارتداد
                               </button>
@@ -885,7 +885,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                 <select
                   value={selectedClientId}
                   onChange={(e) => setSelectedClientId(e.target.value ? parseInt(e.target.value) : '')}
-                  className="w-full text-xs p-2.5 rounded-lg border border-slate-300 bg-white font-bold"
+                  className="w-full text-xs p-2.5 rounded-lg border border-slate-300 bg-white font-bold" data-testid="finance.main.set-selected-client-id"
                 >
                   <option value="">-- اضغط لاختيار موكل --</option>
                   {clients.map(c => (
@@ -937,7 +937,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                         suggestedFileName: `كشف_حساب_${client.name}.pdf`
                       });
                     }}
-                    className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-slate-800 hover:bg-slate-900 rounded-lg shadow-sm"
+                    className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-slate-800 hover:bg-slate-900 rounded-lg shadow-sm" data-testid="finance.main.settings"
                   >
                     <Printer className="w-4 h-4" />
                     طباعة كشف الحساب
@@ -960,7 +960,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
               </h3>
               <button
                 onClick={() => setShowAddTxModal(false)}
-                className="text-slate-400 hover:text-slate-600 font-bold text-lg"
+                className="text-slate-400 hover:text-slate-600 font-bold text-lg" data-testid="finance.main.set-show-add-tx-modal-2"
               >
                 ×
               </button>
@@ -974,7 +974,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                   <select
                     value={txForm.case_id}
                     onChange={(e) => setTxForm({ ...txForm, case_id: e.target.value })}
-                    className="w-full text-xs p-2 rounded border border-slate-300 bg-white"
+                    className="w-full text-xs p-2 rounded border border-slate-300 bg-white" data-testid="finance.main.set-tx-form"
                   >
                     <option value="">بدون ربط بقضية (عام)</option>
                     {cases.map(c => (
@@ -990,7 +990,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                   <select
                     value={txForm.client_id}
                     onChange={(e) => setTxForm({ ...txForm, client_id: e.target.value })}
-                    className="w-full text-xs p-2 rounded border border-slate-300 bg-white"
+                    className="w-full text-xs p-2 rounded border border-slate-300 bg-white" data-testid="finance.main.set-tx-form-2"
                   >
                     <option value="">بدون تحديد موكل</option>
                     {clients.map(cl => (
@@ -1007,7 +1007,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                   <select
                     value={txForm.direction}
                     onChange={(e) => setTxForm({ ...txForm, direction: e.target.value as TransactionDirection })}
-                    className="w-full text-xs p-2 rounded border border-slate-300 bg-white font-bold"
+                    className="w-full text-xs p-2 rounded border border-slate-300 bg-white font-bold" data-testid="finance.main.set-tx-form-3"
                   >
                     <option value="وارد">وارد (مدفوع من الموكل للمكتب)</option>
                     <option value="صادر">صادر (مصروف من المكتب على القضية)</option>
@@ -1019,7 +1019,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                   <select
                     value={txForm.category}
                     onChange={(e) => setTxForm({ ...txForm, category: e.target.value as TransactionCategory })}
-                    className="w-full text-xs p-2 rounded border border-slate-300 bg-white font-bold"
+                    className="w-full text-xs p-2 rounded border border-slate-300 bg-white font-bold" data-testid="finance.main.set-tx-form-4"
                   >
                     <option value="أتعاب">أتعاب المحاماة</option>
                     <option value="رسوم قضائية">رسوم قضائية</option>
@@ -1037,7 +1037,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                     type="text"
                     value={txForm.transaction_type}
                     onChange={(e) => setTxForm({ ...txForm, transaction_type: e.target.value })}
-                    className="w-full text-xs p-2 rounded border border-slate-300 bg-white"
+                    className="w-full text-xs p-2 rounded border border-slate-300 bg-white" data-testid="finance.main.set-tx-form-6"
                   />
                 </div>
 
@@ -1053,7 +1053,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                     onChange={(e) => setTxForm({ ...txForm, amount: e.target.value })}
                     placeholder="0.00"
                     className="w-full text-xs p-2 rounded border border-amber-300 bg-amber-50/50 font-bold text-slate-900"
-                    required
+                    required data-testid="finance.main.set-tx-form-7"
                   />
                 </div>
               </div>
@@ -1067,7 +1067,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                     value={txForm.transaction_date}
                     onChange={(e) => setTxForm({ ...txForm, transaction_date: e.target.value })}
                     className="w-full text-xs p-2 rounded border border-slate-300 bg-white"
-                    required
+                    required data-testid="finance.main.set-tx-form-8"
                   />
                 </div>
 
@@ -1076,7 +1076,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                   <select
                     value={txForm.payment_method}
                     onChange={(e) => setTxForm({ ...txForm, payment_method: e.target.value as PaymentMethod })}
-                    className="w-full text-xs p-2 rounded border border-slate-300 bg-white"
+                    className="w-full text-xs p-2 rounded border border-slate-300 bg-white" data-testid="finance.main.set-tx-form-5"
                   >
                     <option value="نقدي">نقدي (كاش)</option>
                     <option value="تحويل بنكي">تحويل بنكي</option>
@@ -1099,7 +1099,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                         value={txForm.cheque_number}
                         onChange={(e) => setTxForm({ ...txForm, cheque_number: e.target.value })}
                         className="w-full text-xs p-1.5 rounded border border-slate-300 bg-white"
-                        required
+                        required data-testid="finance.main.set-tx-form-9"
                       />
                     </div>
                     <div>
@@ -1109,7 +1109,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                         value={txForm.bank_name}
                         onChange={(e) => setTxForm({ ...txForm, bank_name: e.target.value })}
                         className="w-full text-xs p-1.5 rounded border border-slate-300 bg-white"
-                        required
+                        required data-testid="finance.main.set-tx-form-10"
                       />
                     </div>
                     <div>
@@ -1118,7 +1118,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                         type="text"
                         value={txForm.drawer_name}
                         onChange={(e) => setTxForm({ ...txForm, drawer_name: e.target.value })}
-                        className="w-full text-xs p-1.5 rounded border border-slate-300 bg-white"
+                        className="w-full text-xs p-1.5 rounded border border-slate-300 bg-white" data-testid="finance.main.set-tx-form-11"
                       />
                     </div>
                     <div>
@@ -1128,7 +1128,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                         value={txForm.due_date}
                         onChange={(e) => setTxForm({ ...txForm, due_date: e.target.value })}
                         className="w-full text-xs p-1.5 rounded border border-slate-300 bg-white"
-                        required
+                        required data-testid="finance.main.set-tx-form-12"
                       />
                     </div>
                   </div>
@@ -1146,7 +1146,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                   onChange={(e) => setTxForm({ ...txForm, description: e.target.value })}
                   placeholder="مثلاً: سداد دفعة أتعاب / رسوم استئناف..."
                   className="w-full text-xs p-2 rounded border border-slate-300 bg-white"
-                  required
+                  required data-testid="finance.main.set-tx-form-13"
                 />
               </div>
 
@@ -1156,7 +1156,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                   type="checkbox"
                   checked={txForm.printImmediately}
                   onChange={(e) => setTxForm({ ...txForm, printImmediately: e.target.checked })}
-                  className="rounded text-amber-600 focus:ring-amber-500 w-4 h-4"
+                  className="rounded text-amber-600 focus:ring-amber-500 w-4 h-4" data-testid="finance.main.set-tx-form-14"
                 />
                 <span className="text-xs font-semibold text-slate-800">
                   معاينة وطباعة إيصال السداد المرقّم فور الحفظ
@@ -1167,13 +1167,13 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowAddTxModal(false)}
-                  className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg"
+                  className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg" data-testid="finance.main.set-show-add-tx-modal-3"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2 text-xs font-bold text-white bg-amber-600 hover:bg-amber-700 rounded-lg shadow-sm"
+                  className="px-6 py-2 text-xs font-bold text-white bg-amber-600 hover:bg-amber-700 rounded-lg shadow-sm" data-testid="finance.main.save"
                 >
                   حفظ الحركة المالية
                 </button>
@@ -1213,7 +1213,7 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                   onChange={(e) => setReverseReason(e.target.value)}
                   placeholder="سبب إلغاء الحركة..."
                   className="w-full text-xs p-2 rounded border border-slate-300 bg-white"
-                  required
+                  required data-testid="finance.main.set-reverse-reason"
                 />
               </div>
 
@@ -1221,13 +1221,13 @@ export const FinancePage: React.FC<FinancePageProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowReverseModal(false)}
-                  className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg"
+                  className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg" data-testid="finance.main.set-show-reverse-modal"
                 >
                   تراجع
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-lg shadow-sm"
+                  className="px-5 py-2 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-lg shadow-sm" data-testid="finance.main.cancel"
                 >
                   تأكيد الإلغاء بالقيد العكسي
                 </button>

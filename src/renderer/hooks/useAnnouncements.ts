@@ -92,6 +92,15 @@ export function useAnnouncements(caseId?: number, filter?: AnnouncementFilter) {
     return reattempt;
   };
 
+  const getAnnouncementById = async (id: number): Promise<CaseAnnouncement | null> => {
+    try {
+      return await window.electronAPI.getAnnouncementById(id);
+    } catch (err) {
+      console.error('Failed to get announcement by id:', err);
+      return null;
+    }
+  };
+
   const deleteAnnouncement = async (id: number): Promise<{ success: boolean; message?: string }> => {
     const res = await window.electronAPI.deleteAnnouncement(id);
     if (res.success) {
@@ -107,6 +116,7 @@ export function useAnnouncements(caseId?: number, filter?: AnnouncementFilter) {
     error,
     refreshAnnouncements: fetchAnnouncements,
     refreshWarnings: fetchWarnings,
+    getAnnouncementById,
     createAnnouncement,
     updateAnnouncement,
     createReattemptAnnouncement,

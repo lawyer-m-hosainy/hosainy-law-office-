@@ -203,7 +203,7 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
         <h3 className="text-base font-bold text-slate-800">الملف غير موجود أو تم حذفه</h3>
         <button
           onClick={onBack}
-          className="px-4 py-2 bg-slate-800 text-white rounded-lg text-xs font-bold"
+          className="px-4 py-2 bg-slate-800 text-white rounded-lg text-xs font-bold" data-testid="case.main.on-back"
         >
           العودة لقائمة القضايا
         </button>
@@ -230,7 +230,7 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
           <button
             onClick={onBack}
             className="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors"
-            title="العودة لكل القضايا"
+            title="العودة لكل القضايا" data-testid="case.main.on-back-2"
           >
             <ArrowRight className="w-5 h-5" />
           </button>
@@ -269,7 +269,7 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
             <button
               onClick={() => handlePrintCaseSheet('preview')}
               className="flex items-center gap-1 px-3 py-1.5 text-xs font-bold text-amber-900 hover:bg-amber-100 rounded transition-colors"
-              title="معاينة بيانات القضية قبل الطباعة"
+              title="معاينة بيانات القضية قبل الطباعة" data-testid="case.main.handle-print-case-sheet"
             >
               <Eye className="w-3.5 h-3.5" />
               <span>معاينة</span>
@@ -278,7 +278,7 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
             <button
               onClick={() => handlePrintCaseSheet('print')}
               className="flex items-center gap-1 px-3 py-1.5 text-xs font-bold bg-amber-600 hover:bg-amber-700 text-white rounded transition-colors shadow-xs"
-              title="طباعة مباشرة لبيانات القضية"
+              title="طباعة مباشرة لبيانات القضية" data-testid="case.main.handle-print-case-sheet-2"
             >
               <Printer className="w-3.5 h-3.5" />
               <span>طباعة بيانات القضية</span>
@@ -287,7 +287,7 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
             <button
               onClick={() => handlePrintCaseSheet('pdf')}
               className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-bold text-emerald-800 hover:bg-emerald-100 rounded transition-colors"
-              title="حفظ بيانات القضية كملف PDF رسمي"
+              title="حفظ بيانات القضية كملف PDF رسمي" data-testid="case.main.handle-print-case-sheet-3"
             >
               <FileDown className="w-3.5 h-3.5" />
               <span>PDF</span>
@@ -296,7 +296,7 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
 
           <button
             onClick={handleOpenEditModal}
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-lg transition-colors shadow-xs"
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-lg transition-colors shadow-xs" data-testid="case.main.handle-open-edit-modal"
           >
             <Edit2 className="w-3.5 h-3.5" />
             <span>تعديل البيانات</span>
@@ -325,7 +325,7 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
                 isActive
                   ? 'bg-amber-600 text-white shadow-xs'
                   : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
-              }`}
+              }`} data-testid="case.main.set-active-tab"
             >
               <Icon className="w-4 h-4" />
               <span>{tab.label}</span>
@@ -653,7 +653,7 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
               </div>
               <button
                 onClick={() => setIsEditModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600 transition-colors"
+                className="text-slate-400 hover:text-slate-600 transition-colors" data-testid="case.main.set-is-edit-modal-open"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -674,7 +674,7 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
                     required
                     value={editFormData.case_number || ''}
                     onChange={(e) => setEditFormData({ ...editFormData, case_number: e.target.value })}
-                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold"
+                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold" data-testid="case.main.set-edit-form-data-5"
                   />
                 </div>
 
@@ -685,7 +685,7 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
                     required
                     value={editFormData.case_year || 2026}
                     onChange={(e) => setEditFormData({ ...editFormData, case_year: parseInt(e.target.value) || 2026 })}
-                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold"
+                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold" data-testid="case.main.set-edit-form-data-6"
                   />
                 </div>
 
@@ -694,7 +694,7 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
                   <select
                     value={editFormData.court_name}
                     onChange={(e) => setEditFormData({ ...editFormData, court_name: e.target.value })}
-                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-semibold"
+                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-semibold" data-testid="case.main.set-edit-form-data"
                   >
                     {courts.map((court) => (
                       <option key={court.id} value={court.name}>
@@ -710,7 +710,7 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
                     type="text"
                     value={editFormData.court_circuit || ''}
                     onChange={(e) => setEditFormData({ ...editFormData, court_circuit: e.target.value })}
-                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="case.main.set-edit-form-data-7"
                   />
                 </div>
 
@@ -719,7 +719,7 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
                   <select
                     value={editFormData.case_type}
                     onChange={(e) => setEditFormData({ ...editFormData, case_type: e.target.value })}
-                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-semibold"
+                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-semibold" data-testid="case.main.set-edit-form-data-2"
                   >
                     {caseTypes.map((t) => (
                       <option key={t.id} value={t.name}>
@@ -734,7 +734,7 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
                   <select
                     value={editFormData.status}
                     onChange={(e) => setEditFormData({ ...editFormData, status: e.target.value })}
-                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="case.main.set-edit-form-data-3"
                   >
                     <option value="متداولة">متداولة</option>
                     <option value="محجوزة للحكم">محجوزة للحكم</option>
@@ -752,7 +752,7 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
                   <select
                     value={editFormData.priority}
                     onChange={(e) => setEditFormData({ ...editFormData, priority: e.target.value as any })}
-                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold"
+                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold" data-testid="case.main.set-edit-form-data-4"
                   >
                     <option value="عادية">عادية</option>
                     <option value="مهمة">مهمة</option>
@@ -766,7 +766,7 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
                     type="text"
                     value={editFormData.assigned_lawyer || ''}
                     onChange={(e) => setEditFormData({ ...editFormData, assigned_lawyer: e.target.value })}
-                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="case.main.set-edit-form-data-8"
                   />
                 </div>
               </div>
@@ -778,7 +778,7 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
                   required
                   value={editFormData.subject || ''}
                   onChange={(e) => setEditFormData({ ...editFormData, subject: e.target.value })}
-                  className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold"
+                  className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold" data-testid="case.main.set-edit-form-data-9"
                 />
               </div>
 
@@ -788,7 +788,7 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
                   rows={2}
                   value={editFormData.claims || ''}
                   onChange={(e) => setEditFormData({ ...editFormData, claims: e.target.value })}
-                  className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="case.main.set-edit-form-data-10"
                 />
               </div>
 
@@ -796,14 +796,14 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsEditModalOpen(false)}
-                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition-colors"
+                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition-colors" data-testid="case.main.set-is-edit-modal-open-2"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
                   disabled={isSaving}
-                  className="px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors disabled:opacity-50"
+                  className="px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors disabled:opacity-50" data-testid="case.main.button-14"
                 >
                   {isSaving ? 'جاري الحفظ...' : 'حفظ التعديلات'}
                 </button>

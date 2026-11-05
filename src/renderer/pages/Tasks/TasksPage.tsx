@@ -397,7 +397,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
               onClick={() => setPeriodTab('all')}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 periodTab === 'all' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'
-              }`}
+              }`} data-testid="tasks.main.set-period-tab"
             >
               الكل
             </button>
@@ -405,7 +405,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
               onClick={() => setPeriodTab('today')}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 periodTab === 'today' ? 'bg-white text-blue-700 shadow-xs' : 'text-slate-600 hover:text-slate-900'
-              }`}
+              }`} data-testid="tasks.main.set-period-tab-2"
             >
               مهام اليوم
             </button>
@@ -413,7 +413,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
               onClick={() => setPeriodTab('week')}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 periodTab === 'week' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600 hover:text-slate-900'
-              }`}
+              }`} data-testid="tasks.main.set-period-tab-3"
             >
               الأسبوع
             </button>
@@ -421,7 +421,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
               onClick={() => setPeriodTab('overdue')}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 periodTab === 'overdue' ? 'bg-white text-red-700 shadow-xs' : 'text-slate-600 hover:text-slate-900'
-              }`}
+              }`} data-testid="tasks.main.set-period-tab-4"
             >
               المتأخرة
             </button>
@@ -434,7 +434,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
                 viewMode === 'list' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'
               }`}
-              title="عرض القائمة"
+              title="عرض القائمة" data-testid="tasks.main.set-view-mode"
             >
               <List className="w-3.5 h-3.5" />
               <span>قائمة</span>
@@ -445,7 +445,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
                 viewMode === 'kanban' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'
               }`}
-              title="لوحة كانبان"
+              title="لوحة كانبان" data-testid="tasks.main.set-view-mode-2"
             >
               <Columns className="w-3.5 h-3.5" />
               <span>كانبان</span>
@@ -456,7 +456,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
                 viewMode === 'calendar' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'
               }`}
-              title="عرض التقويم"
+              title="عرض التقويم" data-testid="tasks.main.set-view-mode-3"
             >
               <CalendarDays className="w-3.5 h-3.5" />
               <span>تقويم</span>
@@ -487,7 +487,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
             <button
               onClick={handlePrintTasks}
               className="flex items-center gap-1.5 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition-colors"
-              title="طباعة قائمة المهام بخانات التأشير بالقلم"
+              title="طباعة قائمة المهام بخانات التأشير بالقلم" data-testid="tasks.main.handle-print-tasks"
             >
               <Printer className="w-4 h-4 text-slate-600" />
               <span>طباعة المهام</span>
@@ -495,7 +495,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
 
             <button
               onClick={() => setIsManageTemplatesModalOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-2 bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 rounded-lg text-xs font-bold transition-colors"
+              className="flex items-center gap-1.5 px-3 py-2 bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 rounded-lg text-xs font-bold transition-colors" data-testid="tasks.main.set-is-manage-templates-modal-open"
             >
               <LayoutTemplate className="w-4 h-4" />
               <span>قوالب المهام</span>
@@ -503,7 +503,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
 
             <button
               onClick={() => setIsApplyTemplateModalOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-2 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 rounded-lg text-xs font-bold transition-colors"
+              className="flex items-center gap-1.5 px-3 py-2 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-700 rounded-lg text-xs font-bold transition-colors" data-testid="tasks.main.set-is-apply-template-modal-open"
             >
               <Sparkles className="w-4 h-4" />
               <span>تطبيق قالب</span>
@@ -511,7 +511,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
 
             <button
               onClick={() => setIsNewTaskModalOpen(true)}
-              className="flex items-center gap-1.5 px-3.5 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-bold transition-colors shadow-xs"
+              className="flex items-center gap-1.5 px-3.5 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-bold transition-colors shadow-xs" data-testid="tasks.main.set-is-new-task-modal-open"
             >
               <Plus className="w-4 h-4" />
               <span>مهمة جديدة</span>
@@ -529,7 +529,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="بحث في عنوان المهمة، الوصف، المكلّف، الموكل، القضية..."
-              className="w-full pr-9 pl-3 py-1.5 border border-slate-200 rounded-lg text-xs focus:outline-hidden focus:border-amber-500"
+              className="w-full pr-9 pl-3 py-1.5 border border-slate-200 rounded-lg text-xs focus:outline-hidden focus:border-amber-500" data-testid="tasks.main.set-search-query"
             />
           </div>
 
@@ -539,7 +539,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
             <select
               value={selectedCategory}
               onChange={e => setSelectedCategory(e.target.value)}
-              className="p-1.5 border border-slate-200 rounded-lg text-xs bg-white"
+              className="p-1.5 border border-slate-200 rounded-lg text-xs bg-white" data-testid="tasks.main.set-selected-category"
             >
               <option value="all">كل التصنيفات</option>
               {taskCategories && taskCategories.length > 0 ? (
@@ -563,7 +563,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
             <select
               value={selectedPriority}
               onChange={e => setSelectedPriority(e.target.value)}
-              className="p-1.5 border border-slate-200 rounded-lg text-xs bg-white font-bold"
+              className="p-1.5 border border-slate-200 rounded-lg text-xs bg-white font-bold" data-testid="tasks.main.set-selected-priority"
             >
               <option value="all">كل الأولويات</option>
               <option value="عاجلة">عاجلة</option>
@@ -578,7 +578,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
             <select
               value={selectedStatus}
               onChange={e => setSelectedStatus(e.target.value)}
-              className="p-1.5 border border-slate-200 rounded-lg text-xs bg-white"
+              className="p-1.5 border border-slate-200 rounded-lg text-xs bg-white" data-testid="tasks.main.set-selected-status"
             >
               <option value="all">كل الحالات</option>
               <option value="جديدة">جديدة</option>
@@ -632,7 +632,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                               isCompleted
                                 ? 'bg-emerald-600 border-emerald-600 text-white'
                                 : 'border-slate-300 hover:border-amber-500 bg-white'
-                            }`}
+                            }`} data-testid="tasks.main.handle-toggle-task-status"
                           >
                             {isCompleted && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                           </button>
@@ -692,7 +692,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                               {task.case_id && onNavigateToCase && (
                                 <button
                                   onClick={() => onNavigateToCase(task.case_id!)}
-                                  className="flex items-center gap-1 text-[11px] text-blue-700 hover:underline font-bold"
+                                  className="flex items-center gap-1 text-[11px] text-blue-700 hover:underline font-bold" data-testid="tasks.main.on-navigate-to-case"
                                 >
                                   <span>قضية: {task.case_number} ({task.court_name})</span>
                                   <ExternalLink className="w-3 h-3" />
@@ -724,7 +724,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                               }
                             }}
                             className="p-1.5 text-slate-400 hover:text-red-600 transition-colors"
-                            title="حذف المهمة"
+                            title="حذف المهمة" data-testid="tasks.main.onfirm"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -746,7 +746,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                                 type="checkbox"
                                 checked={cl.is_completed === 1}
                                 onChange={e => toggleChecklistItem(cl.id, e.target.checked)}
-                                className="rounded border-slate-300 text-amber-600 focus:ring-amber-500 w-3.5 h-3.5"
+                                className="rounded border-slate-300 text-amber-600 focus:ring-amber-500 w-3.5 h-3.5" data-testid="tasks.main.toggle-checklist-item"
                               />
                               <span className={cl.is_completed === 1 ? 'line-through text-slate-400' : ''}>
                                 {cl.title}
@@ -825,7 +825,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                               {col.status !== 'جديدة' && (
                                 <button
                                   onClick={() => handleMoveKanban(task.id, 'جديدة')}
-                                  className="text-slate-400 hover:text-slate-700"
+                                  className="text-slate-400 hover:text-slate-700" data-testid="tasks.main.handle-move-kanban"
                                 >
                                   ← جديدة
                                 </button>
@@ -833,7 +833,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                               {col.status !== 'جارية' && (
                                 <button
                                   onClick={() => handleMoveKanban(task.id, 'جارية')}
-                                  className="text-amber-600 hover:text-amber-800 font-bold"
+                                  className="text-amber-600 hover:text-amber-800 font-bold" data-testid="tasks.main.handle-move-kanban-2"
                                 >
                                   قيد التنفيذ
                                 </button>
@@ -841,7 +841,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                               {col.status !== 'منتهية' && (
                                 <button
                                   onClick={() => handleMoveKanban(task.id, 'منتهية')}
-                                  className="text-emerald-600 hover:text-emerald-800 font-bold"
+                                  className="text-emerald-600 hover:text-emerald-800 font-bold" data-testid="tasks.main.handle-move-kanban-3"
                                 >
                                   إنهاء ✓
                                 </button>
@@ -885,7 +885,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                             isSelected
                               ? 'bg-amber-600 text-white font-bold border-amber-600'
                               : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'
-                          }`}
+                          }`} data-testid="tasks.main.set-selected-calendar-day"
                         >
                           <span>{dateStr}</span>
                           <span className={`text-[10px] px-2 py-0.5 rounded-full ${isSelected ? 'bg-amber-700 text-white' : 'bg-white text-slate-800'}`}>
@@ -948,7 +948,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                   value={taskForm.title}
                   onChange={e => setTaskForm({ ...taskForm, title: e.target.value })}
                   placeholder="مثال: تقديم صحيفة الدعوى، استخراج صورة رسمية..."
-                  className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold"
+                  className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold" data-testid="tasks.main.set-task-form-6"
                 />
               </div>
 
@@ -959,7 +959,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                   value={taskForm.description}
                   onChange={e => setTaskForm({ ...taskForm, description: e.target.value })}
                   placeholder="ملاحظات وتفاصيل المهمة..."
-                  className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                  className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="tasks.main.set-task-form-7"
                 />
               </div>
 
@@ -978,7 +978,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                         client_id: foundCase?.primary_client_id || taskForm.client_id
                       });
                     }}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white" data-testid="tasks.main.set-task-form"
                   >
                     <option value="">بدون ربط بقضية (مهمة عامة)</option>
                     {cases.map(c => (
@@ -994,7 +994,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                   <select
                     value={taskForm.client_id}
                     onChange={e => setTaskForm({ ...taskForm, client_id: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white" data-testid="tasks.main.set-task-form-2"
                   >
                     <option value="">بدون تحديد موكل</option>
                     {clients.map(cl => (
@@ -1010,7 +1010,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                   <select
                     value={taskForm.category}
                     onChange={e => setTaskForm({ ...taskForm, category: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white" data-testid="tasks.main.set-task-form-3"
                   >
                     {taskCategories.map(cat => (
                       <option key={cat.id} value={cat.name}>{cat.name}</option>
@@ -1023,7 +1023,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                   <select
                     value={taskForm.priority}
                     onChange={e => setTaskForm({ ...taskForm, priority: e.target.value as any })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold bg-white"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold bg-white" data-testid="tasks.main.set-task-form-4"
                   >
                     <option value="عادية">عادية</option>
                     <option value="مهمة">مهمة</option>
@@ -1040,7 +1040,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                     required
                     value={taskForm.due_date}
                     onChange={e => setTaskForm({ ...taskForm, due_date: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="tasks.main.set-task-form-8"
                   />
                 </div>
 
@@ -1050,7 +1050,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                     type="time"
                     value={taskForm.due_time}
                     onChange={e => setTaskForm({ ...taskForm, due_time: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="tasks.main.set-task-form-9"
                   />
                 </div>
               </div>
@@ -1061,7 +1061,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                   <select
                     value={taskForm.recurrence}
                     onChange={e => setTaskForm({ ...taskForm, recurrence: e.target.value as any })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white" data-testid="tasks.main.set-task-form-5"
                   >
                     <option value="لا يتكرر">لا يتكرر</option>
                     <option value="يومي">يومي</option>
@@ -1077,7 +1077,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                     value={taskForm.assigned_to}
                     onChange={e => setTaskForm({ ...taskForm, assigned_to: e.target.value })}
                     placeholder="أنا، سكرتير، مندوب..."
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="tasks.main.set-task-form-10"
                   />
                 </div>
               </div>
@@ -1091,7 +1091,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                   value={taskForm.checklist_input}
                   onChange={e => setTaskForm({ ...taskForm, checklist_input: e.target.value })}
                   placeholder="تصوير المستندات&#10;إحضار التوكيل&#10;سداد الرسوم"
-                  className="w-full p-2 border border-slate-300 rounded-lg text-xs font-mono"
+                  className="w-full p-2 border border-slate-300 rounded-lg text-xs font-mono" data-testid="tasks.main.set-task-form-11"
                 />
               </div>
 
@@ -1099,13 +1099,13 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsNewTaskModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs"
+                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs" data-testid="tasks.main.set-is-new-task-modal-open-2"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg text-xs shadow-xs"
+                  className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg text-xs shadow-xs" data-testid="tasks.main.add"
                 >
                   إضافة المهمة
                 </button>
@@ -1133,7 +1133,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                   required
                   value={applyTemplateForm.templateId}
                   onChange={e => setApplyTemplateForm({ ...applyTemplateForm, templateId: e.target.value })}
-                  className="w-full p-2.5 border border-slate-300 rounded-lg text-xs font-bold bg-white"
+                  className="w-full p-2.5 border border-slate-300 rounded-lg text-xs font-bold bg-white" data-testid="tasks.main.set-apply-template-form"
                 >
                   <option value="">-- اختر القالب --</option>
                   {templates.map(tmpl => (
@@ -1149,7 +1149,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                 <select
                   value={applyTemplateForm.caseId}
                   onChange={e => setApplyTemplateForm({ ...applyTemplateForm, caseId: e.target.value })}
-                  className="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white"
+                  className="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white" data-testid="tasks.main.set-apply-template-form-2"
                 >
                   <option value="">مهام عامة بدون قضية</option>
                   {cases.map(c => (
@@ -1168,7 +1168,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                     required
                     value={applyTemplateForm.baseDate}
                     onChange={e => setApplyTemplateForm({ ...applyTemplateForm, baseDate: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="tasks.main.set-apply-template-form-3"
                   />
                 </div>
 
@@ -1178,7 +1178,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                     type="text"
                     value={applyTemplateForm.assignedTo}
                     onChange={e => setApplyTemplateForm({ ...applyTemplateForm, assignedTo: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="tasks.main.set-apply-template-form-4"
                   />
                 </div>
               </div>
@@ -1191,13 +1191,13 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsApplyTemplateModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs"
+                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs" data-testid="tasks.main.set-is-apply-template-modal-open-2"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg text-xs shadow-xs"
+                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg text-xs shadow-xs" data-testid="tasks.main.apply"
                 >
                   تطبيق وتوليد المهام
                 </button>
@@ -1222,7 +1222,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                 onClick={() => {
                   setIsCreateTemplateModalOpen(true);
                 }}
-                className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-xs font-bold"
+                className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-xs font-bold" data-testid="tasks.main.set-is-create-template-modal-open"
               >
                 + إنشاء قالب مخصص جديد
               </button>
@@ -1247,7 +1247,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                             await deleteTemplate(tmpl.id);
                           }
                         }}
-                        className="text-red-600 hover:text-red-800 text-xs font-bold"
+                        className="text-red-600 hover:text-red-800 text-xs font-bold" data-testid="tasks.main.onfirm-2"
                       >
                         حذف
                       </button>
@@ -1265,7 +1265,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
               <button
                 type="button"
                 onClick={() => setIsManageTemplatesModalOpen(false)}
-                className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs"
+                className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs" data-testid="tasks.main.set-is-manage-templates-modal-open-2"
               >
                 إغلاق
               </button>
@@ -1295,7 +1295,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                     value={customTemplateForm.name}
                     onChange={e => setCustomTemplateForm({ ...customTemplateForm, name: e.target.value })}
                     placeholder="مثال: إجراءات استئناف حكم، دعوى صحة توقيع..."
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold" data-testid="tasks.main.set-custom-template-form-5"
                   />
                 </div>
                 <div>
@@ -1305,7 +1305,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                     value={customTemplateForm.description}
                     onChange={e => setCustomTemplateForm({ ...customTemplateForm, description: e.target.value })}
                     placeholder="وصف استخدام هذا القالب..."
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="tasks.main.set-custom-template-form-6"
                   />
                 </div>
               </div>
@@ -1332,7 +1332,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                         ]
                       });
                     }}
-                    className="text-purple-700 hover:text-purple-900 font-bold text-xs"
+                    className="text-purple-700 hover:text-purple-900 font-bold text-xs" data-testid="tasks.main.set-custom-template-form"
                   >
                     + إضافة مهمة للقالب
                   </button>
@@ -1351,7 +1351,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                               items: customTemplateForm.items.filter((_, i) => i !== idx)
                             });
                           }}
-                          className="text-red-500 hover:text-red-700"
+                          className="text-red-500 hover:text-red-700" data-testid="tasks.main.set-custom-template-form-2"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -1369,7 +1369,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                           newItems[idx].title = e.target.value;
                           setCustomTemplateForm({ ...customTemplateForm, items: newItems });
                         }}
-                        className="p-1.5 border border-slate-300 rounded text-xs font-bold"
+                        className="p-1.5 border border-slate-300 rounded text-xs font-bold" data-testid="tasks.main.set-custom-template-form-7"
                       />
 
                       <select
@@ -1379,7 +1379,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                           newItems[idx].category = e.target.value;
                           setCustomTemplateForm({ ...customTemplateForm, items: newItems });
                         }}
-                        className="p-1.5 border border-slate-300 rounded text-xs bg-white"
+                        className="p-1.5 border border-slate-300 rounded text-xs bg-white" data-testid="tasks.main.set-custom-template-form-3"
                       >
                         {taskCategories.map(cat => (
                           <option key={cat.id} value={cat.name}>{cat.name}</option>
@@ -1399,7 +1399,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                             newItems[idx].days_offset = Number(e.target.value);
                             setCustomTemplateForm({ ...customTemplateForm, items: newItems });
                           }}
-                          className="w-16 p-1 border border-slate-300 rounded text-xs text-center font-bold"
+                          className="w-16 p-1 border border-slate-300 rounded text-xs text-center font-bold" data-testid="tasks.main.set-custom-template-form-8"
                         />
                         <span className="text-slate-500">يوم</span>
                       </div>
@@ -1411,7 +1411,7 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                           newItems[idx].priority = e.target.value as any;
                           setCustomTemplateForm({ ...customTemplateForm, items: newItems });
                         }}
-                        className="p-1 border border-slate-300 rounded text-xs bg-white font-bold"
+                        className="p-1 border border-slate-300 rounded text-xs bg-white font-bold" data-testid="tasks.main.set-custom-template-form-4"
                       >
                         <option value="عادية">أولوية عادية</option>
                         <option value="مهمة">أولوية مهمة</option>
@@ -1426,13 +1426,13 @@ export const TasksPage: React.FC<TasksPageProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsCreateTemplateModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs"
+                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs" data-testid="tasks.main.set-is-create-template-modal-open-2"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg text-xs shadow-xs"
+                  className="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg text-xs shadow-xs" data-testid="tasks.main.save"
                 >
                   حفظ القالب المخصص
                 </button>

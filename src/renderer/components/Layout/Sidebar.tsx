@@ -45,6 +45,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
   settings,
   dbPath,
 }) => {
+  const [appVersion, setAppVersion] = React.useState<string>('');
+
+  React.useEffect(() => {
+    if (window.electronAPI?.getAppVersion) {
+      window.electronAPI.getAppVersion().then((ver) => {
+        if (ver) setAppVersion(ver);
+      }).catch((err) => {
+        console.error('Failed to get app version:', err);
+      });
+    }
+  }, []);
   return (
     <aside className="w-64 bg-slate-900 text-slate-100 flex flex-col h-screen border-l border-slate-800 shadow-xl flex-shrink-0 select-none">
       {/* Brand / Lawyer Profile Banner */}
@@ -78,7 +89,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 isActive
                   ? 'bg-amber-600/20 text-amber-400 border border-amber-500/30 shadow-sm'
                   : 'text-slate-300 hover:bg-slate-800 hover:text-white'
-              }`}
+              }`} data-testid="sidebar.main.on-tab-change"
             >
               <Icon
                 className={`w-5 h-5 flex-shrink-0 transition-colors ${
@@ -103,8 +114,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
             WAL نشط
           </span>
         </div>
-        <div className="text-[11px] text-slate-500 truncate" title={dbPath}>
-          {dbPath ? dbPath.split(/[\\/]/).pop() : 'office.db'}
+        <div className="flex items-center justify-between text-[11px] text-slate-500 mt-1">
+          <span className="truncate" title={dbPath}>{dbPath ? dbPath.split(/[\\/]/).pop() : 'office.db'}</span>
+          {appVersion && <span className="font-mono text-slate-400 text-[10px]">v{appVersion}</span>}
         </div>
       </div>
     </aside>

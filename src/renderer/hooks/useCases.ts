@@ -73,6 +73,7 @@ export function useCases() {
       }
       return res;
     } catch (err: any) {
+      console.error('Error deleting case:', err);
       return { success: false, message: err?.message || 'تعذر حذف القضية' };
     }
   }, []);

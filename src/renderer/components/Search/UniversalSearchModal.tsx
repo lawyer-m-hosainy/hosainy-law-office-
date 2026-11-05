@@ -214,12 +214,12 @@ export const UniversalSearchModal: React.FC<UniversalSearchModalProps> = ({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="البحث الشامل: اكتب اسم موكل، خصم، رقم قضية، محكمة، جلسة، مستند، مهمة، إيصال..."
-            className="flex-1 bg-transparent border-none text-slate-800 text-sm font-semibold placeholder:text-slate-400 focus:outline-none"
+            className="flex-1 bg-transparent border-none text-slate-800 text-sm font-semibold placeholder:text-slate-400 focus:outline-none" data-testid="search.main.set-query-2"
           />
           {query && (
             <button
               onClick={() => setQuery('')}
-              className="text-slate-400 hover:text-slate-600 p-1"
+              className="text-slate-400 hover:text-slate-600 p-1" data-testid="search.main.set-query"
             >
               <X className="w-4 h-4" />
             </button>
@@ -229,7 +229,7 @@ export const UniversalSearchModal: React.FC<UniversalSearchModalProps> = ({
           </span>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-600 p-1"
+            className="text-slate-400 hover:text-slate-600 p-1" data-testid="search.main.on-close"
           >
             <X className="w-5 h-5" />
           </button>
@@ -251,7 +251,7 @@ export const UniversalSearchModal: React.FC<UniversalSearchModalProps> = ({
                   selectedEntity === tab.id
                     ? 'bg-amber-600 text-white shadow-xs'
                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                }`}
+                }`} data-testid="search.main.set-selected-entity"
               >
                 <span>{tab.label}</span>
                 {searchResults.length > 0 && (
@@ -294,7 +294,7 @@ export const UniversalSearchModal: React.FC<UniversalSearchModalProps> = ({
               <div
                 key={`${item.entityType}-${item.id}`}
                 onClick={() => handleSelectItem(item)}
-                className="group p-3.5 rounded-xl border border-slate-200 hover:border-amber-400 bg-white hover:bg-amber-50/40 cursor-pointer transition-all shadow-xs flex items-center justify-between gap-3"
+                className="group p-3.5 rounded-xl border border-slate-200 hover:border-amber-400 bg-white hover:bg-amber-50/40 cursor-pointer transition-all shadow-xs flex items-center justify-between gap-3" data-testid="search.main.handle-select-item"
               >
                 <div className="flex items-start gap-3 flex-1 min-w-0">
                   <div className="w-9 h-9 rounded-lg bg-slate-100 group-hover:bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors">

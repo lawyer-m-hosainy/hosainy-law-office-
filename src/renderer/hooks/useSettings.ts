@@ -107,6 +107,7 @@ export function useSettings() {
       }
       return res;
     } catch (err: any) {
+      console.error('Error deleting list item:', err);
       return { success: false, message: err?.message || 'فشل في حذف العنصر' };
     }
   };

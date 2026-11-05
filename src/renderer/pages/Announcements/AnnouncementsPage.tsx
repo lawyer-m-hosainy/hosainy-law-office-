@@ -248,7 +248,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({
           <button
             onClick={handlePrint}
             disabled={announcements.length === 0}
-            className="flex items-center gap-1.5 px-4 py-2 bg-slate-800 hover:bg-slate-900 disabled:opacity-50 text-white rounded-xl text-xs font-bold transition-all shadow-xs"
+            className="flex items-center gap-1.5 px-4 py-2 bg-slate-800 hover:bg-slate-900 disabled:opacity-50 text-white rounded-xl text-xs font-bold transition-all shadow-xs" data-testid="announcements.main.handle-print"
           >
             <Printer className="w-4 h-4 text-amber-400" />
             <span>طباعة كشف الإعلانات</span>
@@ -265,7 +265,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({
               onClick={() => setFilterStatus('pending_only')}
               className={`px-3 py-1.5 rounded-md transition-colors ${
                 filterStatus === 'pending_only' ? 'bg-amber-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
-              }`}
+              }`} data-testid="announcements.main.set-filter-status"
             >
               المعلقة فقط (قيد الانتظار / لم تعلن)
             </button>
@@ -273,7 +273,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({
               onClick={() => setFilterStatus('all')}
               className={`px-3 py-1.5 rounded-md transition-colors ${
                 filterStatus === 'all' ? 'bg-amber-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
-              }`}
+              }`} data-testid="announcements.main.set-filter-status-2"
             >
               جميع الحالات
             </button>
@@ -281,7 +281,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({
               onClick={() => setFilterStatus('أُعلن')}
               className={`px-3 py-1.5 rounded-md transition-colors ${
                 filterStatus === 'أُعلن' ? 'bg-amber-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'
-              }`}
+              }`} data-testid="announcements.main.set-filter-status-3"
             >
               أُعلنت بنجاح
             </button>
@@ -295,7 +295,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="ابحث برقم الدعوى، المطلوب إعلانه، القلم، رقم القيد..."
-              className="w-full pl-3 pr-9 py-2 border border-slate-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-amber-500"
+              className="w-full pl-3 pr-9 py-2 border border-slate-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-amber-500" data-testid="announcements.main.set-search-query"
             />
           </div>
 
@@ -305,7 +305,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({
               <select
                 value={selectedOffice}
                 onChange={(e) => setSelectedOffice(e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-bold text-slate-700"
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs font-bold text-slate-700" data-testid="announcements.main.set-selected-office"
               >
                 <option value="الكل">كل أقلام المحضرين</option>
                 {officesList.map((off, idx) => (
@@ -322,14 +322,14 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="px-2 py-1.5 border border-slate-300 rounded-lg font-mono text-xs"
+              className="px-2 py-1.5 border border-slate-300 rounded-lg font-mono text-xs" data-testid="announcements.main.set-start-date"
             />
             <span>إلى:</span>
             <input
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="px-2 py-1.5 border border-slate-300 rounded-lg font-mono text-xs"
+              className="px-2 py-1.5 border border-slate-300 rounded-lg font-mono text-xs" data-testid="announcements.main.set-end-date"
             />
           </div>
         </div>
@@ -375,7 +375,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({
                         {onNavigateToCase ? (
                           <button
                             onClick={() => onNavigateToCase(ann.case_id)}
-                            className="font-bold text-amber-700 hover:text-amber-800 flex items-center gap-1 group"
+                            className="font-bold text-amber-700 hover:text-amber-800 flex items-center gap-1 group" data-testid="announcements.main.on-navigate-to-case"
                           >
                             <span>{ann.case_number ? `${ann.case_number}` : (ann.case_title || `قضية #${ann.case_id}`)}</span>
                             <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -465,7 +465,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({
                           <button
                             onClick={() => handleOpenStatusModal(ann)}
                             className="px-2 py-1 bg-white hover:bg-slate-100 text-slate-700 font-bold rounded border border-slate-300 text-[11px]"
-                            title="تسجيل نتيجة وورود الإعلان"
+                            title="تسجيل نتيجة وورود الإعلان" data-testid="announcements.main.handle-open-status-modal"
                           >
                             النتيجة
                           </button>
@@ -474,7 +474,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({
                             <button
                               onClick={() => handleOpenReattemptModal(ann)}
                               className="p-1 text-amber-700 hover:bg-amber-100 rounded"
-                              title="إضافة إعادة إعلان"
+                              title="إضافة إعادة إعلان" data-testid="announcements.main.handle-open-reattempt-modal"
                             >
                               <RotateCcw className="w-3.5 h-3.5" />
                             </button>
@@ -483,7 +483,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({
                           <button
                             onClick={() => handleDelete(ann)}
                             className="p-1 text-slate-400 hover:text-red-600 rounded"
-                            title="حذف"
+                            title="حذف" data-testid="announcements.main.handle-delete"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -508,7 +508,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({
               </h4>
               <button
                 onClick={() => setStatusModalItem(null)}
-                className="text-slate-400 hover:text-slate-600 text-lg font-bold"
+                className="text-slate-400 hover:text-slate-600 text-lg font-bold" data-testid="announcements.main.set-status-modal-item"
               >
                 ✕
               </button>
@@ -520,7 +520,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({
                 <select
                   value={statusForm.status}
                   onChange={(e) => setStatusForm({ ...statusForm, status: e.target.value as AnnouncementStatus })}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg font-bold"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg font-bold" data-testid="announcements.main.set-status-form"
                 >
                   <option value="أُعلن">أُعلن (تم الإعلان مع الشخص نفسه)</option>
                   <option value="مخاطبة مع شخص آخر">مخاطبة مع شخص آخر (تابع / قريب / شريك)</option>
@@ -539,7 +539,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({
                     type="date"
                     value={statusForm.return_date}
                     onChange={(e) => setStatusForm({ ...statusForm, return_date: e.target.value })}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg font-mono"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg font-mono" data-testid="announcements.main.set-status-form-2"
                   />
                 </div>
 
@@ -549,7 +549,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({
                     type="text"
                     value={statusForm.bailiff_name}
                     onChange={(e) => setStatusForm({ ...statusForm, bailiff_name: e.target.value })}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg" data-testid="announcements.main.set-status-form-3"
                   />
                 </div>
               </div>
@@ -562,7 +562,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({
                     value={statusForm.failure_reason}
                     onChange={(e) => setStatusForm({ ...statusForm, failure_reason: e.target.value })}
                     className="w-full px-3 py-2 border border-red-300 rounded-lg bg-red-50/50"
-                    required
+                    required data-testid="announcements.main.set-status-form-4"
                   />
                 </div>
               )}
@@ -573,7 +573,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({
                   rows={2}
                   value={statusForm.notes}
                   onChange={(e) => setStatusForm({ ...statusForm, notes: e.target.value })}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg resize-none"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg resize-none" data-testid="announcements.main.set-status-form-5"
                 />
               </div>
 
@@ -581,14 +581,14 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({
                 <button
                   type="button"
                   onClick={() => setStatusModalItem(null)}
-                  className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-bold"
+                  className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-bold" data-testid="announcements.main.set-status-modal-item-2"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-bold shadow-xs disabled:opacity-50"
+                  className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-bold shadow-xs disabled:opacity-50" data-testid="announcements.main.button-13"
                 >
                   {isSubmitting ? 'جاري الحفظ...' : 'حفظ النتيجة'}
                 </button>
@@ -608,7 +608,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({
               </h4>
               <button
                 onClick={() => setReattemptModalItem(null)}
-                className="text-slate-400 hover:text-slate-600 text-lg font-bold"
+                className="text-slate-400 hover:text-slate-600 text-lg font-bold" data-testid="announcements.main.set-reattempt-modal-item"
               >
                 ✕
               </button>
@@ -627,7 +627,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({
                     type="text"
                     value={reattemptForm.bailiff_office}
                     onChange={(e) => setReattemptForm({ ...reattemptForm, bailiff_office: e.target.value })}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg" data-testid="announcements.main.set-reattempt-form"
                   />
                 </div>
 
@@ -637,7 +637,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({
                     type="text"
                     value={reattemptForm.request_number}
                     onChange={(e) => setReattemptForm({ ...reattemptForm, request_number: e.target.value })}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg font-mono"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg font-mono" data-testid="announcements.main.set-reattempt-form-2"
                   />
                 </div>
               </div>
@@ -649,7 +649,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({
                     type="date"
                     value={reattemptForm.delivery_date}
                     onChange={(e) => setReattemptForm({ ...reattemptForm, delivery_date: e.target.value })}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg font-mono"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg font-mono" data-testid="announcements.main.set-reattempt-form-3"
                   />
                 </div>
 
@@ -661,7 +661,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({
                     step="0.5"
                     value={reattemptForm.fee_amount}
                     onChange={(e) => setReattemptForm({ ...reattemptForm, fee_amount: parseFloat(e.target.value) || 0 })}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg font-mono font-bold"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg font-mono font-bold" data-testid="announcements.main.set-reattempt-form-4"
                   />
                 </div>
               </div>
@@ -672,7 +672,7 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({
                   rows={2}
                   value={reattemptForm.notes}
                   onChange={(e) => setReattemptForm({ ...reattemptForm, notes: e.target.value })}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg resize-none"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg resize-none" data-testid="announcements.main.set-reattempt-form-5"
                 />
               </div>
 
@@ -680,14 +680,14 @@ export const AnnouncementsPage: React.FC<AnnouncementsPageProps> = ({
                 <button
                   type="button"
                   onClick={() => setReattemptModalItem(null)}
-                  className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-bold"
+                  className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-bold" data-testid="announcements.main.set-reattempt-modal-item-2"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-bold shadow-xs disabled:opacity-50"
+                  className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-bold shadow-xs disabled:opacity-50" data-testid="announcements.main.button-16"
                 >
                   {isSubmitting ? 'جاري الحفظ...' : 'حفظ إعادة الإعلان'}
                 </button>

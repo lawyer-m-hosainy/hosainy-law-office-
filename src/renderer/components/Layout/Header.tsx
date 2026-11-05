@@ -27,6 +27,7 @@ const tabTitles: Record<NavigationTab, { title: string; subtitle: string }> = {
   calendar: { title: 'التقويم القضائي', subtitle: 'متابعة مواعيد الجلسات والمهام على مدار الشهر والأسبوع' },
   finance: { title: 'المالية والحسابات', subtitle: 'الأتعاب، الرسوم القضائية، المصاريف، وسندات القبض' },
   executions: { title: 'إجراءات التنفيذ', subtitle: 'ملفات التنفيذ الجبري، الأوامر، الحجوزات، والمحاضر' },
+  announcements: { title: 'إعلانات المحضرين', subtitle: 'متابعة إعلانات الدعاوى وإعادة الإعلان وأقلام المحضرين' },
   tasks: { title: 'قائمة المهام والمأموريات', subtitle: 'مأموريات المحاكم والنيابة والشهر العقاري والأعمال الإدارية' },
   reports: { title: 'التقارير والطباعة الرسمية', subtitle: 'خدمة الطباعة الموحدة، كشوف الحسابات، وملفات القضايا' },
   trash: { title: 'سلة المحذوفات والأرشيف', subtitle: 'استعراض واسترجاع المستندات والقضايا والمهام المحذوفة' },
@@ -68,7 +69,7 @@ export const Header: React.FC<HeaderProps> = ({
         <button
           onClick={onOpenUniversalSearch}
           className="flex items-center gap-2 px-3 py-1.5 bg-slate-100 hover:bg-slate-200/80 text-slate-500 rounded-lg text-xs font-medium border border-slate-200 transition-colors cursor-pointer group"
-          title="البحث الشامل عبر كل القضايا والموكلين والجلسات والمهام (Ctrl+K)"
+          title="البحث الشامل عبر كل القضايا والموكلين والجلسات والمهام (Ctrl+K)" data-testid="header.main.on-open-universal-search"
         >
           <Search className="w-3.5 h-3.5 text-slate-400 group-hover:text-amber-600 transition-colors" />
           <span className="hidden sm:inline">بحث شامل في كافة السجلات...</span>
@@ -93,7 +94,7 @@ export const Header: React.FC<HeaderProps> = ({
         <button
           onClick={onOpenDataDir}
           title="فتح مجلد بيانات البرنامج (LawOfficeData)"
-          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-lg transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-lg transition-colors" data-testid="header.main.on-open-data-dir"
         >
           <FolderOpen className="w-3.5 h-3.5 text-slate-600" />
           <span className="hidden lg:inline">مجلد البيانات</span>
@@ -104,7 +105,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             onClick={onLockApp}
             title="قفل البرنامج فوراً (Lock Screen)"
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-lg transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-lg transition-colors cursor-pointer" data-testid="header.main.on-lock-app"
           >
             <Lock className="w-3.5 h-3.5 text-slate-700" />
             <span className="hidden md:inline">قفل</span>
@@ -115,7 +116,7 @@ export const Header: React.FC<HeaderProps> = ({
         <button
           onClick={onOpenQuickPrint}
           title="خدمة الطباعة الموحدة"
-          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-amber-600 hover:bg-amber-700 rounded-lg shadow-xs transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-amber-600 hover:bg-amber-700 rounded-lg shadow-xs transition-colors" data-testid="header.main.on-open-quick-print"
         >
           <Printer className="w-3.5 h-3.5" />
           <span>معاينة وطباعة</span>

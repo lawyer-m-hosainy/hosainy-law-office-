@@ -195,28 +195,28 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             <button
               onClick={() => handlePrintTodayRoll('print')}
               disabled={todayHearings.length === 0}
-              className="flex items-center gap-2 px-4 py-2.5 bg-amber-600 hover:bg-amber-500 disabled:opacity-50 text-white text-xs font-bold rounded-xl shadow-md transition-all"
+              className="flex items-center gap-2 px-4 py-2.5 bg-amber-600 hover:bg-amber-500 disabled:opacity-50 text-white text-xs font-bold rounded-xl shadow-md transition-all" data-testid="dashboard.main.handle-print-today-roll"
             >
               <Printer className="w-4 h-4" />
               <span>طباعة رول اليوم</span>
             </button>
             <button
               onClick={() => onNavigate('hearings')}
-              className="flex items-center gap-2 px-4 py-2.5 bg-slate-800/90 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl border border-slate-600/60 transition-all"
+              className="flex items-center gap-2 px-4 py-2.5 bg-slate-800/90 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl border border-slate-600/60 transition-all" data-testid="dashboard.main.on-navigate"
             >
               <Gavel className="w-4 h-4 text-amber-400" />
               <span>رول الجلسات</span>
             </button>
             <button
               onClick={() => onNavigate('calendar')}
-              className="flex items-center gap-2 px-4 py-2.5 bg-slate-800/90 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl border border-slate-600/60 transition-all"
+              className="flex items-center gap-2 px-4 py-2.5 bg-slate-800/90 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl border border-slate-600/60 transition-all" data-testid="dashboard.main.on-navigate-2"
             >
               <Calendar className="w-4 h-4 text-indigo-400" />
               <span>التقويم</span>
             </button>
             <button
               onClick={() => onNavigate('finance')}
-              className="flex items-center gap-2 px-4 py-2.5 bg-slate-800/90 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl border border-slate-600/60 transition-all"
+              className="flex items-center gap-2 px-4 py-2.5 bg-slate-800/90 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl border border-slate-600/60 transition-all" data-testid="dashboard.main.on-navigate-3"
             >
               <Coins className="w-4 h-4 text-emerald-400" />
               <span>المالية</span>
@@ -235,7 +235,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {/* Today's hearings */}
         <div
           onClick={() => onNavigate('hearings')}
-          className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-amber-400 cursor-pointer transition-all"
+          className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-amber-400 cursor-pointer transition-all" data-testid="dashboard.main.on-navigate-4"
         >
           <div className="flex items-center justify-between text-slate-500 mb-1">
             <span className="text-xs font-bold">جلسات اليوم</span>
@@ -274,7 +274,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {/* Expiring POAs */}
         <div
           onClick={() => onNavigate('clients')}
-          className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-amber-400 cursor-pointer transition-all"
+          className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-amber-400 cursor-pointer transition-all" data-testid="dashboard.main.on-navigate-5"
         >
           <div className="flex items-center justify-between text-slate-500 mb-1">
             <span className="text-xs font-bold">توكيلات قاربت على الانتهاء</span>
@@ -303,7 +303,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
             <button
               onClick={() => onNavigate('announcements')}
-              className="text-xs font-bold text-red-800 hover:text-red-950 underline"
+              className="text-xs font-bold text-red-800 hover:text-red-950 underline" data-testid="dashboard.main.on-navigate-6"
             >
               فتح شاشة متابعة الإعلانات ←
             </button>
@@ -314,7 +314,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <div
                 key={w.announcement_id}
                 onClick={() => handleOpenCase(w.case_id)}
-                className="bg-white p-3 rounded-lg border border-red-200 hover:border-red-400 cursor-pointer transition-colors shadow-2xs space-y-1.5 text-xs"
+                className="bg-white p-3 rounded-lg border border-red-200 hover:border-red-400 cursor-pointer transition-colors shadow-2xs space-y-1.5 text-xs" data-testid="dashboard.main.handle-open-case"
               >
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-slate-800 line-clamp-1">{w.case_title}</span>
@@ -353,14 +353,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
               <>
                 <button
                   onClick={() => handlePrintTodayRoll('preview')}
-                  className="flex items-center gap-1 px-3 py-1 text-xs font-bold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 rounded-lg"
+                  className="flex items-center gap-1 px-3 py-1 text-xs font-bold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 rounded-lg" data-testid="dashboard.main.handle-print-today-roll-2"
                 >
                   <Eye className="w-3.5 h-3.5" />
                   معاينة
                 </button>
                 <button
                   onClick={() => handlePrintTodayRoll('print')}
-                  className="flex items-center gap-1 px-3 py-1 text-xs font-bold text-white bg-slate-800 hover:bg-slate-900 rounded-lg shadow-sm"
+                  className="flex items-center gap-1 px-3 py-1 text-xs font-bold text-white bg-slate-800 hover:bg-slate-900 rounded-lg shadow-sm" data-testid="dashboard.main.handle-print-today-roll-3"
                 >
                   <Printer className="w-3.5 h-3.5" />
                   طباعة الرول
@@ -370,7 +370,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
             <button
               onClick={() => onNavigate('hearings')}
-              className="text-xs font-bold text-amber-700 hover:text-amber-800 mr-2"
+              className="text-xs font-bold text-amber-700 hover:text-amber-800 mr-2" data-testid="dashboard.main.on-navigate-7"
             >
               فتح رول الجلسات الكامل ←
             </button>
@@ -420,7 +420,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <td className="p-2.5">
                       <button
                         onClick={() => handleOpenCase(h.case_id)}
-                        className="font-extrabold text-slate-900 hover:text-amber-700 flex items-center gap-1"
+                        className="font-extrabold text-slate-900 hover:text-amber-700 flex items-center gap-1" data-testid="dashboard.main.handle-open-case-2"
                       >
                         {h.case_number} لسنة {h.case_year}
                         <ExternalLink className="w-3 h-3 text-slate-400" />
@@ -439,7 +439,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     <td className="p-2.5 text-center">
                       <button
                         onClick={() => onNavigate('hearings')}
-                        className="px-2.5 py-1 text-[11px] font-bold text-white bg-slate-800 hover:bg-slate-900 rounded-lg"
+                        className="px-2.5 py-1 text-[11px] font-bold text-white bg-slate-800 hover:bg-slate-900 rounded-lg" data-testid="dashboard.main.on-navigate-8"
                       >
                         تسجيل النتيجة
                       </button>
@@ -463,7 +463,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           </div>
           <button
             onClick={() => onNavigate('tasks')}
-            className="text-xs text-amber-600 font-bold hover:underline"
+            className="text-xs text-amber-600 font-bold hover:underline" data-testid="dashboard.main.on-navigate-9"
           >
             سجل المهام الكامل ←
           </button>
@@ -490,7 +490,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     loadDashboardData();
                   }}
                   className="w-5 h-5 rounded-md border border-slate-300 hover:border-emerald-600 bg-white flex items-center justify-center mt-0.5"
-                  title="تأشير المهمة كمنجزة فوراً"
+                  title="تأشير المهمة كمنجزة فوراً" data-testid="dashboard.main.on-api"
                 >
                   <Check className="w-3.5 h-3.5 text-emerald-600 opacity-30 hover:opacity-100" />
                 </button>
@@ -551,7 +551,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div>
                     <button
                       onClick={() => handleOpenCase(h.case_id)}
-                      className="font-bold text-slate-900 hover:text-purple-700 flex items-center gap-1"
+                      className="font-bold text-slate-900 hover:text-purple-700 flex items-center gap-1" data-testid="dashboard.main.handle-open-case-3"
                     >
                       {h.case_number} لسنة {h.case_year} ({h.court_name})
                     </button>
@@ -596,7 +596,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                   <div>
                     <button
                       onClick={() => handleOpenCase(a.case_id)}
-                      className="font-bold text-slate-900 hover:text-rose-700 flex items-center gap-1"
+                      className="font-bold text-slate-900 hover:text-rose-700 flex items-center gap-1" data-testid="dashboard.main.handle-open-case-4"
                     >
                       {a.appeal_type} — قضية {a.case_id}
                     </button>
@@ -640,7 +640,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
             <button
               onClick={() => onNavigate('clients')}
-              className="text-xs text-amber-600 font-bold hover:underline"
+              className="text-xs text-amber-600 font-bold hover:underline" data-testid="dashboard.main.on-navigate-10"
             >
               سجل الموكلين ←
             </button>
@@ -676,7 +676,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             </div>
             <button
               onClick={onOpenDataDir}
-              className="text-xs text-amber-600 font-bold hover:underline"
+              className="text-xs text-amber-600 font-bold hover:underline" data-testid="dashboard.main.on-open-data-dir"
             >
               فتح المجلد ←
             </button>

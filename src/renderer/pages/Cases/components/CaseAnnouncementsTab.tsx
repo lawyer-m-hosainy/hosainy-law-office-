@@ -386,7 +386,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
             <button
               onClick={handlePrint}
               className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition-colors border border-slate-300"
-              title="طباعة كشف إعلانات القضية"
+              title="طباعة كشف إعلانات القضية" data-testid="case.announcements.tab.handle-print"
             >
               <Printer className="w-3.5 h-3.5" />
               <span>طباعة الكشف</span>
@@ -395,7 +395,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
 
           <button
             onClick={handleOpenAddModal}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg transition-colors shadow-xs"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg transition-colors shadow-xs" data-testid="case.announcements.tab.handle-open-add-modal"
           >
             <Plus className="w-4 h-4" />
             <span>إضافة إعلان جديد</span>
@@ -415,7 +415,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
           </p>
           <button
             onClick={handleOpenAddModal}
-            className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors"
+            className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors" data-testid="case.announcements.tab.handle-open-add-modal-2"
           >
             <Plus className="w-4 h-4" />
             <span>تسجيل أول إعلان</span>
@@ -524,7 +524,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                     <button
                       onClick={() => handleOpenStatusModal(root)}
                       className="px-2.5 py-1 text-xs font-bold bg-white hover:bg-slate-100 text-slate-700 rounded border border-slate-200 transition-colors"
-                      title="تسجيل نتيجة وورود الإعلان"
+                      title="تسجيل نتيجة وورود الإعلان" data-testid="case.announcements.tab.handle-open-status-modal"
                     >
                       تسجيل النتيجة
                     </button>
@@ -532,7 +532,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                     <button
                       onClick={() => handleDelete(root)}
                       className="p-1.5 text-slate-400 hover:text-red-600 rounded transition-colors"
-                      title="حذف الإعلان"
+                      title="حذف الإعلان" data-testid="case.announcements.tab.handle-delete"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -591,13 +591,13 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                           <div className="flex items-center gap-1 shrink-0 self-end md:self-center">
                             <button
                               onClick={() => handleOpenStatusModal(att)}
-                              className="px-2 py-0.5 text-xs font-semibold bg-white hover:bg-slate-100 text-slate-700 rounded border border-slate-200"
+                              className="px-2 py-0.5 text-xs font-semibold bg-white hover:bg-slate-100 text-slate-700 rounded border border-slate-200" data-testid="case.announcements.tab.handle-open-status-modal-2"
                             >
                               تسجيل النتيجة
                             </button>
                             <button
                               onClick={() => handleDelete(att)}
-                              className="p-1 text-slate-400 hover:text-red-600 rounded"
+                              className="p-1 text-slate-400 hover:text-red-600 rounded" data-testid="case.announcements.tab.handle-delete-2"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
                             </button>
@@ -617,7 +617,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                     </span>
                     <button
                       onClick={() => handleOpenReattemptModal(allInChain[allInChain.length - 1])}
-                      className="flex items-center gap-1 px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded text-xs font-bold transition-colors shadow-xs"
+                      className="flex items-center gap-1 px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded text-xs font-bold transition-colors shadow-xs" data-testid="case.announcements.tab.handle-open-reattempt-modal"
                     >
                       <RotateCcw className="w-3.5 h-3.5" />
                       <span>إضافة إعادة إعلان</span>
@@ -641,7 +641,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
               </div>
               <button
                 onClick={() => setIsAddModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600 text-lg font-bold"
+                className="text-slate-400 hover:text-slate-600 text-lg font-bold" data-testid="case.announcements.tab.set-is-add-modal-open"
               >
                 ✕
               </button>
@@ -662,7 +662,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                 <select
                   value={addForm.hearing_id}
                   onChange={(e) => setAddForm({ ...addForm, hearing_id: e.target.value ? Number(e.target.value) : '' })}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 font-mono"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 font-mono" data-testid="case.announcements.tab.set-add-form"
                 >
                   <option value="">-- بدون ربط بجلسة محددة --</option>
                   {hearings.map((h) => (
@@ -681,7 +681,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                     <input
                       type="radio"
                       checked={addForm.recipient_type === 'party'}
-                      onChange={() => setAddForm({ ...addForm, recipient_type: 'party' })}
+                      onChange={() => setAddForm({ ...addForm, recipient_type: 'party' })} data-testid="case.announcements.tab.set-add-form-3"
                     />
                     <span>من أطراف القضية (خصم / موكل)</span>
                   </label>
@@ -689,7 +689,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                     <input
                       type="radio"
                       checked={addForm.recipient_type === 'free'}
-                      onChange={() => setAddForm({ ...addForm, recipient_type: 'free' })}
+                      onChange={() => setAddForm({ ...addForm, recipient_type: 'free' })} data-testid="case.announcements.tab.set-add-form-4"
                     />
                     <span>اسم حر جديد</span>
                   </label>
@@ -699,7 +699,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                   <select
                     value={addForm.recipient_name}
                     onChange={(e) => handleSelectParty(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg font-bold"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg font-bold" data-testid="case.announcements.tab.handle-select-party"
                   >
                     <option value="">-- اختر من أطراف القضية --</option>
                     {opponents.length > 0 && (
@@ -728,7 +728,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                     onChange={(e) => setAddForm({ ...addForm, recipient_name: e.target.value })}
                     placeholder="اسم المطلوب إعلانه..."
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg font-bold"
-                    required
+                    required data-testid="case.announcements.tab.set-add-form-5"
                   />
                 )}
               </div>
@@ -742,7 +742,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                     value={addForm.recipient_capacity}
                     onChange={(e) => setAddForm({ ...addForm, recipient_capacity: e.target.value })}
                     placeholder="مثال: المدعى عليه الأول"
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg" data-testid="case.announcements.tab.set-add-form-6"
                   />
                 </div>
 
@@ -751,7 +751,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                   <select
                     value={addForm.announcement_type}
                     onChange={(e) => setAddForm({ ...addForm, announcement_type: e.target.value })}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg font-bold"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg font-bold" data-testid="case.announcements.tab.set-add-form-2"
                   >
                     <option value="صحيفة دعوى">صحيفة دعوى</option>
                     <option value="إعلان بالحضور">إعلان بالحضور</option>
@@ -775,7 +775,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                   value={addForm.recipient_address}
                   onChange={(e) => setAddForm({ ...addForm, recipient_address: e.target.value })}
                   placeholder="العنوان التفصيلي للإعلان..."
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg" data-testid="case.announcements.tab.set-add-form-7"
                 />
               </div>
 
@@ -788,7 +788,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                     value={addForm.bailiff_office}
                     onChange={(e) => setAddForm({ ...addForm, bailiff_office: e.target.value })}
                     placeholder="محضرين قسم..."
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg" data-testid="case.announcements.tab.set-add-form-8"
                   />
                 </div>
 
@@ -799,7 +799,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                     value={addForm.request_number}
                     onChange={(e) => setAddForm({ ...addForm, request_number: e.target.value })}
                     placeholder="رقم القيد..."
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg font-mono"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg font-mono" data-testid="case.announcements.tab.set-add-form-9"
                   />
                 </div>
 
@@ -809,7 +809,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                     type="date"
                     value={addForm.delivery_date}
                     onChange={(e) => setAddForm({ ...addForm, delivery_date: e.target.value })}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg font-mono"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg font-mono" data-testid="case.announcements.tab.set-add-form-10"
                   />
                 </div>
               </div>
@@ -827,7 +827,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                   value={addForm.fee_amount}
                   onChange={(e) => setAddForm({ ...addForm, fee_amount: parseFloat(e.target.value) || 0 })}
                   className="w-full px-3 py-2 border border-emerald-300 rounded-lg font-mono font-bold text-emerald-900 bg-white"
-                  placeholder="0.00"
+                  placeholder="0.00" data-testid="case.announcements.tab.set-add-form-11"
                 />
                 <span className="text-[11px] text-emerald-700 block mt-1">
                   * سيتم إنشاء حركة مالية منصرفة من نوع "رسوم قضائية - رسوم إعلان محضرين" مربوطة بالقضية تلقائياً.
@@ -841,7 +841,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                   value={addForm.notes}
                   onChange={(e) => setAddForm({ ...addForm, notes: e.target.value })}
                   placeholder="أي ملاحظات تخص الإعلان..."
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg resize-none"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg resize-none" data-testid="case.announcements.tab.set-add-form-12"
                 />
               </div>
 
@@ -850,14 +850,14 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-bold"
+                  className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-bold" data-testid="case.announcements.tab.set-is-add-modal-open-2"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-bold shadow-xs disabled:opacity-50"
+                  className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-bold shadow-xs disabled:opacity-50" data-testid="case.announcements.tab.button-14"
                 >
                   {submitting ? 'جاري الحفظ...' : 'حفظ الإعلان'}
                 </button>
@@ -880,7 +880,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
               </div>
               <button
                 onClick={() => setIsStatusModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600 text-lg font-bold"
+                className="text-slate-400 hover:text-slate-600 text-lg font-bold" data-testid="case.announcements.tab.set-is-status-modal-open"
               >
                 ✕
               </button>
@@ -898,7 +898,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                 <select
                   value={statusForm.status}
                   onChange={(e) => setStatusForm({ ...statusForm, status: e.target.value as AnnouncementStatus })}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg font-bold"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg font-bold" data-testid="case.announcements.tab.set-status-form"
                 >
                   <option value="أُعلن">أُعلن (تم الإعلان مع الشخص نفسه)</option>
                   <option value="مخاطبة مع شخص آخر">مخاطبة مع شخص آخر (تابع / قريب / شريك)</option>
@@ -917,7 +917,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                     type="date"
                     value={statusForm.return_date}
                     onChange={(e) => setStatusForm({ ...statusForm, return_date: e.target.value })}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg font-mono"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg font-mono" data-testid="case.announcements.tab.set-status-form-2"
                   />
                 </div>
 
@@ -928,7 +928,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                     value={statusForm.bailiff_name}
                     onChange={(e) => setStatusForm({ ...statusForm, bailiff_name: e.target.value })}
                     placeholder="اسم المحضر..."
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg" data-testid="case.announcements.tab.set-status-form-3"
                   />
                 </div>
               </div>
@@ -942,7 +942,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                     onChange={(e) => setStatusForm({ ...statusForm, failure_reason: e.target.value })}
                     placeholder="مثال: لعدم الاستدلال على العنوان، أو العقار مغلق، أو رفض الاستلام..."
                     className="w-full px-3 py-2 border border-red-300 rounded-lg bg-red-50/50"
-                    required
+                    required data-testid="case.announcements.tab.set-status-form-4"
                   />
                 </div>
               )}
@@ -954,7 +954,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                   value={statusForm.notes}
                   onChange={(e) => setStatusForm({ ...statusForm, notes: e.target.value })}
                   placeholder="ملاحظات المحضر أو تفاصيل الإعلان..."
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg resize-none"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg resize-none" data-testid="case.announcements.tab.set-status-form-5"
                 />
               </div>
 
@@ -962,14 +962,14 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsStatusModalOpen(false)}
-                  className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-bold"
+                  className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-bold" data-testid="case.announcements.tab.set-is-status-modal-open-2"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-bold shadow-xs disabled:opacity-50"
+                  className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-bold shadow-xs disabled:opacity-50" data-testid="case.announcements.tab.button-18"
                 >
                   {submitting ? 'جاري الحفظ...' : 'حفظ النتيجة'}
                 </button>
@@ -992,7 +992,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
               </div>
               <button
                 onClick={() => setIsReattemptModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600 text-lg font-bold"
+                className="text-slate-400 hover:text-slate-600 text-lg font-bold" data-testid="case.announcements.tab.set-is-reattempt-modal-open"
               >
                 ✕
               </button>
@@ -1016,7 +1016,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                 <select
                   value={reattemptForm.hearing_id}
                   onChange={(e) => setReattemptForm({ ...reattemptForm, hearing_id: e.target.value ? Number(e.target.value) : '' })}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg font-mono"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg font-mono" data-testid="case.announcements.tab.set-reattempt-form"
                 >
                   <option value="">-- بدون ربط بجلسة --</option>
                   {hearings.map((h) => (
@@ -1034,7 +1034,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                     type="text"
                     value={reattemptForm.bailiff_office}
                     onChange={(e) => setReattemptForm({ ...reattemptForm, bailiff_office: e.target.value })}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg" data-testid="case.announcements.tab.set-reattempt-form-2"
                   />
                 </div>
 
@@ -1044,7 +1044,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                     type="text"
                     value={reattemptForm.request_number}
                     onChange={(e) => setReattemptForm({ ...reattemptForm, request_number: e.target.value })}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg font-mono"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg font-mono" data-testid="case.announcements.tab.set-reattempt-form-3"
                   />
                 </div>
               </div>
@@ -1056,7 +1056,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                     type="date"
                     value={reattemptForm.delivery_date}
                     onChange={(e) => setReattemptForm({ ...reattemptForm, delivery_date: e.target.value })}
-                    className="w-full px-3 py-2 border border-slate-300 rounded-lg font-mono"
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg font-mono" data-testid="case.announcements.tab.set-reattempt-form-4"
                   />
                 </div>
 
@@ -1069,7 +1069,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                     value={reattemptForm.fee_amount}
                     onChange={(e) => setReattemptForm({ ...reattemptForm, fee_amount: parseFloat(e.target.value) || 0 })}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg font-mono font-bold"
-                    placeholder="0.00"
+                    placeholder="0.00" data-testid="case.announcements.tab.set-reattempt-form-5"
                   />
                 </div>
               </div>
@@ -1080,7 +1080,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                   rows={2}
                   value={reattemptForm.notes}
                   onChange={(e) => setReattemptForm({ ...reattemptForm, notes: e.target.value })}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg resize-none"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg resize-none" data-testid="case.announcements.tab.set-reattempt-form-6"
                 />
               </div>
 
@@ -1088,14 +1088,14 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsReattemptModalOpen(false)}
-                  className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-bold"
+                  className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg font-bold" data-testid="case.announcements.tab.set-is-reattempt-modal-open-2"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-bold shadow-xs disabled:opacity-50"
+                  className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-bold shadow-xs disabled:opacity-50" data-testid="case.announcements.tab.button-22"
                 >
                   {submitting ? 'جاري الحفظ...' : 'حفظ إعادة الإعلان'}
                 </button>

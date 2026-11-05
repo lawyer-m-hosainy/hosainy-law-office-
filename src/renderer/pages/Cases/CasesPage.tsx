@@ -282,7 +282,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="بحث في القضايا (رقم القضية، السنة، المحكمة، الموكل، الخصم، الموضوع)..."
-              className="w-full pr-10 pl-4 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium"
+              className="w-full pr-10 pl-4 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-medium" data-testid="cases.main.set-search-query"
             />
           </div>
 
@@ -308,7 +308,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
 
             <button
               onClick={handleOpenAddModal}
-              className="flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors flex-shrink-0"
+              className="flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors flex-shrink-0" data-testid="cases.main.handle-open-add-modal"
             >
               <FolderPlus className="w-4 h-4" />
               <span>إضافة ملف قضية جديد</span>
@@ -326,7 +326,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-700 font-medium focus:outline-none"
+            className="px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-700 font-medium focus:outline-none" data-testid="cases.main.set-status-filter"
           >
             <option value="الكل">كل الحالات</option>
             <option value="متداولة">متداولة</option>
@@ -342,7 +342,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
           <select
             value={courtFilter}
             onChange={(e) => setCourtFilter(e.target.value)}
-            className="px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-700 font-medium focus:outline-none max-w-[160px]"
+            className="px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-700 font-medium focus:outline-none max-w-[160px]" data-testid="cases.main.set-court-filter"
           >
             <option value="الكل">كل المحاكم</option>
             {courts.map((court) => (
@@ -355,7 +355,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
           <select
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value)}
-            className="px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-700 font-medium focus:outline-none max-w-[140px]"
+            className="px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-700 font-medium focus:outline-none max-w-[140px]" data-testid="cases.main.set-type-filter"
           >
             <option value="الكل">كل الأنواع</option>
             {caseTypes.map((t) => (
@@ -368,7 +368,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
           <select
             value={priorityFilter}
             onChange={(e) => setPriorityFilter(e.target.value)}
-            className="px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-700 font-medium focus:outline-none"
+            className="px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-700 font-medium focus:outline-none" data-testid="cases.main.set-priority-filter"
           >
             <option value="الكل">كل درجات الأهمية</option>
             <option value="عادية">عادية</option>
@@ -399,7 +399,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
             <div
               key={cs.id}
               onClick={() => onOpenCaseDetails(cs.id)}
-              className="bg-white rounded-xl border border-slate-200 shadow-xs hover:shadow-md hover:border-amber-400/80 transition-all p-5 cursor-pointer flex flex-col justify-between group relative overflow-hidden"
+              className="bg-white rounded-xl border border-slate-200 shadow-xs hover:shadow-md hover:border-amber-400/80 transition-all p-5 cursor-pointer flex flex-col justify-between group relative overflow-hidden" data-testid="cases.main.on-open-case-details"
             >
               <div className="space-y-3">
                 {/* Header: Number, Year, Priority Badge */}
@@ -468,7 +468,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                 <button
                   onClick={(e) => handleDelete(e, cs)}
                   title="حذف القضية"
-                  className="p-1 text-slate-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="p-1 text-slate-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity" data-testid="cases.main.handle-delete"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>
@@ -492,7 +492,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
               <select
                 value={pageSize}
                 onChange={(e) => setPageSize(Number(e.target.value))}
-                className="px-2 py-1 text-xs bg-slate-50 border border-slate-300 rounded font-bold focus:outline-none focus:ring-1 focus:ring-amber-500"
+                className="px-2 py-1 text-xs bg-slate-50 border border-slate-300 rounded font-bold focus:outline-none focus:ring-1 focus:ring-amber-500" data-testid="cases.main.set-page-size"
               >
                 <option value={12}>12</option>
                 <option value={24}>24</option>
@@ -508,7 +508,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
               onClick={() => setCurrentPage(1)}
               disabled={currentPage === 1}
               title="الصفحة الأولى"
-              className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+              className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-30 disabled:pointer-events-none transition-colors" data-testid="cases.main.set-current-page"
             >
               <ChevronsRight className="w-4 h-4" />
             </button>
@@ -517,7 +517,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               disabled={currentPage === 1}
               title="الصفحة السابقة"
-              className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+              className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-30 disabled:pointer-events-none transition-colors" data-testid="cases.main.set-current-page-2"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -550,7 +550,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                         currentPage === p
                           ? 'bg-amber-600 text-white shadow-xs'
                           : 'border border-slate-200 text-slate-700 hover:bg-slate-50'
-                      }`}
+                      }`} data-testid="cases.main.set-current-page-3"
                     >
                       {(p as number).toLocaleString('ar-EG')}
                     </button>
@@ -563,7 +563,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
               title="الصفحة التالية"
-              className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+              className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-30 disabled:pointer-events-none transition-colors" data-testid="cases.main.set-current-page-4"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -572,7 +572,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
               onClick={() => setCurrentPage(totalPages)}
               disabled={currentPage === totalPages}
               title="الصفحة الأخيرة"
-              className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+              className="p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-30 disabled:pointer-events-none transition-colors" data-testid="cases.main.set-current-page-5"
             >
               <ChevronsLeft className="w-4 h-4" />
             </button>
@@ -591,7 +591,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
               </div>
               <button
                 onClick={() => setIsAddModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600 transition-colors"
+                className="text-slate-400 hover:text-slate-600 transition-colors" data-testid="cases.main.set-is-add-modal-open"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -619,7 +619,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                       value={formData.case_number}
                       onChange={(e) => setFormData({ ...formData, case_number: e.target.value })}
                       placeholder="مثال: 1234"
-                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold"
+                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold" data-testid="cases.main.set-form-data-8"
                     />
                   </div>
 
@@ -630,7 +630,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                       required
                       value={formData.case_year}
                       onChange={(e) => setFormData({ ...formData, case_year: parseInt(e.target.value) || 2026 })}
-                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold"
+                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold" data-testid="cases.main.set-form-data-9"
                     />
                   </div>
 
@@ -639,7 +639,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                     <select
                       value={formData.court_name}
                       onChange={(e) => setFormData({ ...formData, court_name: e.target.value })}
-                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-semibold"
+                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-semibold" data-testid="cases.main.set-form-data"
                     >
                       {courts.map((court) => (
                         <option key={court.id} value={court.name}>
@@ -656,7 +656,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                       value={formData.court_circuit || ''}
                       onChange={(e) => setFormData({ ...formData, court_circuit: e.target.value })}
                       placeholder="مثال: 7 مدني كلي"
-                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="cases.main.set-form-data-10"
                     />
                   </div>
 
@@ -665,7 +665,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                     <select
                       value={formData.case_type}
                       onChange={(e) => handleCaseTypeChange(e.target.value)}
-                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-semibold"
+                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-semibold" data-testid="cases.main.handle-case-type-change"
                     >
                       {caseTypes.map((t) => (
                         <option key={t.id} value={t.name}>
@@ -680,7 +680,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                     <select
                       value={formData.court_degree}
                       onChange={(e) => setFormData({ ...formData, court_degree: e.target.value })}
-                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="cases.main.set-form-data-2"
                     >
                       <option value="أول درجة">أول درجة</option>
                       <option value="استئناف">استئناف</option>
@@ -695,7 +695,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                       type="text"
                       value={formData.table_number || ''}
                       onChange={(e) => setFormData({ ...formData, table_number: e.target.value })}
-                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono"
+                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono" data-testid="cases.main.set-form-data-11"
                     />
                   </div>
 
@@ -705,7 +705,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                       type="text"
                       value={formData.police_report_number || ''}
                       onChange={(e) => setFormData({ ...formData, police_report_number: e.target.value })}
-                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono"
+                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono" data-testid="cases.main.set-form-data-12"
                     />
                   </div>
 
@@ -715,7 +715,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                       type="date"
                       value={formData.filing_date || ''}
                       onChange={(e) => setFormData({ ...formData, filing_date: e.target.value })}
-                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="cases.main.set-form-data-13"
                     />
                   </div>
 
@@ -724,7 +724,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                     <select
                       value={formData.status}
                       onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="cases.main.set-form-data-3"
                     >
                       <option value="متداولة">متداولة</option>
                       <option value="محجوزة للحكم">محجوزة للحكم</option>
@@ -742,7 +742,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                     <select
                       value={formData.priority}
                       onChange={(e) => setFormData({ ...formData, priority: e.target.value as any })}
-                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold"
+                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-bold" data-testid="cases.main.set-form-data-4"
                     >
                       <option value="عادية">عادية</option>
                       <option value="مهمة">مهمة</option>
@@ -757,7 +757,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                       value={formData.assigned_lawyer || ''}
                       onChange={(e) => setFormData({ ...formData, assigned_lawyer: e.target.value })}
                       placeholder="اسم المحامي المتابع..."
-                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="cases.main.set-form-data-14"
                     />
                   </div>
                 </div>
@@ -777,7 +777,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                       value={formData.subject}
                       onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                       placeholder="مثال: دعوى صحة ونفاذ عقد بيع ابتدائي أو جنحة شيك بدون رصيد..."
-                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-semibold"
+                      className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-semibold" data-testid="cases.main.set-form-data-15"
                     />
                   </div>
 
@@ -789,7 +789,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                         value={formData.claims || ''}
                         onChange={(e) => setFormData({ ...formData, claims: e.target.value })}
                         placeholder="الطلبات الواردة بصحيفة الدعوى..."
-                        className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                        className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="cases.main.set-form-data-16"
                       />
                     </div>
 
@@ -800,7 +800,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                         value={formData.description || ''}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                         placeholder="ملخص وقائع الدعوى..."
-                        className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                        className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="cases.main.set-form-data-17"
                       />
                     </div>
                   </div>
@@ -817,7 +817,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                     <button
                       type="button"
                       onClick={() => setIsQuickAddClientModalOpen(true)}
-                      className="flex items-center gap-1 px-2.5 py-1 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-md border border-blue-200 transition-colors"
+                      className="flex items-center gap-1 px-2.5 py-1 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-md border border-blue-200 transition-colors" data-testid="cases.main.set-is-quick-add-client-modal-open"
                     >
                       <Plus className="w-3.5 h-3.5" />
                       <span>إضافة موكل جديد</span>
@@ -825,7 +825,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                     <button
                       type="button"
                       onClick={handleAddClientToCase}
-                      className="flex items-center gap-1 px-2.5 py-1 text-xs font-bold text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-md border border-amber-200 transition-colors"
+                      className="flex items-center gap-1 px-2.5 py-1 text-xs font-bold text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-md border border-amber-200 transition-colors" data-testid="cases.main.handle-add-client-to-case"
                     >
                       <Plus className="w-3.5 h-3.5" />
                       <span>إضافة موكل آخر</span>
@@ -851,7 +851,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                               newClients[idx].client_id = parseInt(e.target.value);
                               setFormData({ ...formData, clients: newClients });
                             }}
-                            className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded font-semibold focus:outline-none"
+                            className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded font-semibold focus:outline-none" data-testid="cases.main.set-form-data-5"
                           >
                             {clients.map((cl) => (
                               <option key={cl.id} value={cl.id}>
@@ -870,7 +870,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                               newClients[idx].role_capacity = e.target.value;
                               setFormData({ ...formData, clients: newClients });
                             }}
-                            className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded font-bold text-amber-800 focus:outline-none"
+                            className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded font-bold text-amber-800 focus:outline-none" data-testid="cases.main.set-form-data-6"
                           >
                             <option value="مدعي">مدعي</option>
                             <option value="مدعى عليه">مدعى عليه</option>
@@ -891,7 +891,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                           <button
                             type="button"
                             onClick={() => handleRemoveClientFromCase(idx)}
-                            className="text-red-500 hover:text-red-700 p-1 self-end mb-1"
+                            className="text-red-500 hover:text-red-700 p-1 self-end mb-1" data-testid="cases.main.handle-remove-client-from-case"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -911,7 +911,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                   <button
                     type="button"
                     onClick={handleAddOpponentToCase}
-                    className="flex items-center gap-1 px-2.5 py-1 text-xs font-bold text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-md border border-amber-200 transition-colors"
+                    className="flex items-center gap-1 px-2.5 py-1 text-xs font-bold text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-md border border-amber-200 transition-colors" data-testid="cases.main.handle-add-opponent-to-case"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>إضافة خصم</span>
@@ -927,7 +927,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                           <button
                             type="button"
                             onClick={() => handleRemoveOpponentFromCase(idx)}
-                            className="text-xs text-red-500 hover:text-red-700"
+                            className="text-xs text-red-500 hover:text-red-700" data-testid="cases.main.handle-remove-opponent-from-case"
                           >
                             حذف الخصم
                           </button>
@@ -946,7 +946,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                               setFormData({ ...formData, opponents: ops });
                             }}
                             placeholder="اسم الخصم أو الشركة..."
-                            className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded font-semibold focus:outline-none"
+                            className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded font-semibold focus:outline-none" data-testid="cases.main.set-form-data-18"
                           />
                         </div>
 
@@ -959,7 +959,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                               ops[idx].role_capacity = e.target.value;
                               setFormData({ ...formData, opponents: ops });
                             }}
-                            className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded focus:outline-none"
+                            className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded focus:outline-none" data-testid="cases.main.set-form-data-7"
                           >
                             <option value="مدعى عليه">مدعى عليه</option>
                             <option value="مدعي">مدعي</option>
@@ -983,7 +983,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                               setFormData({ ...formData, opponents: ops });
                             }}
                             placeholder="الأستاذ محامي الخصم..."
-                            className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded focus:outline-none"
+                            className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded focus:outline-none" data-testid="cases.main.set-form-data-19"
                           />
                         </div>
 
@@ -997,7 +997,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                               ops[idx].lawyer_phone = e.target.value;
                               setFormData({ ...formData, opponents: ops });
                             }}
-                            className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded focus:outline-none font-mono"
+                            className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded focus:outline-none font-mono" data-testid="cases.main.set-form-data-20"
                           />
                         </div>
 
@@ -1011,7 +1011,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                               ops[idx].address = e.target.value;
                               setFormData({ ...formData, opponents: ops });
                             }}
-                            className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded focus:outline-none"
+                            className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded focus:outline-none" data-testid="cases.main.set-form-data-21"
                           />
                         </div>
                       </div>
@@ -1035,7 +1035,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                       type="checkbox"
                       checked={formData.is_juvenile === 1}
                       onChange={(e) => setFormData({ ...formData, is_juvenile: e.target.checked ? 1 : 0 })}
-                      className="rounded text-amber-600 focus:ring-amber-500 w-4 h-4"
+                      className="rounded text-amber-600 focus:ring-amber-500 w-4 h-4" data-testid="cases.main.set-form-data-22"
                     />
                     <span>تفعيل حقول جنح الأحداث</span>
                   </label>
@@ -1049,7 +1049,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                         type="text"
                         value={formData.juvenile_name || ''}
                         onChange={(e) => setFormData({ ...formData, juvenile_name: e.target.value })}
-                        className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded focus:outline-none font-semibold"
+                        className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded focus:outline-none font-semibold" data-testid="cases.main.set-form-data-23"
                       />
                     </div>
 
@@ -1061,7 +1061,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                         max={18}
                         value={formData.juvenile_age || ''}
                         onChange={(e) => setFormData({ ...formData, juvenile_age: parseInt(e.target.value) || 0 })}
-                        className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded focus:outline-none font-bold"
+                        className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded focus:outline-none font-bold" data-testid="cases.main.set-form-data-24"
                       />
                     </div>
 
@@ -1071,7 +1071,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                         type="text"
                         value={formData.juvenile_charge || ''}
                         onChange={(e) => setFormData({ ...formData, juvenile_charge: e.target.value })}
-                        className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded focus:outline-none"
+                        className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded focus:outline-none" data-testid="cases.main.set-form-data-25"
                       />
                     </div>
 
@@ -1081,7 +1081,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                         type="text"
                         value={formData.guardian_name || ''}
                         onChange={(e) => setFormData({ ...formData, guardian_name: e.target.value })}
-                        className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded focus:outline-none"
+                        className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded focus:outline-none" data-testid="cases.main.set-form-data-26"
                       />
                     </div>
 
@@ -1092,7 +1092,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                         value={formData.guardian_relation || ''}
                         onChange={(e) => setFormData({ ...formData, guardian_relation: e.target.value })}
                         placeholder="أب / أم / عم / جد..."
-                        className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded focus:outline-none"
+                        className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded focus:outline-none" data-testid="cases.main.set-form-data-27"
                       />
                     </div>
 
@@ -1102,7 +1102,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                         type="text"
                         value={formData.probation_officer || ''}
                         onChange={(e) => setFormData({ ...formData, probation_officer: e.target.value })}
-                        className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded focus:outline-none"
+                        className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded focus:outline-none" data-testid="cases.main.set-form-data-28"
                       />
                     </div>
 
@@ -1113,7 +1113,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                         value={formData.care_facility || ''}
                         onChange={(e) => setFormData({ ...formData, care_facility: e.target.value })}
                         placeholder="دار رعاية الأحداث إن وُجد..."
-                        className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded focus:outline-none"
+                        className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded focus:outline-none" data-testid="cases.main.set-form-data-29"
                       />
                     </div>
 
@@ -1124,7 +1124,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                         value={formData.imposed_measures || ''}
                         onChange={(e) => setFormData({ ...formData, imposed_measures: e.target.value })}
                         placeholder="تسليم لولي الأمر، إلحاق بتدريب، إيداع..."
-                        className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded focus:outline-none"
+                        className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded focus:outline-none" data-testid="cases.main.set-form-data-30"
                       />
                     </div>
                   </div>
@@ -1136,14 +1136,14 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition-colors"
+                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition-colors" data-testid="cases.main.set-is-add-modal-open-2"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors disabled:opacity-50"
+                  className="px-6 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors disabled:opacity-50" data-testid="cases.main.button-29"
                 >
                   {isSubmitting ? 'جاري الحفظ...' : 'حفظ وإنشاء ملف القضية'}
                 </button>
@@ -1161,7 +1161,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
               <h3 className="font-bold text-slate-800 text-sm">إضافة موكل جديد سريع</h3>
               <button
                 onClick={() => setIsQuickAddClientModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600 transition-colors p-1 rounded-lg"
+                className="text-slate-400 hover:text-slate-600 transition-colors p-1 rounded-lg" data-testid="cases.main.set-is-quick-add-client-modal-open-2"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -1184,7 +1184,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                   value={quickClientName}
                   onChange={(e) => setQuickClientName(e.target.value)}
                   placeholder="اسم الموكل بالكامل..."
-                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-semibold"
+                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500 font-semibold" data-testid="cases.main.set-quick-client-name"
                 />
               </div>
 
@@ -1198,7 +1198,7 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                   value={quickClientPhone}
                   onChange={(e) => setQuickClientPhone(e.target.value)}
                   placeholder="01xxxxxxxxx"
-                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500" data-testid="cases.main.set-quick-client-phone"
                 />
               </div>
 
@@ -1206,14 +1206,14 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsQuickAddClientModalOpen(false)}
-                  className="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition-colors"
+                  className="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition-colors" data-testid="cases.main.set-is-quick-add-client-modal-open-3"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
                   disabled={isQuickClientSubmitting}
-                  className="px-5 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors disabled:opacity-50"
+                  className="px-5 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-xs transition-colors disabled:opacity-50" data-testid="cases.main.button-32"
                 >
                   {isQuickClientSubmitting ? 'جاري الحفظ...' : 'إضافة الموكل'}
                 </button>

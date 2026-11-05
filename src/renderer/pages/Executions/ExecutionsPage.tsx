@@ -490,7 +490,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="بحث برقم الملف، المنفذ، المدين، المحكمة، السند..."
-              className="w-full pr-9 pl-3 py-2 border border-slate-200 rounded-lg text-xs focus:outline-hidden focus:border-amber-500"
+              className="w-full pr-9 pl-3 py-2 border border-slate-200 rounded-lg text-xs focus:outline-hidden focus:border-amber-500" data-testid="executions.main.set-search-query"
             />
           </div>
 
@@ -500,7 +500,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
             <select
               value={selectedDeedType}
               onChange={e => setSelectedDeedType(e.target.value)}
-              className="p-2 border border-slate-200 rounded-lg text-xs bg-white"
+              className="p-2 border border-slate-200 rounded-lg text-xs bg-white" data-testid="executions.main.set-selected-deed-type"
             >
               <option value="all">كل السندات</option>
               <option value="حكم">حكم قضائي</option>
@@ -518,7 +518,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
             <select
               value={selectedStatus}
               onChange={e => setSelectedStatus(e.target.value)}
-              className="p-2 border border-slate-200 rounded-lg text-xs bg-white"
+              className="p-2 border border-slate-200 rounded-lg text-xs bg-white" data-testid="executions.main.set-selected-status"
             >
               <option value="all">كل الحالات</option>
               <option value="جاري">جاري</option>
@@ -535,7 +535,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
             <select
               value={selectedCaseLink}
               onChange={e => setSelectedCaseLink(e.target.value as any)}
-              className="p-2 border border-slate-200 rounded-lg text-xs bg-white"
+              className="p-2 border border-slate-200 rounded-lg text-xs bg-white" data-testid="executions.main.set-selected-case-link"
             >
               <option value="all">الكل</option>
               <option value="linked">مرتبطة بقضية</option>
@@ -590,7 +590,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
             });
             setIsNewFileModalOpen(true);
           }}
-          className="flex items-center gap-1.5 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-bold transition-all shadow-xs shrink-0"
+          className="flex items-center gap-1.5 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-bold transition-all shadow-xs shrink-0" data-testid="executions.main.set-new-file-form"
         >
           <Plus className="w-4 h-4" />
           <span>فتح ملف تنفيذ جديد</span>
@@ -636,7 +636,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                         isSelected
                           ? 'bg-amber-50/70 border-r-4 border-amber-600 shadow-xs'
                           : 'hover:bg-slate-50'
-                      }`}
+                      }`} data-testid="executions.main.set-selected-file-id"
                     >
                       <div className="flex items-start justify-between mb-1.5">
                         <div className="flex items-center gap-2">
@@ -740,7 +740,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                     <button
                       onClick={() => handlePrint(selectedFileDetails)}
                       className="p-1.5 bg-white hover:bg-slate-100 border border-slate-200 rounded-lg text-slate-700 transition-colors"
-                      title="طباعة ملف التنفيذ"
+                      title="طباعة ملف التنفيذ" data-testid="executions.main.handle-print"
                     >
                       <Printer className="w-4 h-4 text-slate-600" />
                     </button>
@@ -749,7 +749,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                       <button
                         onClick={() => onNavigateToCase(selectedFileDetails.case_id!)}
                         className="p-1.5 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg text-blue-700 transition-colors"
-                        title="الانتقال إلى صفحة القضية المرتبطة"
+                        title="الانتقال إلى صفحة القضية المرتبطة" data-testid="executions.main.on-navigate-to-case"
                       >
                         <ExternalLink className="w-4 h-4" />
                       </button>
@@ -767,7 +767,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                         }
                       }}
                       className="p-1.5 bg-white hover:bg-red-50 border border-slate-200 rounded-lg text-red-600 transition-colors"
-                      title="حذف الملف"
+                      title="حذف الملف" data-testid="executions.main.set-selected-file-id-2"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -782,7 +782,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                       detailTab === 'info'
                         ? 'bg-amber-600 text-white shadow-xs'
                         : 'text-slate-600 hover:bg-slate-200/60'
-                    }`}
+                    }`} data-testid="executions.main.set-detail-tab"
                   >
                     البيانات الأساسية
                   </button>
@@ -793,7 +793,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                       detailTab === 'actions'
                         ? 'bg-amber-600 text-white shadow-xs'
                         : 'text-slate-600 hover:bg-slate-200/60'
-                    }`}
+                    }`} data-testid="executions.main.set-detail-tab-2"
                   >
                     الإجراءات ({(selectedFileDetails.actions || []).length})
                   </button>
@@ -804,7 +804,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                       detailTab === 'hearings'
                         ? 'bg-amber-600 text-white shadow-xs'
                         : 'text-slate-600 hover:bg-slate-200/60'
-                    }`}
+                    }`} data-testid="executions.main.set-detail-tab-3"
                   >
                     الجلسات ({(selectedFileDetails.hearings || []).length})
                   </button>
@@ -815,7 +815,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                       detailTab === 'finance'
                         ? 'bg-amber-600 text-white shadow-xs'
                         : 'text-slate-600 hover:bg-slate-200/60'
-                    }`}
+                    }`} data-testid="executions.main.set-detail-tab-4"
                   >
                     المالية ({(selectedFileDetails.transactions || []).length})
                   </button>
@@ -826,7 +826,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                       detailTab === 'settlement'
                         ? 'bg-amber-600 text-white shadow-xs'
                         : 'text-slate-600 hover:bg-slate-200/60'
-                    }`}
+                    }`} data-testid="executions.main.set-detail-tab-5"
                   >
                     الصلح والتسوية
                   </button>
@@ -927,7 +927,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                       <span className="font-bold text-slate-700 text-xs">سجل الإجراءات المتسلسلة</span>
                       <button
                         onClick={() => setIsActionModalOpen(true)}
-                        className="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-[11px] font-bold"
+                        className="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-[11px] font-bold" data-testid="executions.main.set-is-action-modal-open"
                       >
                         + إضافة إجراء
                       </button>
@@ -999,7 +999,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                           });
                           setIsHearingModalOpen(true);
                         }}
-                        className="px-2.5 py-1 bg-purple-600 hover:bg-purple-700 text-white rounded text-[11px] font-bold"
+                        className="px-2.5 py-1 bg-purple-600 hover:bg-purple-700 text-white rounded text-[11px] font-bold" data-testid="executions.main.set-hearing-form"
                       >
                         + إضافة جلسة
                       </button>
@@ -1032,7 +1032,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                                   });
                                   setIsHearingOutcomeModalOpen(true);
                                 }}
-                                className="text-purple-700 hover:text-purple-900 font-bold underline"
+                                className="text-purple-700 hover:text-purple-900 font-bold underline" data-testid="executions.main.set-selected-hearing-to-outcome"
                               >
                                 تسجيل القرار
                               </button>
@@ -1074,7 +1074,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                           });
                           setIsPaymentModalOpen(true);
                         }}
-                        className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-[11px] font-bold"
+                        className="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-[11px] font-bold" data-testid="executions.main.set-payment-form"
                       >
                         + تسجيل تحصيل أو مصروف
                       </button>
@@ -1133,7 +1133,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                           });
                           setIsSettlementModalOpen(true);
                         }}
-                        className="px-2.5 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded text-[11px] font-bold"
+                        className="px-2.5 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded text-[11px] font-bold" data-testid="executions.main.set-settlement-form"
                       >
                         {selectedFileDetails.settlement_minutes ? 'تعديل محضر الصلح' : '+ تحرير محضر صلح'}
                       </button>
@@ -1184,7 +1184,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                 <select
                   value={newFileForm.case_id}
                   onChange={e => handleCaseSelection(e.target.value)}
-                  className="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white"
+                  className="w-full p-2 border border-slate-300 rounded-lg text-xs bg-white" data-testid="executions.main.handle-case-selection"
                 >
                   <option value="">ملف تنفيذ مستقل (غير مرتبط بقضية)</option>
                   {cases.map(c => (
@@ -1204,7 +1204,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                     value={newFileForm.file_number}
                     onChange={e => setNewFileForm({ ...newFileForm, file_number: e.target.value })}
                     placeholder="مثال: 512"
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-new-file-form-3"
                   />
                 </div>
                 <div>
@@ -1213,7 +1213,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                     type="number"
                     value={newFileForm.year}
                     onChange={e => setNewFileForm({ ...newFileForm, year: Number(e.target.value) })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-new-file-form-4"
                   />
                 </div>
               </div>
@@ -1224,7 +1224,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                   <select
                     value={newFileForm.deed_type}
                     onChange={e => setNewFileForm({ ...newFileForm, deed_type: e.target.value as any })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-new-file-form-2"
                   >
                     <option value="حكم">حكم قضائي</option>
                     <option value="أمر أداء">أمر أداء</option>
@@ -1242,7 +1242,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                     value={newFileForm.deed_number}
                     onChange={e => setNewFileForm({ ...newFileForm, deed_number: e.target.value })}
                     placeholder="رقم الحكم، تاريخه، الدائرة..."
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-new-file-form-5"
                   />
                 </div>
               </div>
@@ -1256,7 +1256,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                     value={newFileForm.court}
                     onChange={e => setNewFileForm({ ...newFileForm, court: e.target.value })}
                     placeholder="مثال: محكمة جنوب القاهرة الابتدائية"
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-new-file-form-6"
                   />
                 </div>
                 <div>
@@ -1266,7 +1266,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                     value={newFileForm.execution_judge}
                     onChange={e => setNewFileForm({ ...newFileForm, execution_judge: e.target.value })}
                     placeholder="قاضي التنفيذ أو الدائرة"
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-new-file-form-7"
                   />
                 </div>
               </div>
@@ -1279,7 +1279,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                     required
                     value={newFileForm.applicant_name}
                     onChange={e => setNewFileForm({ ...newFileForm, applicant_name: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-new-file-form-8"
                   />
                 </div>
                 <div>
@@ -1289,7 +1289,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                     required
                     value={newFileForm.enforced_against}
                     onChange={e => setNewFileForm({ ...newFileForm, enforced_against: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-new-file-form-9"
                   />
                 </div>
               </div>
@@ -1304,7 +1304,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                     required
                     value={newFileForm.total_claimed_amount}
                     onChange={e => setNewFileForm({ ...newFileForm, total_claimed_amount: Number(e.target.value) })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold text-blue-700"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold text-blue-700" data-testid="executions.main.set-new-file-form-10"
                   />
                 </div>
                 <div>
@@ -1313,7 +1313,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                     type="date"
                     value={newFileForm.announcement_date}
                     onChange={e => setNewFileForm({ ...newFileForm, announcement_date: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-new-file-form-11"
                   />
                 </div>
               </div>
@@ -1325,7 +1325,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                   value={newFileForm.notes}
                   onChange={e => setNewFileForm({ ...newFileForm, notes: e.target.value })}
                   placeholder="ملاحظات..."
-                  className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                  className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-new-file-form-12"
                 />
               </div>
 
@@ -1333,13 +1333,13 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsNewFileModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs"
+                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs" data-testid="executions.main.set-is-new-file-modal-open"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg text-xs shadow-xs"
+                  className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg text-xs shadow-xs" data-testid="executions.main.open"
                 >
                   فتح الملف
                 </button>
@@ -1367,7 +1367,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                   <select
                     value={actionForm.action_type}
                     onChange={e => setActionForm({ ...actionForm, action_type: e.target.value as any })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-action-form"
                   >
                     <option value="إعلان السند التنفيذي">إعلان السند التنفيذي</option>
                     <option value="تكليف بالوفاء">تكليف بالوفاء</option>
@@ -1394,7 +1394,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                     required
                     value={actionForm.action_date}
                     onChange={e => setActionForm({ ...actionForm, action_date: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-action-form-3"
                   />
                 </div>
               </div>
@@ -1407,7 +1407,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                     value={actionForm.police_report_or_bailiff_number}
                     onChange={e => setActionForm({ ...actionForm, police_report_or_bailiff_number: e.target.value })}
                     placeholder="رقم المحضر"
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-action-form-4"
                   />
                 </div>
                 <div>
@@ -1415,7 +1415,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                   <select
                     value={actionForm.status}
                     onChange={e => setActionForm({ ...actionForm, status: e.target.value as any })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-action-form-2"
                   >
                     <option value="تم">تم بنجاح</option>
                     <option value="جاري">جاري التنفيذ</option>
@@ -1435,7 +1435,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                     step="any"
                     value={actionForm.amount_collected}
                     onChange={e => setActionForm({ ...actionForm, amount_collected: Number(e.target.value) })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs text-emerald-700 font-bold"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs text-emerald-700 font-bold" data-testid="executions.main.set-action-form-5"
                   />
                 </div>
                 <div>
@@ -1444,7 +1444,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                     type="text"
                     value={actionForm.bailiff_name}
                     onChange={e => setActionForm({ ...actionForm, bailiff_name: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-action-form-6"
                   />
                 </div>
               </div>
@@ -1456,7 +1456,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                   value={actionForm.details}
                   onChange={e => setActionForm({ ...actionForm, details: e.target.value })}
                   placeholder="ما تم أثناء الإجراء..."
-                  className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                  className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-action-form-7"
                 />
               </div>
 
@@ -1464,13 +1464,13 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsActionModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs"
+                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs" data-testid="executions.main.set-is-action-modal-open-2"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-xs shadow-xs"
+                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-xs shadow-xs" data-testid="executions.main.save"
                 >
                   حفظ الإجراء
                 </button>
@@ -1500,7 +1500,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                     required
                     value={hearingForm.hearing_date}
                     onChange={e => setHearingForm({ ...hearingForm, hearing_date: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-hearing-form-2"
                   />
                 </div>
                 <div>
@@ -1509,7 +1509,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                     type="time"
                     value={hearingForm.hearing_time}
                     onChange={e => setHearingForm({ ...hearingForm, hearing_time: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-hearing-form-3"
                   />
                 </div>
               </div>
@@ -1521,7 +1521,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                     type="text"
                     value={hearingForm.court_name}
                     onChange={e => setHearingForm({ ...hearingForm, court_name: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-hearing-form-4"
                   />
                 </div>
                 <div>
@@ -1530,7 +1530,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                     type="text"
                     value={hearingForm.court_circuit}
                     onChange={e => setHearingForm({ ...hearingForm, court_circuit: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-hearing-form-5"
                   />
                 </div>
               </div>
@@ -1542,7 +1542,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                   value={hearingForm.roll_number}
                   onChange={e => setHearingForm({ ...hearingForm, roll_number: e.target.value })}
                   placeholder="مثال: 5"
-                  className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                  className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-hearing-form-6"
                 />
               </div>
 
@@ -1553,7 +1553,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                   value={hearingForm.proceedings}
                   onChange={e => setHearingForm({ ...hearingForm, proceedings: e.target.value })}
                   placeholder="نظر إشكال، استمرار تنفيذ..."
-                  className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                  className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-hearing-form-7"
                 />
               </div>
 
@@ -1561,13 +1561,13 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsHearingModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs"
+                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs" data-testid="executions.main.set-is-hearing-modal-open"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg text-xs shadow-xs"
+                  className="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg text-xs shadow-xs" data-testid="executions.main.save-2"
                 >
                   حفظ الجلسة
                 </button>
@@ -1595,7 +1595,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                   <select
                     value={hearingOutcomeForm.attended}
                     onChange={e => setHearingOutcomeForm({ ...hearingOutcomeForm, attended: Number(e.target.value) })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-hearing-outcome-form"
                   >
                     <option value={1}>تم الحضور</option>
                     <option value={0}>لم يحضر أحد</option>
@@ -1607,7 +1607,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                     type="text"
                     value={hearingOutcomeForm.attended_by}
                     onChange={e => setHearingOutcomeForm({ ...hearingOutcomeForm, attended_by: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-hearing-outcome-form-2"
                   />
                 </div>
               </div>
@@ -1620,7 +1620,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                   value={hearingOutcomeForm.court_decision}
                   onChange={e => setHearingOutcomeForm({ ...hearingOutcomeForm, court_decision: e.target.value })}
                   placeholder="منطوق القرار..."
-                  className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold"
+                  className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold" data-testid="executions.main.set-hearing-outcome-form-3"
                 />
               </div>
 
@@ -1631,7 +1631,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                     type="text"
                     value={hearingOutcomeForm.adjournment_reason}
                     onChange={e => setHearingOutcomeForm({ ...hearingOutcomeForm, adjournment_reason: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-hearing-outcome-form-4"
                   />
                 </div>
                 <div>
@@ -1640,7 +1640,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                     type="date"
                     value={hearingOutcomeForm.next_hearing_date}
                     onChange={e => setHearingOutcomeForm({ ...hearingOutcomeForm, next_hearing_date: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-hearing-outcome-form-5"
                   />
                 </div>
               </div>
@@ -1649,13 +1649,13 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsHearingOutcomeModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs"
+                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs" data-testid="executions.main.set-is-hearing-outcome-modal-open"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg text-xs shadow-xs"
+                  className="px-5 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg text-xs shadow-xs" data-testid="executions.main.save-3"
                 >
                   حفظ القرار
                 </button>
@@ -1690,7 +1690,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                         transactionType: dir === 'وارد' ? 'تحصيل تنفيذ جبري / ودي' : 'مصاريف تنفيذ ورسوم محضرين'
                       });
                     }}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold" data-testid="executions.main.set-payment-form-2"
                   >
                     <option value="وارد">وارد (تحصيل دين من المدين)</option>
                     <option value="صادر">صادر (مصروفات ورسوم تنفيذ)</option>
@@ -1705,7 +1705,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                     required
                     value={paymentForm.amount || ''}
                     onChange={e => setPaymentForm({ ...paymentForm, amount: Number(e.target.value) })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold text-emerald-700"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs font-bold text-emerald-700" data-testid="executions.main.set-payment-form-4"
                   />
                 </div>
               </div>
@@ -1716,7 +1716,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                   <select
                     value={paymentForm.paymentMethod}
                     onChange={e => setPaymentForm({ ...paymentForm, paymentMethod: e.target.value as any })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-payment-form-3"
                   >
                     <option value="نقدي">نقدي</option>
                     <option value="تحويل بنكي">تحويل بنكي</option>
@@ -1731,7 +1731,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                     type="text"
                     value={paymentForm.transactionType}
                     onChange={e => setPaymentForm({ ...paymentForm, transactionType: e.target.value })}
-                    className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                    className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-payment-form-5"
                   />
                 </div>
               </div>
@@ -1744,7 +1744,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                   value={paymentForm.description}
                   onChange={e => setPaymentForm({ ...paymentForm, description: e.target.value })}
                   placeholder="تحصيل قسط تنفيذ، أمانة محضرين..."
-                  className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                  className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-payment-form-6"
                 />
               </div>
 
@@ -1752,13 +1752,13 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsPaymentModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs"
+                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs" data-testid="executions.main.set-is-payment-modal-open"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs shadow-xs"
+                  className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs shadow-xs" data-testid="executions.main.save-4"
                 >
                   حفظ وإصدار إيصال
                 </button>
@@ -1787,7 +1787,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                   required
                   value={settlementForm.settlement_date}
                   onChange={e => setSettlementForm({ ...settlementForm, settlement_date: e.target.value })}
-                  className="w-full p-2 border border-slate-300 rounded-lg text-xs"
+                  className="w-full p-2 border border-slate-300 rounded-lg text-xs" data-testid="executions.main.set-settlement-form-2"
                 />
               </div>
 
@@ -1799,7 +1799,7 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                   value={settlementForm.settlement_minutes}
                   onChange={e => setSettlementForm({ ...settlementForm, settlement_minutes: e.target.value })}
                   placeholder="تم الاتفاق بين طالب التنفيذ والمنفذ ضده على..."
-                  className="w-full p-2.5 border border-slate-300 rounded-lg text-xs leading-relaxed"
+                  className="w-full p-2.5 border border-slate-300 rounded-lg text-xs leading-relaxed" data-testid="executions.main.set-settlement-form-3"
                 />
               </div>
 
@@ -1807,13 +1807,13 @@ export const ExecutionsPage: React.FC<ExecutionsPageProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsSettlementModalOpen(false)}
-                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs"
+                  className="px-4 py-2 border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold rounded-lg text-xs" data-testid="executions.main.set-is-settlement-modal-open"
                 >
                   إلغاء
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg text-xs shadow-xs"
+                  className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg text-xs shadow-xs" data-testid="executions.main.button-37"
                 >
                   تثبيت الصلح والتسوية
                 </button>
