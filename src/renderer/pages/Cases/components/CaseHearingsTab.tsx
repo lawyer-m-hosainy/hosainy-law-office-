@@ -9,13 +9,9 @@ import {
   AlertTriangle,
   FileText,
   Trash2,
-  Edit2,
-  ChevronDown,
-  ChevronUp,
   Scale,
   Calculator,
   AlertCircle,
-  HelpCircle,
   Clock3,
   Send
 } from 'lucide-react';
@@ -47,7 +43,6 @@ export const CaseHearingsTab: React.FC<CaseHearingsTabProps> = ({
     getHearingStatsByCase,
     createHearing,
     recordOutcome,
-    updateHearing,
     deleteHearing,
     getAppealDeadlines,
     saveAppealDeadline,
@@ -61,7 +56,7 @@ export const CaseHearingsTab: React.FC<CaseHearingsTabProps> = ({
   });
   const [appealDeadlines, setAppealDeadlines] = useState<AppealDeadline[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [, setError] = useState<string | null>(null);
 
   // Configurable lists for adjournment reasons
   const [adjournmentReasons, setAdjournmentReasons] = useState<string[]>([]);

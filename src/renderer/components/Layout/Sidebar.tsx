@@ -116,8 +116,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
         <div className="flex items-center justify-between text-[11px] text-slate-500 mt-1">
           <span className="truncate" title={dbPath}>{dbPath ? dbPath.split(/[\\/]/).pop() : 'office.db'}</span>
-          {appVersion && <span className="font-mono text-slate-400 text-[10px]">v{appVersion}</span>}
+          <span className="font-mono text-amber-400 font-bold text-[10px]">
+            v{appVersion || (typeof __APP_VERSION__ !== 'undefined' ? __APP_VERSION__ : '1.0.1')}
+          </span>
         </div>
+        {typeof __BUILD_TIMESTAMP__ !== 'undefined' && __BUILD_TIMESTAMP__ && (
+          <div className="flex items-center justify-between text-[9px] text-slate-400 font-mono mt-0.5" title="تاريخ ووقت البناء">
+            <span>بناء:</span>
+            <span>{__BUILD_TIMESTAMP__}</span>
+          </div>
+        )}
       </div>
     </aside>
   );

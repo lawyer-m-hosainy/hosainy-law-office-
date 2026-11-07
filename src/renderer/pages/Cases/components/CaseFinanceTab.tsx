@@ -3,22 +3,14 @@ import {
   Coins,
   Plus,
   Printer,
-  Calendar,
   CheckCircle2,
-  AlertTriangle,
   RotateCcw,
-  FileText,
-  CreditCard,
-  Building,
   Scale,
   ArrowDownLeft,
   ArrowUpRight,
   Receipt,
-  HelpCircle,
   Clock,
   ShieldCheck,
-  ChevronDown,
-  ChevronUp,
   Trash2,
   Edit2
 } from 'lucide-react';
@@ -26,7 +18,6 @@ import {
   CaseDetails,
   CaseFeeAgreement,
   CaseFinancialSummary,
-  FeeInstallment,
   FinancialTransaction,
   OfficeSettings,
   PaymentMethod,
@@ -56,7 +47,6 @@ export const CaseFinanceTab: React.FC<CaseFinanceTabProps> = ({
     createFinancialTransaction,
     reverseFinancialTransaction,
     getCaseFinancialSummary,
-    getNextReceiptNumber
   } = useFinance();
 
   // State
@@ -591,7 +581,6 @@ export const CaseFinanceTab: React.FC<CaseFinanceTabProps> = ({
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {filteredTransactions.map((tx, idx) => {
-                  const isReversal = tx.is_reversed === 1 || Boolean(tx.reversal_of_id);
                   const isIncome = tx.direction === 'وارد';
 
                   return (

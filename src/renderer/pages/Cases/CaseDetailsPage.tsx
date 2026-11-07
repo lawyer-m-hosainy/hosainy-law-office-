@@ -4,7 +4,6 @@ import {
   ArrowRight,
   Printer,
   Edit2,
-  Calendar,
   Gavel,
   Coins,
   FileCheck2,
@@ -12,20 +11,14 @@ import {
   CheckSquare,
   History,
   Scale,
-  Building,
-  User,
   Users,
   Shield,
   Baby,
-  Phone,
-  MessageCircle,
   FileDown,
   Eye,
   Check,
   AlertCircle,
   X,
-  Plus,
-  Trash2,
   Send,
 } from 'lucide-react';
 import {
@@ -64,7 +57,7 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
   courts,
   caseTypes,
   taskCategories,
-  clients,
+  clients: _clients,
   onBack,
 }) => {
   const { getCaseById, updateCase } = useCases();
@@ -90,7 +83,6 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
       if (showLoading) setLoading(false);
     }
   };
-  const loadCaseData = loadCase;
 
   useEffect(() => {
     loadCase(true);
