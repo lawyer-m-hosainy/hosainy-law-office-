@@ -1,4 +1,5 @@
 import { FinancialTransaction, GeneralFinancialStats, OfficeSettings } from '../../shared/types';
+import { escapeHtml } from '../../shared/htmlUtils';
 
 export interface GeneralFinancialReportOptions {
   periodTitle?: string;
@@ -7,11 +8,40 @@ export interface GeneralFinancialReportOptions {
 }
 
 export function generateGeneralFinancialReportHtml(
-  stats: GeneralFinancialStats,
-  transactions: FinancialTransaction[],
-  settings: OfficeSettings,
-  options?: GeneralFinancialReportOptions
+  statsOrConfig: GeneralFinancialStats | {
+    stats?: GeneralFinancialStats | any;
+    transactions?: FinancialTransaction[];
+    settings?: OfficeSettings;
+    options?: GeneralFinancialReportOptions;
+    periodName?: string;
+  },
+  transactionsArg?: FinancialTransaction[],
+  settingsArg?: OfficeSettings,
+  optionsArg?: GeneralFinancialReportOptions
 ): string {
+  const isObjectConfig =
+    statsOrConfig &&
+    typeof statsOrConfig === 'object' &&
+    ('transactions' in statsOrConfig || 'settings' in statsOrConfig || transactionsArg === undefined);
+
+  let rawStats: any;
+  let transactions: FinancialTransaction[] = [];
+  let settings: OfficeSettings = { office_name: 'مكتب المحاماة' };
+  let options: GeneralFinancialReportOptions = {};
+
+  if (isObjectConfig && !Array.isArray(transactionsArg)) {
+    const cfg = statsOrConfig as any;
+    rawStats = cfg.stats;
+    transactions = Array.isArray(cfg.transactions) ? cfg.transactions : [];
+    settings = cfg.settings || { office_name: 'مكتب المحاماة' };
+    options = cfg.options || (cfg.periodName ? { periodTitle: cfg.periodName } : {});
+  } else {
+    rawStats = statsOrConfig;
+    transactions = Array.isArray(transactionsArg) ? transactionsArg : [];
+    settings = settingsArg || { office_name: 'مكتب المحاماة' };
+    options = optionsArg || {};
+  }
+
   const printDate = new Date().toLocaleDateString('ar-EG', {
     weekday: 'long',
     year: 'numeric',
@@ -35,20 +65,29 @@ export function generateGeneralFinancialReportHtml(
   let executionInflow = 0;
   let executionOutflow = 0;
 
-  const activeTransactions = transactions.filter(t => !t.is_reversed);
+  const safeTxList = Array.isArray(transactions) ? transactions : [];
+  const activeTransactions = safeTxList.filter(t => Boolean(t) && !t.is_reversed);
 
   activeTransactions.forEach(t => {
+    const amt = Number(t.amount) || 0;
     if (t.direction === 'وارد') {
-      if (t.category === 'أتعاب') feesInflow += t.amount;
-      else if (t.category === 'رسوم قضائية') courtFeesInflow += t.amount;
-      else if (t.category === 'مصاريف') expensesInflow += t.amount;
-      else if (t.category === 'تنفيذ') executionInflow += t.amount;
+      if (t.category === 'أتعاب') feesInflow += amt;
+      else if (t.category === 'رسوم قضائية') courtFeesInflow += amt;
+      else if (t.category === 'مصاريف') expensesInflow += amt;
+      else if (t.category === 'تنفيذ') executionInflow += amt;
     } else {
-      if (t.category === 'رسوم قضائية') courtFeesOutflow += t.amount;
-      else if (t.category === 'مصاريف') expensesOutflow += t.amount;
-      else if (t.category === 'تنفيذ') executionOutflow += t.amount;
+      if (t.category === 'رسوم قضائية') courtFeesOutflow += amt;
+      else if (t.category === 'مصاريف') expensesOutflow += amt;
+      else if (t.category === 'تنفيذ') executionOutflow += amt;
     }
   });
+
+  const totalIncome = Number(rawStats?.total_income ?? rawStats?.total_inflow) || 0;
+  const totalExpense = Number(rawStats?.total_expense ?? rawStats?.total_outflow) || 0;
+  const netProfit = Number(rawStats?.net_profit ?? rawStats?.net_income ?? (totalIncome - totalExpense)) || 0;
+  const outstandingFees = Number(rawStats?.outstanding_fees) || 0;
+  const pendingChequesCount = Number(rawStats?.pending_cheques_count ?? rawStats?.active_cheques_count) || 0;
+  const pendingChequesAmount = Number(rawStats?.pending_cheques_amount ?? rawStats?.active_cheques_total) || 0;
 
   const tableRows = activeTransactions.length === 0
     ? `<tr><td colspan="8" style="text-align: center; padding: 25px; color: #64748b;">لا توجد حركات مالية مسجلة لهذه الفترة</td></tr>`
@@ -58,19 +97,19 @@ export function generateGeneralFinancialReportHtml(
           <tr>
             <td style="text-align: center; font-weight: bold;">${idx + 1}</td>
             <td style="text-align: center; white-space: nowrap;">${tx.transaction_date}</td>
-            <td style="text-align: center; font-family: monospace; font-weight: bold; color: #0369a1;">${tx.receipt_number}</td>
-            <td style="text-align: center;"><span class="badge-cat">${tx.category}</span></td>
+            <td style="text-align: center; font-family: monospace; font-weight: bold; color: #0369a1;">${escapeHtml(tx.receipt_number)}</td>
+            <td style="text-align: center;"><span class="badge-cat">${escapeHtml(tx.category)}</span></td>
             <td>
-              <strong>${tx.description}</strong>
-              ${tx.case_number ? `<br><span style="font-size: 8pt; color: #64748b;">قضية: ${tx.case_number}/${tx.case_year || ''} (${tx.court_name || ''})</span>` : ''}
-              ${tx.client_name ? `<br><span style="font-size: 8pt; color: #475569;">موكل: ${tx.client_name}</span>` : ''}
+              <strong>${escapeHtml(tx.description)}</strong>
+              ${tx.case_number ? `<br><span style="font-size: 8pt; color: #0284c7;">قضية ${tx.case_number}/${tx.case_year || ''}</span>` : ''}
+              ${tx.client_name ? `<span style="font-size: 8pt; color: #475569;"> - ${escapeHtml(tx.client_name)}</span>` : ''}
             </td>
-            <td style="text-align: center;">${tx.payment_method}</td>
+            <td style="text-align: center;">${escapeHtml(tx.payment_method)}</td>
             <td style="text-align: left; font-weight: bold; color: #166534; direction: ltr;">
-              ${isIncome ? tx.amount.toLocaleString('ar-EG', { minimumFractionDigits: 2 }) : '-'}
+              ${isIncome ? Number(tx.amount).toLocaleString('ar-EG', { minimumFractionDigits: 2 }) : '-'}
             </td>
             <td style="text-align: left; font-weight: bold; color: #991b1b; direction: ltr;">
-              ${!isIncome ? tx.amount.toLocaleString('ar-EG', { minimumFractionDigits: 2 }) : '-'}
+              ${!isIncome ? Number(tx.amount).toLocaleString('ar-EG', { minimumFractionDigits: 2 }) : '-'}
             </td>
           </tr>
         `;
@@ -81,7 +120,7 @@ export function generateGeneralFinancialReportHtml(
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>التقرير المالي العام - ${settings.office_name}</title>
+  <title>التقرير المالي العام - ${escapeHtml(settings.office_name || 'مكتب المحاماة')}</title>
   <style>
     @page {
       size: A4 portrait;
@@ -157,25 +196,25 @@ export function generateGeneralFinancialReportHtml(
     }
 
     .title-banner {
-      text-align: center;
-      background: #f8fafc;
+      background: #f1f5f9;
       border: 1px solid #cbd5e1;
       border-radius: 6px;
-      padding: 10px;
+      padding: 10px 14px;
       margin-bottom: 14px;
+      text-align: center;
     }
 
     .report-title {
-      font-size: 14pt;
+      font-size: 13pt;
       font-weight: 800;
       color: #1e293b;
       margin: 0 0 4px 0;
     }
 
     .period-text {
-      font-size: 9pt;
-      font-weight: 600;
+      font-size: 9.5pt;
       color: #0369a1;
+      font-weight: 600;
     }
 
     .main-metrics-grid {
@@ -186,46 +225,43 @@ export function generateGeneralFinancialReportHtml(
     }
 
     .metric-card {
-      border: 1px solid #cbd5e1;
       background: #f8fafc;
+      border: 1px solid #e2e8f0;
       border-radius: 6px;
-      padding: 8px 10px;
+      padding: 10px;
       text-align: center;
     }
 
     .metric-val {
-      font-size: 12pt;
+      font-size: 13pt;
       font-weight: 800;
-      direction: ltr;
     }
 
     .metric-lbl {
-      font-size: 8pt;
+      font-size: 7.5pt;
       color: #64748b;
-      font-weight: 600;
-      margin-top: 2px;
+      margin-top: 3px;
     }
 
     .categories-box {
+      background: #fafafa;
       border: 1px solid #e2e8f0;
       border-radius: 6px;
       padding: 10px 14px;
       margin-bottom: 14px;
-      background: #fafafa;
     }
 
     .cat-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      font-size: 8.5pt;
-      text-align: center;
+      gap: 8px;
+      font-size: 8pt;
     }
 
     .cat-item strong {
-      display: block;
       color: #334155;
-      font-size: 8pt;
+      display: block;
+      margin-bottom: 2px;
     }
 
     table.tx-table {
@@ -308,19 +344,19 @@ export function generateGeneralFinancialReportHtml(
 
   <div class="main-metrics-grid">
     <div class="metric-card">
-      <div class="metric-val" style="color: #166534;">${stats.total_income.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
+      <div class="metric-val" style="color: #166534;">${totalIncome.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
       <div class="metric-lbl">إجمالي الإيرادات (وارد)</div>
     </div>
     <div class="metric-card">
-      <div class="metric-val" style="color: #991b1b;">${stats.total_expense.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
+      <div class="metric-val" style="color: #991b1b;">${totalExpense.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
       <div class="metric-lbl">إجمالي المصروفات (صادر)</div>
     </div>
     <div class="metric-card">
-      <div class="metric-val" style="color: #0369a1;">${stats.net_profit.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
+      <div class="metric-val" style="color: #0369a1;">${netProfit.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
       <div class="metric-lbl">صافي الأرباح / الفائض</div>
     </div>
     <div class="metric-card">
-      <div class="metric-val" style="color: #b45309;">${stats.outstanding_fees.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
+      <div class="metric-val" style="color: #b45309;">${outstandingFees.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
       <div class="metric-lbl">الأتعاب المعلقة والمتأخرات</div>
     </div>
   </div>
@@ -342,7 +378,7 @@ export function generateGeneralFinancialReportHtml(
       </div>
       <div class="cat-item">
         <strong>شيكات مؤجلة تحت التحصيل:</strong>
-        <span style="font-weight: 800; color: #b45309;">${stats.pending_cheques_amount.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م (${stats.pending_cheques_count} شيك)</span>
+        <span style="font-weight: 800; color: #b45309;">${pendingChequesAmount.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م (${pendingChequesCount} شيك)</span>
       </div>
     </div>
   </div>

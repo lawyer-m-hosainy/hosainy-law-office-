@@ -29,11 +29,13 @@ import {
   HearingWithCase,
   FinancialTransaction,
   GeneralFinancialStats,
+  CaseFinancialSummary,
   Task,
   ExecutionFile,
   ExecutionDetails,
   CaseDetails,
 } from '../../../shared/types';
+import { escapeHtml } from '../../../shared/htmlUtils';
 import { generateHearingRollHtml } from '../../services/hearingRollReportGenerator';
 import { generateClientStatementHtml } from '../../services/clientStatementReportGenerator';
 import { generateReceiptHtml } from '../../services/receiptReportGenerator';
@@ -87,6 +89,7 @@ export const ReportsPage: React.FC<ReportsPageProps> = ({
   const [tasksData, setTasksData] = useState<Task[]>([]);
   const [finTxsData, setFinTxsData] = useState<FinancialTransaction[]>([]);
   const [finStatsData, setFinStatsData] = useState<GeneralFinancialStats | null>(null);
+  const [selectedCaseSummary, setSelectedCaseSummary] = useState<CaseFinancialSummary | null>(null);
   const [selectedCaseDetails, setSelectedCaseDetails] = useState<CaseDetails | null>(null);
   const [executionDetails, setExecutionDetails] = useState<ExecutionDetails | null>(null);
   const [loadingData, setLoadingData] = useState(false);
@@ -145,11 +148,17 @@ export const ReportsPage: React.FC<ReportsPageProps> = ({
           const txs = await window.electronAPI.getFinancialTransactions();
           if (isMounted) setFinTxsData(txs || []);
         } else if (selectedReport === 'client_statement' && (selectedClientId || selectedCaseId)) {
-          const txs = await window.electronAPI.getFinancialTransactions({
-            clientId: selectedClientId ? Number(selectedClientId) : undefined,
-            caseId: selectedCaseId ? Number(selectedCaseId) : undefined,
-          });
-          if (isMounted) setFinTxsData(txs || []);
+          const [txs, summary] = await Promise.all([
+            window.electronAPI.getFinancialTransactions({
+              clientId: selectedClientId ? Number(selectedClientId) : undefined,
+              caseId: selectedCaseId ? Number(selectedCaseId) : undefined,
+            }),
+            selectedCaseId ? window.electronAPI.getCaseFinancialSummary(Number(selectedCaseId)) : Promise.resolve(null),
+          ]);
+          if (isMounted) {
+            setFinTxsData(txs || []);
+            setSelectedCaseSummary(summary || null);
+          }
         } else if (selectedReport === 'execution_file') {
           const files = await window.electronAPI.getExecutionFiles();
           if (files && files.length > 0) {
@@ -193,19 +202,37 @@ export const ReportsPage: React.FC<ReportsPageProps> = ({
             settings,
             'تقرير وتحليل أسباب تأجيل الجلسات',
             `المحكمة: ${selectedCourt} • عدد الجلسات المؤجلة: ${
-              hearingsData.filter((h) => h.adjournment_reason).length
+              hearingsData.filter((h) => Boolean(h.adjournment_reason)).length
             }`
           );
 
         case 'client_statement': {
           const clientObj = clients.find((c) => c.id === Number(selectedClientId));
           const caseObj = cases.find((c) => c.id === Number(selectedCaseId));
-          return generateClientStatementHtml({
-            client: clientObj,
-            caseItem: caseObj,
-            transactions: finTxsData,
+          return generateClientStatementHtml(
+            selectedCaseSummary || {
+              total_agreed_fees: 0,
+              paid_fees: 0,
+              remaining_fees: 0,
+              total_court_fees_inflow: 0,
+              total_court_fees_outflow: 0,
+              total_expenses_inflow: 0,
+              total_expenses_outflow: 0,
+              total_execution_inflow: 0,
+              total_execution_outflow: 0,
+              net_balance: 0,
+            },
+            finTxsData,
             settings,
-          });
+            {
+              clientName: clientObj?.name || 'اسم الموكل',
+              clientPhone: clientObj?.phone,
+              caseNumber: caseObj?.case_number,
+              caseYear: caseObj?.case_year,
+              courtName: caseObj?.court_name,
+              subject: caseObj?.subject,
+            }
+          );
         }
 
         case 'receipt': {
@@ -213,7 +240,7 @@ export const ReportsPage: React.FC<ReportsPageProps> = ({
             id: 1,
             receipt_number: 'REC-2026-0001',
             transaction_date: new Date().toISOString().slice(0, 10),
-            direction: 'inflow',
+            direction: 'وارد',
             category: 'أتعاب',
             transaction_type: 'دفعة أتعاب',
             amount: 5000,
@@ -246,22 +273,21 @@ export const ReportsPage: React.FC<ReportsPageProps> = ({
         }
 
         case 'financial_general': {
-          return generateGeneralFinancialReportHtml({
-            stats: finStatsData || {
-              total_inflow: 0,
-              total_outflow: 0,
-              net_income: 0,
-              fees_inflow: 0,
-              court_expenses: 0,
-              office_expenses: 0,
-              execution_inflow: 0,
-              active_cheques_count: 0,
-              active_cheques_total: 0,
+          return generateGeneralFinancialReportHtml(
+            finStatsData || {
+              total_income: 0,
+              total_expense: 0,
+              net_profit: 0,
+              outstanding_fees: 0,
+              pending_cheques_count: 0,
+              pending_cheques_amount: 0,
             },
-            transactions: finTxsData,
+            finTxsData,
             settings,
-            periodName: 'التقرير المالي العام للمكتب',
-          });
+            {
+              periodTitle: 'التقرير المالي العام للمكتب',
+            }
+          );
         }
 
         case 'generic_table': {
@@ -308,7 +334,13 @@ export const ReportsPage: React.FC<ReportsPageProps> = ({
           return '';
       }
     } catch (e: any) {
-      return `<div style="color: red; padding: 20px;">خطأ أثناء توليد التقرير: ${e?.message}</div>`;
+      console.error('Error generating report:', e);
+      const stackTrace = e?.stack ? `<pre style="margin-top: 10px; padding: 10px; background: #fee2e2; border-radius: 4px; font-size: 8pt; text-align: left; direction: ltr; overflow-x: auto; white-space: pre-wrap;">${escapeHtml(e.stack)}</pre>` : '';
+      return `<div style="color: #991b1b; background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; padding: 20px; margin: 20px; font-family: Cairo, Tahoma, sans-serif;">
+        <div style="font-weight: bold; font-size: 11pt; margin-bottom: 6px;">❌ خطأ أثناء توليد التقرير: ${escapeHtml(e?.message || 'خطأ غير معروف')}</div>
+        <div style="font-size: 9pt; color: #7f1d1d;">يرجى التحقق من صحة البيانات المحددة أو إعادة المحاولة.</div>
+        ${stackTrace}
+      </div>`;
     }
   }, [
     selectedReport,
@@ -317,6 +349,7 @@ export const ReportsPage: React.FC<ReportsPageProps> = ({
     tasksData,
     finTxsData,
     finStatsData,
+    selectedCaseSummary,
     selectedCaseDetails,
     executionDetails,
     genericTableType,

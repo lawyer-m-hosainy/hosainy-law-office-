@@ -5,43 +5,57 @@ export function generateReceiptHtml(
   tx: FinancialTransaction,
   settings: OfficeSettings
 ): string {
-  const amountTafqit = tafqit(tx.amount);
-  const isReversal = tx.is_reversed === 1 || Boolean(tx.reversal_of_id);
+  const safeTx = tx || {
+    id: 1,
+    receipt_number: 'REC-0000',
+    transaction_date: new Date().toISOString().slice(0, 10),
+    direction: 'وارد',
+    category: 'أتعاب',
+    transaction_type: 'استلام نقدية',
+    amount: 0,
+    payment_method: 'نقدي',
+    description: 'لا توجد بيانات',
+  };
 
-  const chequeInfo = tx.cheque_details 
-    ? `بموجب شيك رقم (${tx.cheque_details.cheque_number}) مسحوب على بنك (${tx.cheque_details.bank_name}) استحقاق ${tx.cheque_details.due_date}`
+  const amount = Number(safeTx.amount) || 0;
+  const amountTafqit = tafqit(amount);
+  const isReversal = safeTx.is_reversed === 1 || Boolean(safeTx.reversal_of_id);
+  const isIncome = safeTx.direction === 'وارد' || (safeTx as any).direction === 'inflow';
+
+  const chequeInfo = safeTx.cheque_details 
+    ? `بموجب شيك رقم (${safeTx.cheque_details.cheque_number}) مسحوب على بنك (${safeTx.cheque_details.bank_name}) استحقاق ${safeTx.cheque_details.due_date}`
     : '';
 
   const renderSingleVoucher = (voucherTypeTitle: string) => `
     <div class="receipt-box ${isReversal ? 'reversal-border' : ''}">
       <div class="receipt-header">
         <div class="header-right">
-          <div class="office-name">${settings.office_name || 'مكتب المحاماة'}</div>
-          <div class="lawyer-name">${settings.lawyer_name || ''}</div>
-          <div class="lawyer-title">${settings.lawyer_title || 'محامٍ بالنقض والدستورية العليا'}</div>
+          <div class="office-name">${settings?.office_name || 'مكتب المحاماة'}</div>
+          <div class="lawyer-name">${settings?.lawyer_name || ''}</div>
+          <div class="lawyer-title">${settings?.lawyer_title || 'محامٍ بالنقض والدستورية العليا'}</div>
         </div>
         <div class="header-center">
-          ${settings.logo_path
+          ${settings?.logo_path
             ? `<img class="logo-img" src="${settings.logo_path}" alt="الشعار" />`
             : `<div class="emblem">⚖️</div>`}
           <div class="voucher-title ${isReversal ? 'reversal-title' : ''}">
-            ${isReversal ? 'إيصال قيد تسوية عكسي' : (tx.direction === 'وارد' ? 'إيصال استلام نقدية' : 'إذن صرف نقدي')}
+            ${isReversal ? 'إيصال قيد تسوية عكسي' : (isIncome ? 'إيصال استلام نقدية' : 'إذن صرف نقدي')}
           </div>
           <div class="voucher-copy-tag">(${voucherTypeTitle})</div>
         </div>
         <div class="header-left">
           <div class="receipt-num-box">
             <span class="num-lbl">رقم الإيصال:</span>
-            <span class="num-val">${tx.receipt_number}</span>
+            <span class="num-val">${safeTx.receipt_number || '-'}</span>
           </div>
-          <div class="receipt-date"><strong>التاريخ:</strong> ${tx.transaction_date}</div>
-          ${settings.phone ? `<div><strong>هاتف:</strong> ${settings.phone}</div>` : ''}
+          <div class="receipt-date"><strong>التاريخ:</strong> ${safeTx.transaction_date || ''}</div>
+          ${settings?.phone ? `<div><strong>هاتف:</strong> ${settings.phone}</div>` : ''}
         </div>
       </div>
 
       <div class="amount-banner">
         <div class="amount-number">
-          ${tx.amount.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} <span style="font-size: 10pt;">ج.م</span>
+          ${amount.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} <span style="font-size: 10pt;">ج.م</span>
         </div>
         <div class="amount-words">
           ${amountTafqit}

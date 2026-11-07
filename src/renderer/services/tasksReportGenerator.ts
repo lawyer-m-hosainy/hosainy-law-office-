@@ -9,8 +9,10 @@ export interface TasksReportOptions {
 export function generateTasksReportHtml(
   tasks: Task[],
   settings: OfficeSettings,
-  options?: TasksReportOptions
+  options?: TasksReportOptions | string
 ): string {
+  const resolvedOptions: TasksReportOptions = typeof options === 'string' ? { title: options } : (options || {});
+
   const printDate = new Date().toLocaleDateString('ar-EG', {
     weekday: 'long',
     year: 'numeric',
@@ -20,20 +22,22 @@ export function generateTasksReportHtml(
     minute: '2-digit',
   });
 
-  const reportTitle = options?.title || 'قائمة المهام والمأموريات القضائية';
-  const periodText = options?.periodText || 'لكافة المهام المحددة';
+  const reportTitle = resolvedOptions?.title || 'قائمة المهام والمأموريات القضائية';
+  const periodText = resolvedOptions?.periodText || 'لكافة المهام المحددة';
+
+  const safeTasks = Array.isArray(tasks) ? tasks : [];
 
   // Stats
-  const totalTasks = tasks.length;
-  const urgentCount = tasks.filter(t => t.priority === 'عاجلة').length;
-  const importantCount = tasks.filter(t => t.priority === 'مهمة').length;
-  const completedCount = tasks.filter(t => t.status === 'منتهية').length;
-  const pendingCount = tasks.filter(t => t.status !== 'منتهية' && t.status !== 'ملغاة').length;
+  const totalTasks = safeTasks.length;
+  const urgentCount = safeTasks.filter(t => t.priority === 'عاجلة').length;
+  const importantCount = safeTasks.filter(t => t.priority === 'مهمة').length;
+  const completedCount = safeTasks.filter(t => t.status === 'منتهية').length;
+  const pendingCount = safeTasks.filter(t => t.status !== 'منتهية' && t.status !== 'ملغاة').length;
 
   // Table rows with pen checkboxes
-  const tableRows = tasks.length === 0
+  const tableRows = safeTasks.length === 0
     ? `<tr><td colspan="8" style="text-align: center; padding: 25px; color: #64748b;">لا توجد مهام مدرجة في هذه القائمة</td></tr>`
-    : tasks.map((task, idx) => {
+    : safeTasks.map((task, idx) => {
         const isUrgent = task.priority === 'عاجلة';
         const isImportant = task.priority === 'مهمة';
         const priorityColor = isUrgent ? '#b91c1c' : isImportant ? '#b45309' : '#475569';

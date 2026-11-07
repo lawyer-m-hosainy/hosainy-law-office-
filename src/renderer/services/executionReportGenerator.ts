@@ -14,9 +14,19 @@ export function generateExecutionReportHtml(
     minute: '2-digit',
   });
 
-  const claimedTafqit = tafqit(execution.total_claimed_amount);
-  const collectedTafqit = tafqit(execution.collected_amount);
-  const remainingTafqit = tafqit(execution.remaining_amount);
+  const totalClaimed = Number(execution?.total_claimed_amount ?? (execution as any)?.claimed_amount) || 0;
+  const collected = Number(execution?.collected_amount) || 0;
+  const remaining = Number(execution?.remaining_amount ?? (totalClaimed - collected)) || 0;
+
+  const claimedTafqit = tafqit(totalClaimed);
+  const collectedTafqit = tafqit(collected);
+  const remainingTafqit = tafqit(remaining);
+
+  const safeActions = Array.isArray(execution?.actions)
+    ? execution.actions
+    : (Array.isArray((execution as any)?.procedures) ? (execution as any).procedures : []);
+  const safeHearings = Array.isArray(execution?.hearings) ? execution.hearings : [];
+  const safeTransactions = Array.isArray(execution?.transactions) ? execution.transactions : [];
 
   // Status color pill
   const getStatusBadge = (status: string) => {
@@ -35,9 +45,9 @@ export function generateExecutionReportHtml(
   };
 
   // Actions Table Rows
-  const actionsRows = execution.actions.length === 0
+  const actionsRows = safeActions.length === 0
     ? `<tr><td colspan="7" style="text-align: center; padding: 15px; color: #64748b;">لا توجد إجراءات تنفيذية مسجلة بعد</td></tr>`
-    : execution.actions.map((act, idx) => `
+    : safeActions.map((act, idx) => `
         <tr>
           <td style="text-align: center; font-weight: bold;">${idx + 1}</td>
           <td style="text-align: center; white-space: nowrap;">${act.action_date}</td>
@@ -57,9 +67,9 @@ export function generateExecutionReportHtml(
       `).join('\n');
 
   // Hearings Table Rows
-  const hearingsRows = execution.hearings.length === 0
+  const hearingsRows = safeHearings.length === 0
     ? `<tr><td colspan="6" style="text-align: center; padding: 15px; color: #64748b;">لا توجد جلسات أو إشكالات تنفيذ مسجلة</td></tr>`
-    : execution.hearings.map((h, idx) => `
+    : safeHearings.map((h, idx) => `
         <tr>
           <td style="text-align: center; font-weight: bold;">${idx + 1}</td>
           <td style="text-align: center; white-space: nowrap;">${h.hearing_date}</td>
@@ -77,9 +87,9 @@ export function generateExecutionReportHtml(
       `).join('\n');
 
   // Transactions Rows
-  const txRows = execution.transactions.length === 0
+  const txRows = safeTransactions.length === 0
     ? `<tr><td colspan="7" style="text-align: center; padding: 15px; color: #64748b;">لا توجد حركات مالية مقيدة على هذا التنفيذ</td></tr>`
-    : execution.transactions.map((tx, idx) => {
+    : safeTransactions.map((tx, idx) => {
         const isInflow = tx.direction === 'وارد';
         return `
           <tr style="${tx.is_reversed ? 'text-decoration: line-through; opacity: 0.6; background: #fff1f2;' : ''}">
@@ -456,17 +466,17 @@ export function generateExecutionReportHtml(
   <div class="finance-cards">
     <div class="fin-box fin-box-claimed">
       <div class="fin-title">إجمالي المبلغ المطلوب تنفيذه</div>
-      <div class="fin-amount" style="color: #0369a1;">${execution.total_claimed_amount.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
+      <div class="fin-amount" style="color: #0369a1;">${totalClaimed.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
     </div>
 
     <div class="fin-box fin-box-collected">
       <div class="fin-title">إجمالي المبالغ المحصلة فعلياً</div>
-      <div class="fin-amount" style="color: #047857;">${execution.collected_amount.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
+      <div class="fin-amount" style="color: #047857;">${collected.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
     </div>
 
     <div class="fin-box fin-box-remaining">
       <div class="fin-title">المبلغ المتبقي للتحصيل</div>
-      <div class="fin-amount" style="color: #b91c1c;">${execution.remaining_amount.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
+      <div class="fin-amount" style="color: #b91c1c;">${remaining.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
     </div>
   </div>
 
@@ -485,7 +495,7 @@ export function generateExecutionReportHtml(
   ` : ''}
 
   <!-- Execution Actions Table -->
-  <div class="section-title">سجل إجراءات التنفيذ المتسلسلة (${execution.actions.length})</div>
+  <div class="section-title">سجل إجراءات التنفيذ المتسلسلة (${safeActions.length})</div>
   <table>
     <thead>
       <tr>
@@ -505,8 +515,8 @@ export function generateExecutionReportHtml(
   </table>
 
   <!-- Hearings Table (if any) -->
-  ${execution.hearings.length > 0 ? `
-    <div class="section-title">جلسات ومنازعات التنفيذ والإشكالات (${execution.hearings.length})</div>
+  ${safeHearings.length > 0 ? `
+    <div class="section-title">جلسات ومنازعات التنفيذ والإشكالات (${safeHearings.length})</div>
     <table>
       <thead>
         <tr>
@@ -525,8 +535,8 @@ export function generateExecutionReportHtml(
   ` : ''}
 
   <!-- Financial Transactions Table (if any) -->
-  ${execution.transactions.length > 0 ? `
-    <div class="section-title">سجل الحركات المالية والإيصالات لملف التنفيذ (${execution.transactions.length})</div>
+  ${safeTransactions.length > 0 ? `
+    <div class="section-title">سجل الحركات المالية والإيصالات لملف التنفيذ (${safeTransactions.length})</div>
     <table>
       <thead>
         <tr>

@@ -11,8 +11,10 @@ export interface HearingRollReportOptions {
 export function generateHearingRollHtml(
   hearings: HearingWithCase[],
   settings: OfficeSettings,
-  options?: HearingRollReportOptions
+  options?: HearingRollReportOptions | string
 ): string {
+  const resolvedOptions: HearingRollReportOptions = typeof options === 'string' ? { title: options } : (options || {});
+
   const printDate = new Date().toLocaleDateString('ar-EG', {
     weekday: 'long',
     year: 'numeric',
@@ -22,13 +24,15 @@ export function generateHearingRollHtml(
     minute: '2-digit',
   });
 
-  const orientation = options?.orientation || 'landscape';
-  const reportTitle = options?.title || 'رول الجلسات القضائية';
-  const filterSummary = options?.filterSummary || '';
+  const orientation = resolvedOptions?.orientation || 'landscape';
+  const reportTitle = resolvedOptions?.title || 'رول الجلسات القضائية';
+  const filterSummary = resolvedOptions?.filterSummary || '';
 
-  const tableRows = hearings.length === 0
+  const safeHearings = Array.isArray(hearings) ? hearings : [];
+
+  const tableRows = safeHearings.length === 0
     ? `<tr><td colspan="9" style="text-align: center; padding: 25px; color: #64748b;">لا توجد جلسات مسجلة وفق الفلاتر المحددة</td></tr>`
-    : hearings.map((h, idx) => {
+    : safeHearings.map((h, idx) => {
         const clientText = h.primary_client_name 
           ? `<strong>${escapeHtml(h.primary_client_name)}</strong>${h.primary_client_role ? `<br><span class="role-badge">(${escapeHtml(h.primary_client_role)})</span>` : ''}`
           : '-';

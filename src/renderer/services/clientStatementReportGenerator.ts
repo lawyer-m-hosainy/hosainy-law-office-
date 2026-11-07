@@ -13,11 +13,105 @@ export interface ClientStatementOptions {
 }
 
 export function generateClientStatementHtml(
-  summary: CaseFinancialSummary,
-  transactions: FinancialTransaction[],
-  settings: OfficeSettings,
-  options: ClientStatementOptions
+  summaryOrOptions: CaseFinancialSummary | {
+    summary?: CaseFinancialSummary;
+    transactions?: FinancialTransaction[];
+    settings?: OfficeSettings;
+    client?: any;
+    caseItem?: any;
+    options?: ClientStatementOptions;
+  },
+  transactionsArg?: FinancialTransaction[],
+  settingsArg?: OfficeSettings,
+  optionsArg?: ClientStatementOptions
 ): string {
+  const isObjectConfig =
+    summaryOrOptions &&
+    typeof summaryOrOptions === 'object' &&
+    ('client' in summaryOrOptions || 'caseItem' in summaryOrOptions || 'transactions' in summaryOrOptions || transactionsArg === undefined);
+
+  let rawSummary: CaseFinancialSummary | undefined;
+  let transactions: FinancialTransaction[] = [];
+  let settings: OfficeSettings = { office_name: 'مكتب المحاماة' };
+  let options: ClientStatementOptions = { clientName: 'الموكل' };
+
+  if (isObjectConfig && !Array.isArray(transactionsArg)) {
+    const cfg = summaryOrOptions as any;
+    transactions = Array.isArray(cfg.transactions) ? cfg.transactions : [];
+    settings = cfg.settings || { office_name: 'مكتب المحاماة' };
+    rawSummary = cfg.summary;
+    const clientName = cfg.client?.name || cfg.client?.client_name || cfg.options?.clientName || 'الموكل';
+    const clientPhone = cfg.client?.phone || cfg.client?.client_phone || cfg.options?.clientPhone;
+    const caseNumber = cfg.caseItem?.case_number || cfg.options?.caseNumber;
+    const caseYear = cfg.caseItem?.case_year || cfg.options?.caseYear;
+    const courtName = cfg.caseItem?.court_name || cfg.options?.courtName;
+    const subject = cfg.caseItem?.subject || cfg.options?.subject;
+    options = {
+      clientName,
+      clientPhone,
+      caseNumber,
+      caseYear,
+      courtName,
+      subject,
+      ...cfg.options,
+    };
+  } else {
+    rawSummary = summaryOrOptions as CaseFinancialSummary;
+    transactions = Array.isArray(transactionsArg) ? transactionsArg : [];
+    settings = settingsArg || { office_name: 'مكتب المحاماة' };
+    options = optionsArg || { clientName: 'الموكل' };
+  }
+
+  // Safe transactions list
+  const safeTxList = Array.isArray(transactions) ? transactions : [];
+  const activeTx = safeTxList
+    .filter(t => Boolean(t) && !t.is_reversed)
+    .sort((a, b) => new Date(a.transaction_date).getTime() - new Date(b.transaction_date).getTime());
+
+  // Derive summary metrics if missing or incomplete
+  let calcPaidFees = 0;
+  let calcCourtFeesInflow = 0;
+  let calcCourtFeesOutflow = 0;
+  let calcExpensesInflow = 0;
+  let calcExpensesOutflow = 0;
+  let calcExecutionInflow = 0;
+  let calcExecutionOutflow = 0;
+  let calcTotalInflow = 0;
+  let calcTotalOutflow = 0;
+
+  activeTx.forEach(t => {
+    const amt = Number(t.amount) || 0;
+    if (t.direction === 'وارد') {
+      calcTotalInflow += amt;
+      if (t.category === 'أتعاب') calcPaidFees += amt;
+      else if (t.category === 'رسوم قضائية') calcCourtFeesInflow += amt;
+      else if (t.category === 'مصاريف') calcExpensesInflow += amt;
+      else if (t.category === 'تنفيذ') calcExecutionInflow += amt;
+    } else if (t.direction === 'صادر') {
+      calcTotalOutflow += amt;
+      if (t.category === 'رسوم قضائية') calcCourtFeesOutflow += amt;
+      else if (t.category === 'مصاريف') calcExpensesOutflow += amt;
+      else if (t.category === 'تنفيذ') calcExecutionOutflow += amt;
+    }
+  });
+
+  const totalAgreedFees = Number(rawSummary?.total_agreed_fees) || 0;
+  const paidFees = rawSummary?.paid_fees !== undefined ? Number(rawSummary.paid_fees) : calcPaidFees;
+  const remainingFees = rawSummary?.remaining_fees !== undefined ? Number(rawSummary.remaining_fees) : Math.max(0, totalAgreedFees - paidFees);
+  const totalInflow = rawSummary?.total_inflow !== undefined ? Number(rawSummary.total_inflow) : calcTotalInflow;
+  const totalOutflow = rawSummary?.total_outflow !== undefined ? Number(rawSummary.total_outflow) : calcTotalOutflow;
+  const actualCosts = (Number(rawSummary?.total_court_fees_outflow) || calcCourtFeesOutflow) +
+                      (Number(rawSummary?.total_expenses_outflow) || calcExpensesOutflow) +
+                      (Number(rawSummary?.total_execution_outflow) || calcExecutionOutflow);
+
+  const netBalance = rawSummary?.net_balance !== undefined
+    ? Number(rawSummary.net_balance)
+    : (totalInflow - (totalAgreedFees + actualCosts));
+
+  const isCredit = netBalance >= 0;
+  const netBalanceText = isCredit ? 'رصيد دائن للموكل (له أمانة لدينا)' : 'مستحق على الموكل للمكتب (مدين)';
+  const netBalanceTafqit = tafqit(Math.abs(netBalance));
+
   const printDate = new Date().toLocaleDateString('ar-EG', {
     weekday: 'long',
     year: 'numeric',
@@ -26,15 +120,6 @@ export function generateClientStatementHtml(
     hour: '2-digit',
     minute: '2-digit',
   });
-
-  const isCredit = summary.net_balance >= 0;
-  const netBalanceText = isCredit ? 'رصيد دائن للموكل (له أمانة لدينا)' : 'مستحق على الموكل للمكتب (مدين)';
-  const netBalanceTafqit = tafqit(Math.abs(summary.net_balance));
-
-  // Compute running balance for chronological transactions
-  const activeTx = [...transactions]
-    .filter(t => !t.is_reversed)
-    .sort((a, b) => new Date(a.transaction_date).getTime() - new Date(b.transaction_date).getTime());
 
   let runningBalance = 0;
   const tableRows = activeTx.length === 0
@@ -342,28 +427,28 @@ export function generateClientStatementHtml(
   <!-- Summary of Agreed Fees & Actual Inflows/Outflows -->
   <div class="stats-summary-grid">
     <div class="summary-card">
-      <div class="card-val">${(summary.total_agreed_fees || 0).toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
+      <div class="card-val">${totalAgreedFees.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
       <div class="card-lbl">إجمالي الأتعاب المتفق عليها</div>
     </div>
     <div class="summary-card">
-      <div class="card-val" style="color: #166534;">${(summary.paid_fees ?? summary.total_paid_fees ?? 0).toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
+      <div class="card-val" style="color: #166534;">${paidFees.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
       <div class="card-lbl">المدفوع من الأتعاب</div>
     </div>
     <div class="summary-card">
-      <div class="card-val" style="color: #b45309;">${(summary.remaining_fees || 0).toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
+      <div class="card-val" style="color: #b45309;">${remainingFees.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
       <div class="card-lbl">متبقي الأتعاب</div>
     </div>
 
     <div class="summary-card">
-      <div class="card-val">${(summary.total_inflow || 0).toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
+      <div class="card-val">${totalInflow.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
       <div class="card-lbl">إجمالي الوارد من الموكل</div>
     </div>
     <div class="summary-card">
-      <div class="card-val">${((summary.total_court_fees_outflow || 0) + (summary.total_expenses_outflow || 0) + (summary.total_execution_outflow || 0) || (summary.total_expenses || 0) || (summary.total_outflow || 0)).toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
+      <div class="card-val">${actualCosts.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
       <div class="card-lbl">إجمالي المصروفات والرسوم الفعلية</div>
     </div>
     <div class="summary-card">
-      <div class="card-val">${(summary.total_outflow || 0).toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
+      <div class="card-val">${totalOutflow.toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م</div>
       <div class="card-lbl">إجمالي المنصرف من المكتب</div>
     </div>
   </div>
@@ -375,7 +460,7 @@ export function generateClientStatementHtml(
       <div class="net-tafqit">${netBalanceTafqit}</div>
     </div>
     <div class="net-amount">
-      ${Math.abs(summary.net_balance).toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م
+      ${Math.abs(netBalance).toLocaleString('ar-EG', { minimumFractionDigits: 2 })} ج.م
     </div>
   </div>
 

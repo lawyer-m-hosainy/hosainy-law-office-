@@ -117,7 +117,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <div className="flex items-center justify-between text-[11px] text-slate-500 mt-1">
           <span className="truncate" title={dbPath}>{dbPath ? dbPath.split(/[\\/]/).pop() : 'office.db'}</span>
           <span className="font-mono text-amber-400 font-bold text-[10px]">
-            v{appVersion || (typeof __APP_VERSION__ !== 'undefined' ? __APP_VERSION__ : '1.0.1')}
+            v{appVersion || (typeof __APP_VERSION__ !== 'undefined' ? __APP_VERSION__ : '1.0.3')}
           </span>
         </div>
         {typeof __BUILD_TIMESTAMP__ !== 'undefined' && __BUILD_TIMESTAMP__ && (

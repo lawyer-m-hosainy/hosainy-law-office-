@@ -103,11 +103,14 @@ export const CalendarPage: React.FC<CalendarPageProps> = ({
     loadHearings();
   }, [loadHearings]);
 
-  // Subscribe to hearings updates from elsewhere
+  // Subscribe to hearings and announcements updates from elsewhere
   useEffect(() => {
-    return entityEventBus.subscribe('hearings', () => {
-      loadHearings();
-    });
+    const unsubHearings = entityEventBus.subscribe('hearings', loadHearings);
+    const unsubAnnouncements = entityEventBus.subscribe('announcements', loadHearings);
+    return () => {
+      unsubHearings();
+      unsubAnnouncements();
+    };
   }, [loadHearings]);
 
   // Navigation handlers

@@ -53,13 +53,27 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
     refreshAnnouncements
   } = useAnnouncements(caseData.id);
 
-  const { hearings } = useHearings(caseData.id);
+  const { hearings = [] } = useHearings(caseData.id);
+  const safeHearings = hearings || [];
 
   // Modals state
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
   const [isReattemptModalOpen, setIsReattemptModalOpen] = useState(false);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState<CaseAnnouncement | null>(null);
+
+  // Close modals on Escape key
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsAddModalOpen(false);
+        setIsStatusModalOpen(false);
+        setIsReattemptModalOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   // Form states
   const [addForm, setAddForm] = useState<{
@@ -134,17 +148,17 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
     let defAddr = '';
 
     if (opponents.length > 0) {
-      defName = opponents[0].name;
-      defCap = opponents[0].capacity || 'المدعى عليه';
+      defName = opponents[0].name || '';
+      defCap = opponents[0].role_capacity || (opponents[0] as any).capacity || 'المدعى عليه';
       defAddr = opponents[0].address || '';
     } else if (clients.length > 0) {
-      defName = clients[0].name;
-      defCap = clients[0].capacity || 'الموكل';
-      defAddr = clients[0].address || '';
+      defName = clients[0].client_name || (clients[0] as any).name || '';
+      defCap = clients[0].role_capacity || (clients[0] as any).capacity || 'الموكل';
+      defAddr = (clients[0] as any).address || '';
     }
 
     setAddForm({
-      hearing_id: hearings.length > 0 ? hearings[0].id : '',
+      hearing_id: (safeHearings.length > 0 ? safeHearings[0].id : '') as number | '',
       recipient_type: 'party',
       recipient_name: defName,
       recipient_capacity: defCap,
@@ -167,19 +181,19 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
       setAddForm(prev => ({
         ...prev,
         recipient_name: opp.name,
-        recipient_capacity: opp.capacity || 'خصم',
+        recipient_capacity: opp.role_capacity || (opp as any).capacity || 'خصم',
         recipient_address: opp.address || ''
       }));
       return;
     }
 
-    const cl = clients.find(c => c.name === name);
+    const cl = clients.find(c => (c.client_name || (c as any).name) === name);
     if (cl) {
       setAddForm(prev => ({
         ...prev,
-        recipient_name: cl.name,
-        recipient_capacity: cl.capacity || 'موكل',
-        recipient_address: cl.address || ''
+        recipient_name: cl.client_name || (cl as any).name || '',
+        recipient_capacity: cl.role_capacity || (cl as any).capacity || 'موكل',
+        recipient_address: (cl as any).address || ''
       }));
     }
   };
@@ -268,7 +282,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
   const handleOpenReattemptModal = (ann: CaseAnnouncement) => {
     setSelectedAnnouncement(ann);
     setReattemptForm({
-      hearing_id: ann.hearing_id || (hearings.length > 0 ? hearings[0].id : ''),
+      hearing_id: ann.hearing_id || (safeHearings.length > 0 ? safeHearings[0].id : ''),
       delivery_date: new Date().toISOString().split('T')[0],
       bailiff_office: ann.bailiff_office || '',
       request_number: '',
@@ -665,7 +679,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-amber-500 font-mono" data-testid="case.announcements.tab.set-add-form"
                 >
                   <option value="">-- بدون ربط بجلسة محددة --</option>
-                  {hearings.map((h) => (
+                  {safeHearings.map((h) => (
                     <option key={h.id} value={h.id}>
                       جلسة {h.hearing_date} ({h.status}) - {h.court_decision ? h.court_decision.slice(0, 30) : 'محددة'}
                     </option>
@@ -706,18 +720,21 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                       <optgroup label="الخصوم">
                         {opponents.map((o) => (
                           <option key={`opp-${o.id}`} value={o.name}>
-                            {o.name} ({o.capacity || 'خصم'})
+                            {o.name} ({o.role_capacity || (o as any).capacity || 'خصم'})
                           </option>
                         ))}
                       </optgroup>
                     )}
                     {clients.length > 0 && (
                       <optgroup label="الموكلون">
-                        {clients.map((c) => (
-                          <option key={`cl-${c.id}`} value={c.name}>
-                            {c.name} ({c.capacity || 'موكل'})
-                          </option>
-                        ))}
+                        {clients.map((c) => {
+                          const clientDisplayName = c.client_name || (c as any).name || '';
+                          return (
+                            <option key={`cl-${c.id}`} value={clientDisplayName}>
+                              {clientDisplayName} ({c.role_capacity || (c as any).capacity || 'موكل'})
+                            </option>
+                          );
+                        })}
                       </optgroup>
                     )}
                   </select>
@@ -780,7 +797,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
               </div>
 
               {/* Bailiff details */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 <div>
                   <label className="block text-slate-700 font-bold mb-1">قلم المحضرين</label>
                   <input
@@ -800,6 +817,17 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                     onChange={(e) => setAddForm({ ...addForm, request_number: e.target.value })}
                     placeholder="رقم القيد..."
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg font-mono" data-testid="case.announcements.tab.set-add-form-9"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-slate-700 font-bold mb-1">اسم المحضر (إن وجد)</label>
+                  <input
+                    type="text"
+                    value={addForm.bailiff_name}
+                    onChange={(e) => setAddForm({ ...addForm, bailiff_name: e.target.value })}
+                    placeholder="المحضر المختص..."
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg" data-testid="case.announcements.tab.set-add-form-bailiff-name"
                   />
                 </div>
 
@@ -1019,7 +1047,7 @@ export const CaseAnnouncementsTab: React.FC<CaseAnnouncementsTabProps> = ({
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg font-mono" data-testid="case.announcements.tab.set-reattempt-form"
                 >
                   <option value="">-- بدون ربط بجلسة --</option>
-                  {hearings.map((h) => (
+                  {safeHearings.map((h) => (
                     <option key={h.id} value={h.id}>
                       جلسة {h.hearing_date} ({h.status})
                     </option>

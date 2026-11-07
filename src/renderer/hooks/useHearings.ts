@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import {
   Hearing,
   HearingWithCase,
@@ -9,15 +9,16 @@ import {
 } from '../../shared/types';
 import { entityEventBus } from '../services/eventBus';
 
-export function useHearings() {
+export function useHearings(caseId?: number) {
+  const [hearings, setHearings] = useState<Hearing[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const getHearingsByCase = useCallback(async (caseId: number): Promise<Hearing[]> => {
+  const getHearingsByCase = useCallback(async (cId: number): Promise<Hearing[]> => {
     setLoading(true);
     setError(null);
     try {
-      const data = await window.electronAPI.getHearingsByCase(caseId);
+      const data = await window.electronAPI.getHearingsByCase(cId);
       return data;
     } catch (err: any) {
       setError(err?.message || 'فشل في تحميل جلسات القضية');
@@ -26,6 +27,25 @@ export function useHearings() {
       setLoading(false);
     }
   }, []);
+
+  const loadCaseHearings = useCallback(async () => {
+    if (caseId) {
+      try {
+        const data = await window.electronAPI.getHearingsByCase(caseId);
+        setHearings(data || []);
+      } catch {
+        setHearings([]);
+      }
+    }
+  }, [caseId]);
+
+  useEffect(() => {
+    if (caseId) {
+      loadCaseHearings();
+      const unsub = entityEventBus.subscribe('hearings', loadCaseHearings);
+      return () => unsub();
+    }
+  }, [caseId, loadCaseHearings]);
 
   const getHearingStatsByCase = useCallback(async (caseId: number): Promise<CaseHearingStats | null> => {
     try {
@@ -154,6 +174,7 @@ export function useHearings() {
   }, []);
 
   return {
+    hearings,
     loading,
     error,
     getHearingsByCase,
