@@ -235,17 +235,21 @@ export function registerSettingsIpc(): void {
 
   // Select logo file
   ipcMain.handle('settings:selectLogoFile', async (): Promise<{ canceled: boolean; filePath?: string; fileDataUrl?: string }> => {
-    const result = await dialog.showOpenDialog({
-      title: 'اختر شعار المكتب',
-      properties: ['openFile'],
-      filters: [{ name: 'صور', extensions: ['png', 'jpg', 'jpeg', 'webp', 'svg'] }],
-    });
+    let selectedFile = '';
+    if (process.env.NODE_ENV === 'test' && process.env.TEST_ASSET_PNG) {
+      selectedFile = process.env.TEST_ASSET_PNG;
+    } else {
+      const result = await dialog.showOpenDialog({
+        title: 'اختر شعار المكتب',
+        properties: ['openFile'],
+        filters: [{ name: 'صور', extensions: ['png', 'jpg', 'jpeg', 'webp', 'svg'] }],
+      });
 
-    if (result.canceled || result.filePaths.length === 0) {
-      return { canceled: true };
+      if (result.canceled || result.filePaths.length === 0) {
+        return { canceled: true };
+      }
+      selectedFile = result.filePaths[0];
     }
-
-    const selectedFile = result.filePaths[0];
     const ext = path.extname(selectedFile);
     const attachmentsDir = dataDirService.getAttachmentsPath();
     const destFileName = `logo_${Date.now()}${ext}`;

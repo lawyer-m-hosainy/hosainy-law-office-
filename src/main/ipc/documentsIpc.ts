@@ -15,6 +15,9 @@ export function registerDocumentsIpc(): void {
 
   // 1. Show Open File Dialog for picking attachments
   ipcMain.handle('documents:selectFiles', async () => {
+    if (process.env.NODE_ENV === 'test' && process.env.TEST_ASSET_PDF) {
+      return [process.env.TEST_ASSET_PDF];
+    }
     const result = await dialog.showOpenDialog({
       title: 'اختر المستندات أو الملفات المراد إرفاقها بالقضية',
       properties: ['openFile', 'multiSelections'],
@@ -116,6 +119,10 @@ export function registerDocumentsIpc(): void {
 
     if (!fs.existsSync(fullPath)) {
       return { success: false, error: `الملف غير موجود بالمسار: ${fullPath}` };
+    }
+
+    if (process.env.NODE_ENV === 'test') {
+      return { success: true };
     }
 
     const openError = await shell.openPath(fullPath);

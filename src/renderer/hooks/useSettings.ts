@@ -22,7 +22,7 @@ export function useSettings() {
 
   const loadData = useCallback(async () => {
     try {
-      setLoading(true);
+      // setLoading(true) omitted to prevent app unmount on background reload
       setError(null);
 
       if (!window.electronAPI) {

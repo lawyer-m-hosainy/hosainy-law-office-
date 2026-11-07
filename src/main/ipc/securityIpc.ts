@@ -119,7 +119,7 @@ export function registerSecurityIpc(): void {
   });
 
   // 4. Remove Password
-  ipcMain.handle('security:removePassword', async (_, currentPassword: string) => {
+  ipcMain.handle('security:removePassword', async (event, currentPassword: string) => {
     const current = db.prepare('SELECT * FROM app_security WHERE id = 1').get() as any;
     if (!current || !current.password_hash) {
       return { success: true };
@@ -137,6 +137,7 @@ export function registerSecurityIpc(): void {
     `).run();
 
     isAppLocked = false;
+    event.sender.send('security:lockStatusChanged', false);
 
     // Audit log
     db.prepare(`
@@ -148,16 +149,18 @@ export function registerSecurityIpc(): void {
   });
 
   // 5. Verify Password (Unlock App)
-  ipcMain.handle('security:verifyPassword', async (_, password: string) => {
+  ipcMain.handle('security:verifyPassword', async (event, password: string) => {
     const current = db.prepare('SELECT * FROM app_security WHERE id = 1').get() as any;
     if (!current || !current.password_hash || current.is_password_enabled === 0) {
       isAppLocked = false;
+      event.sender.send('security:lockStatusChanged', false);
       return { success: true };
     }
 
     const match = bcrypt.compareSync(password, current.password_hash);
     if (match) {
       isAppLocked = false;
+      event.sender.send('security:lockStatusChanged', false);
 
       // Audit log
       db.prepare(`
@@ -181,10 +184,11 @@ export function registerSecurityIpc(): void {
   });
 
   // 7. Lock / Unlock App Instantly
-  ipcMain.handle('security:setAppLocked', async (_, locked: boolean): Promise<boolean> => {
+  ipcMain.handle('security:setAppLocked', async (event, locked: boolean): Promise<boolean> => {
     const current = db.prepare('SELECT is_password_enabled, password_hash FROM app_security WHERE id = 1').get() as any;
     if (!current || current.is_password_enabled === 0 || !current.password_hash) {
       isAppLocked = false;
+      event.sender.send('security:lockStatusChanged', false);
       return false;
     }
 
@@ -195,6 +199,7 @@ export function registerSecurityIpc(): void {
         VALUES ('lock', 'system', 'قفل البرنامج', 'تم قفل شاشة البرنامج يدوياً أو بعد مدة خمول')
       `).run();
     }
+    event.sender.send('security:lockStatusChanged', isAppLocked);
     return isAppLocked;
   });
 }

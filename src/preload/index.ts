@@ -348,6 +348,13 @@ const api: IElectronAPI = {
   setAppLocked: (locked: boolean): Promise<any> => {
     return ipcRenderer.invoke('security:setAppLocked', locked);
   },
+  onLockStatusChanged: (callback: (locked: boolean) => void) => {
+    const listener = (_: any, locked: boolean) => callback(locked);
+    ipcRenderer.on('security:lockStatusChanged', listener);
+    return () => {
+      ipcRenderer.removeListener('security:lockStatusChanged', listener);
+    };
+  },
 
   // Backup & Restore (Phase 8)
   createBackup: (options?: any): Promise<any> => {

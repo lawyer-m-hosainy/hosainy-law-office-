@@ -31,6 +31,12 @@ export function useSecurityAndBackup() {
   useEffect(() => {
     loadSecuritySettings();
     loadBackupsList();
+    if (window.electronAPI?.onLockStatusChanged) {
+      const unsub = window.electronAPI.onLockStatusChanged((locked: boolean) => {
+        setIsLocked(locked);
+      });
+      return unsub;
+    }
   }, [loadSecuritySettings, loadBackupsList]);
 
   // Set or change password
