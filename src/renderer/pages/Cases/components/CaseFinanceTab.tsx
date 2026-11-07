@@ -325,10 +325,10 @@ export const CaseFinanceTab: React.FC<CaseFinanceTabProps> = ({
 
   // Print Statement of Account
   const handlePrintStatement = async () => {
-    const clientName = caseData.clients?.[0]?.name || 'الموكل';
+    const clientName = caseData.clients?.[0]?.client_name || (caseData.clients?.[0] as any)?.name || 'الموكل';
     const htmlContent = generateClientStatementHtml(summary, transactions, settings, {
       clientName,
-      clientPhone: caseData.clients?.[0]?.phone,
+      clientPhone: caseData.clients?.[0]?.client_phone || (caseData.clients?.[0] as any)?.phone,
       caseNumber: caseData.case_number,
       caseYear: caseData.case_year,
       courtName: caseData.court_name,

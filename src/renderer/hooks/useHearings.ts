@@ -56,7 +56,7 @@ export function useHearings() {
     setError(null);
     try {
       const created = await window.electronAPI.createHearing(hearing);
-      entityEventBus.emit('hearings');
+      entityEventBus.emitMultiple(['hearings', 'cases']);
       return created;
     } catch (err: any) {
       setError(err?.message || 'فشل في إنشاء الجلسة');
@@ -83,7 +83,7 @@ export function useHearings() {
     setError(null);
     try {
       const res = await window.electronAPI.recordHearingOutcome(hearingId, outcome);
-      entityEventBus.emit('hearings');
+      entityEventBus.emitMultiple(['hearings', 'cases']);
       return res;
     } catch (err: any) {
       setError(err?.message || 'فشل في تسجيل نتيجة الجلسة');
@@ -98,7 +98,7 @@ export function useHearings() {
     setError(null);
     try {
       const updated = await window.electronAPI.updateHearing(id, updates);
-      entityEventBus.emit('hearings');
+      entityEventBus.emitMultiple(['hearings', 'cases']);
       return updated;
     } catch (err: any) {
       setError(err?.message || 'فشل في تعديل بيانات الجلسة');
@@ -113,7 +113,7 @@ export function useHearings() {
     setError(null);
     try {
       const res = await window.electronAPI.deleteHearing(id);
-      entityEventBus.emit('hearings');
+      entityEventBus.emitMultiple(['hearings', 'cases']);
       return res.success;
     } catch (err: any) {
       setError(err?.message || 'فشل في حذف الجلسة');

@@ -36,6 +36,7 @@ import {
   OfficeSettings,
 } from '../../../shared/types';
 import { useCases } from '../../hooks/useCases';
+import { entityEventBus } from '../../services/eventBus';
 import { generateCaseSheetHtml } from '../../services/caseReportGenerator';
 import { CaseHearingsTab } from './components/CaseHearingsTab';
 import { CaseFinanceTab } from './components/CaseFinanceTab';
@@ -78,15 +79,27 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
   const [editError, setEditError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
-  const loadCase = async () => {
-    setLoading(true);
-    const data = await getCaseById(caseId);
-    setCaseData(data);
-    setLoading(false);
+  const loadCase = async (showLoading = false) => {
+    if (showLoading) setLoading(true);
+    try {
+      const data = await getCaseById(caseId);
+      if (data) {
+        setCaseData(data);
+      }
+    } finally {
+      if (showLoading) setLoading(false);
+    }
   };
+  const loadCaseData = loadCase;
 
   useEffect(() => {
-    loadCase();
+    loadCase(true);
+    const unsubCases = entityEventBus.subscribe('cases', () => {
+      loadCase(false);
+    });
+    return () => {
+      unsubCases();
+    };
   }, [caseId]);
 
   // Handle Quick Print / PDF of Case Details
@@ -562,7 +575,7 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
             appeal_deadline_admin: 60,
             hearing_alert_days: 1
           } as any}
-          onCaseUpdated={loadCaseData}
+          onCaseUpdated={loadCase}
         />
       )}
 
@@ -575,7 +588,7 @@ export const CaseDetailsPage: React.FC<CaseDetailsPageProps> = ({
             lawyer_name: '',
             lawyer_title: 'المحامي بالنقض'
           } as any}
-          onCaseUpdated={loadCaseData}
+          onCaseUpdated={loadCase}
         />
       )}
 

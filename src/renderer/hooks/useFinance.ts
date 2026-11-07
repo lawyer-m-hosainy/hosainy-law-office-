@@ -27,7 +27,9 @@ export function useFinance() {
     setLoading(true);
     setError(null);
     try {
-      return await window.electronAPI.saveFeeAgreement(data);
+      const res = await window.electronAPI.saveFeeAgreement(data);
+      entityEventBus.emitMultiple(['finance', 'cases']);
+      return res;
     } catch (err: any) {
       setError(err?.message || 'فشل في حفظ اتفاق الأتعاب');
       return null;
@@ -54,7 +56,7 @@ export function useFinance() {
     setError(null);
     try {
       const result = await window.electronAPI.createFinancialTransaction(tx, cheque);
-      entityEventBus.emit('finance');
+      entityEventBus.emitMultiple(['finance', 'cases']);
       return result;
     } catch (err: any) {
       setError(err?.message || 'فشل في تسجيل الحركة المالية');
@@ -69,7 +71,7 @@ export function useFinance() {
     setError(null);
     try {
       await window.electronAPI.reverseFinancialTransaction(transactionId, reason);
-      entityEventBus.emit('finance');
+      entityEventBus.emitMultiple(['finance', 'cases']);
       return true;
     } catch (err: any) {
       setError(err?.message || 'فشل في إلغاء الحركة بالقيد العكسي');
@@ -130,7 +132,9 @@ export function useFinance() {
 
   const updateChequeStatus = useCallback(async (id: number, status: ChequeStatus, collectedDate?: string): Promise<ChequeDetail | null> => {
     try {
-      return await window.electronAPI.updateChequeStatus(id, status, collectedDate);
+      const res = await window.electronAPI.updateChequeStatus(id, status, collectedDate);
+      entityEventBus.emitMultiple(['finance', 'cases']);
+      return res;
     } catch (err: any) {
       console.error('Failed to update cheque status:', err);
       return null;
